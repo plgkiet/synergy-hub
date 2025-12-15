@@ -197,7 +197,6 @@ export default function SearchPage() {
               <GlassCard className="search-result-card">
                 <div className="search-result-content">
                   <div className="search-result-text-block">
-                    {/* chỉ show info cần thiết */}
                     <p className="search-result-line">
                       <span className="search-result-label">Name:</span>{" "}
                       {activeCandidate.name}

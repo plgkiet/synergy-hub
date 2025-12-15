@@ -202,7 +202,8 @@
 .sh-band-cta {
   border: none;
   background: transparent;
-  color: #60a5fa;
+  /* color: #60a5fa; */
+  color: #d1d5db;
   font-size: 13px;
   cursor: pointer;
   padding: 0;
@@ -423,6 +424,138 @@
 
 .sh-footer-social-icon:hover {
   background: rgba(15, 23, 42, 0.5);
+}
+
+/* bubble */
+.bubble-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000; /* nền đen */
+}
+
+.bubble-bg__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.bubble-bg__layer {
+  position: absolute;
+  inset: 0;
+  filter: url(#goo) blur(40px);
+}
+
+.bubble {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  border-radius: 999px;
+  mix-blend-mode: hard-light;
+}
+
+.bubble--1 {
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--first-color), 0.8) 0%,
+    rgba(var(--first-color), 0) 50%
+  );
+}
+
+.bubble--2 {
+  width: 80%;
+  height: 80%;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--second-color), 0.8) 0%,
+    rgba(var(--second-color), 0) 50%
+  );
+}
+
+.bubble--3 {
+  width: 80%;
+  height: 80%;
+  top: calc(50% + 200px);
+  left: calc(50% - 500px);
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--third-color), 0.8) 0%,
+    rgba(var(--third-color), 0) 50%
+  );
+}
+
+.bubble--4 {
+  opacity: 0.7;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--fourth-color), 0.8) 0%,
+    rgba(var(--fourth-color), 0) 50%
+  );
+}
+
+.bubble--5 {
+  width: 160%;
+  height: 160%;
+  top: -30%;
+  left: -30%;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--fifth-color), 0.8) 0%,
+    rgba(var(--fifth-color), 0) 50%
+  );
+}
+
+.bubble--6 {
+  opacity: 0.7;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--sixth-color), 0.8) 0%,
+    rgba(var(--sixth-color), 0) 50%
+  );
+}
+
+.bubble-rot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubble-rot--2 {
+  transform-origin: calc(50% - 400px) 50%;
+}
+.bubble-rot--3 {
+  transform-origin: calc(50% + 400px) 50%;
+}
+.bubble-rot--5 {
+  transform-origin: 50% 50%;
+}
+
+.sh-band--bubble {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.sh-band-bubble {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* đảm bảo content/visual nổi lên trên bubble */
+.sh-band-bubble {
+  z-index: 0;
+}
+.sh-band-content,
+.sh-band-visual {
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 1024px) {

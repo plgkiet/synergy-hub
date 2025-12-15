@@ -9,6 +9,7 @@ import hero2 from "@/assets/img/hero123.png";
 import { useNavigate } from "react-router-dom";
 import { authStorage } from "@/api/authStorage";
 import { logout as logoutApi } from "@/api/auth";
+import { BubbleBackground } from "@/components/ui/BubbleBackground";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -73,12 +74,14 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <section className="sh-band">
+      <section className="sh-band  sh-band--bubble">
+        <BubbleBackground interactive className="sh-band-bubble" />
+
         <div className="sh-band-content">
           <h2 className="sh-band-title">
-            High-quality talent, matched to
+            High-quality talent,
             <br />
-            your needs
+            matched to your needs
           </h2>
 
           <p className="sh-band-text">
