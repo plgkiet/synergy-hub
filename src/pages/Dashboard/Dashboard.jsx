@@ -35,7 +35,7 @@ export default function Dashboard() {
         <div className="sh-nav-right">
           <GlassPill className="sh-nav-auth">
             <span className="user-greeting">
-              Hi, {user?.username || "User"}
+              Hi, {user?.username || "User"}!
             </span>
 
             <GlassButton

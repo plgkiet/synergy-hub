@@ -12,7 +12,7 @@ import { searchCvs } from "@/api/cvSearch";
 import { downloadCvByCode } from "@/api/fileService";
 import { PRESET_KEYWORDS } from "@/constants/presetKeywords";
 
-const LIMIT = 10;
+const LIMIT = 50;
 
 export default function SearchPage() {
   const { enqueueSnackbar } = useSnackbar();
@@ -128,7 +128,15 @@ export default function SearchPage() {
           </div>
 
           <button type="submit" className="search-btn" disabled={loading}>
-            {loading ? "..." : "search"}
+            {loading ? (
+              <span className="typing-dots">
+                <i></i>
+                <i></i>
+                <i></i>
+              </span>
+            ) : (
+              "search"
+            )}
           </button>
         </form>
 
