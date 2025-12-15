@@ -7,7 +7,13 @@ export default function ProtectedRoute() {
   const token = authStorage.getToken();
   const user = authStorage.getUser();
 
-  if (!token || !user) {
+  const isAuthed = Boolean(token && user);
+
+  if (isAuthed && location.pathname === "/login") {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  if (!isAuthed && location.pathname !== "/login") {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 

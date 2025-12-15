@@ -101,7 +101,7 @@ export default function LoginForm({ onSwitch }) {
               aria-label={showPw ? "Hide password" : "Show password"}
               title={showPw ? "Hide password" : "Show password"}
             >
-              <img src={showPw ? EyeInvisibleOutlined : EyeOutlined} alt="" />
+              <img src={showPw ? EyeOutlined : EyeInvisibleOutlined} alt="" />
             </button>
           </div>
         </label>
