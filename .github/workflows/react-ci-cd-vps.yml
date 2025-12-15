@@ -1,0 +1,131 @@
+name: React CI/CD to VPS
+
+on:
+  push:
+    branches: [ "develop" ]
+
+jobs:
+  ci-build-test:
+    name: Build & Test React
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests (if any)
+        run: |
+          if command -v jq >/dev/null 2>&1 && jq -e '.scripts.test' package.json >/dev/null 2>&1; then
+            npm test || true
+          fi
+
+      - name: Build
+        run: npm run build
+
+  docker-build-push:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: ci-build-test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & Push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/synergy-hub:latest
+
+  deploy-to-ubuntu-server:
+    name: Deploy to Ubuntu Server
+    runs-on: ubuntu-latest
+    needs: docker-build-push
+    steps:
+      - name: Deploy to Ubuntu Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: 22
+          command_timeout: 30m
+          script: |
+            set -e
+            echo "🚀 Starting React deployment..."
+
+            IMAGE=${{ secrets.DOCKER_USERNAME }}/synergy-hub:latest
+            echo "Image: $IMAGE"
+
+            APP_DIR="${{ secrets.SERVER_APP_PATH }}"
+            if [ -z "$APP_DIR" ]; then
+              APP_DIR="$HOME/synergy-hub"
+            fi
+
+            mkdir -p "$APP_DIR"
+            cd "$APP_DIR"
+
+            echo "🔐 Logging into Docker Hub..."
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+            echo "📥 Pulling latest Docker image..."
+            if ! docker pull "$IMAGE"; then
+              echo "❌ Failed to pull Docker image"
+              exit 1
+            fi
+
+            echo "🛑 Stopping old container if exists..."
+            if docker ps -q -f name=synergy-hub | grep -q .; then
+              docker stop synergy-hub
+              echo "✅ Old container stopped"
+            fi
+
+            if docker ps -aq -f name=synergy-hub | grep -q .; then
+              docker rm synergy-hub
+              echo "✅ Old container removed"
+            fi
+
+            echo "🧹 Cleaning up old images..."
+            docker image prune -af --filter "until=48h" || true
+
+            echo "▶️  Starting new container..."
+            # Bind container port 80 to host loopback port 8080 so nginx (listening on 80) can proxy to http://localhost:8080
+            docker run -d \
+              --name synergy-hub \
+              --restart unless-stopped \
+              -p 127.0.0.1:8080:80 \
+              -v "$APP_DIR/logs:/var/log/synergy-hub" \
+              $IMAGE
+
+            if [ $? -ne 0 ]; then
+              echo "❌ Failed to start container"
+              exit 1
+            fi
+
+            echo "⏳ Waiting for container to start..."
+            sleep 5
+
+            if [ "$(docker ps -q -f name=synergy-hub)" ]; then
+              echo "✅ Deployment successful!"
+              docker ps -f name=synergy-hub
+              docker logs --tail 20 synergy-hub
+            else
+              echo "❌ Deployment failed; container not running"
+              docker logs synergy-hub || true
+              exit 1
+            fi
+
+            docker logout || true
