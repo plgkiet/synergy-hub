@@ -13,5 +13,5 @@
 #### Version 0.0.1 - Ngày phát hành 15/12/2025
 
 - Phát triển tính năng Login
-- Phát triển tính năng upload Files
+- Phát triển tính năng Upload Files
 - Phát triển tính năng Search CVs
