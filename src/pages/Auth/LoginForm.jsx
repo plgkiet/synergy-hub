@@ -89,7 +89,6 @@ export default function LoginForm({ onSwitch }) {
           />
         </label>
 
-        {/* nếu m muốn rememberMe thì mở block này */}
         {/*
         <label className="remember-row">
           <input
