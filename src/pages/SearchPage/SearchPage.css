@@ -1,0 +1,350 @@
+.search-root {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    sans-serif;
+  color: #0f172a;
+}
+
+.search-left {
+  background: #ffffff;
+  padding: 48px 48px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.search-title {
+  font-size: clamp(40px, 4vw, 52px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.search-input-row {
+  display: flex;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.search-input {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  padding: 14px 0px;
+  padding-left: 10px;
+  font-size: 15px;
+  outline: none;
+  background: #ffffff;
+}
+
+.search-input:focus {
+  border-color: #111827;
+}
+
+.search-clear-btn {
+  position: absolute;
+  padding: 0;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #9ca3af;
+}
+
+.search-clear-btn:hover {
+  color: #4b5563;
+}
+
+.search-btn {
+  flex: 0 0 auto;
+  min-width: 120px;
+  border-radius: 999px;
+  border: none;
+  padding: 14px 26px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  background: #111827;
+  color: #f9fafb;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.35);
+}
+
+.search-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 52px rgba(15, 23, 42, 0.45);
+}
+
+.search-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.4);
+}
+
+.search-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+  padding-right: 24px;
+}
+
+.search-chip {
+  padding: 8px 22px;
+  border-radius: 999px;
+  border: 1px solid #111827;
+  background: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.search-chip--active {
+  background: #111827;
+  color: #ffffff;
+}
+
+.search-right {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #30d18a 23%, #1ea5e0 65%, #163c98 100%);
+}
+
+.search-hero-graphic {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  display: block;
+  z-index: 1;
+}
+
+.search-right::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 65%;
+  background: url("/src/assets/img/search-wave.svg") bottom center / cover
+    no-repeat;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.search-right::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  background-repeat: repeat;
+  opacity: 0.35;
+  mix-blend-mode: soft-light;
+}
+
+.search-right-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 640px;
+  padding: 40px 40px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-result-wrapper {
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-result-card {
+  width: 100%;
+  min-height: 70vh;
+  border-radius: 32px;
+  padding: 30px 32px 34px;
+  position: relative;
+  padding-bottom: 90px;
+
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: -11px -10px 48px -12px rgba(0, 0, 0, 0.18),
+    -2px -2px 12px -8px rgba(0, 0, 0, 0.16),
+    inset 2px 2px 11px rgba(255, 255, 255, 0.25),
+    inset 1px 1px 5px rgba(255, 255, 255, 0.18);
+
+  background: radial-gradient(
+    circle at 0% 0%,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.18) 35%,
+    rgba(255, 255, 255, 0.03) 100%
+  );
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  color: #f9fafb;
+}
+
+.search-result-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 22px;
+  line-height: 1.6;
+}
+
+.search-result-text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.search-result-line {
+  margin: 0;
+}
+
+.search-result-label {
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: 0.02em;
+}
+
+.search-result-email {
+  color: inherit;
+  /* text-decoration: none;  */
+  cursor: pointer;
+}
+
+.search-result-email:hover {
+  text-decoration: underline;
+  opacity: 0.9;
+}
+
+.search-nav-top {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.search-nav-indicator {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* DOWNLOAD CV – cố định đáy card */
+
+.search-download-section {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-download-text {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.glass-icon-btn {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-arrow-top {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+}
+
+.search-arrow-top img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.search-arrow-top:disabled {
+  opacity: 0.35;
+  cursor: default;
+  box-shadow: none;
+  transform: none;
+}
+
+.search-download-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+}
+
+.search-download-circle img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .search-root {
+    grid-template-columns: 1fr;
+  }
+
+  .search-right {
+    min-height: 420px;
+  }
+
+  .search-right-inner {
+    padding: 40px 24px 60px;
+  }
+}
+
+@media (max-width: 640px) {
+  .search-left {
+    padding: 32px 20px 24px;
+  }
+
+  .search-input-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-btn {
+    width: 100%;
+  }
+
+  .search-chips {
+    padding-right: 0;
+  }
+
+  .search-result-card {
+    padding: 22px 20px 26px;
+    border-radius: 24px;
+    min-height: 320px;
+  }
+}
