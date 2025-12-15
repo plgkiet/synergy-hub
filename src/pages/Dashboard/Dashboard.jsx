@@ -3,9 +3,10 @@ import GlassPill from "@/components/GlassCard/GlassPill";
 import GlassHeroCard from "@/components/GlassCard/GlassHeroCard";
 import GlassButton from "@/components/GlassCard/GlassButton";
 import GlassCard from "@/components/GlassCard/GlassCard";
+import GlassCircle from "@/components/GlassCard/GlassCircle";
 import logo from "@/assets/img/logo/logo.png";
 import hero from "@/assets/img/hero.png";
-import hero2 from "@/assets/img/hero123.png";
+import hero2 from "@/assets/img/whiteLogo.png";
 import { useNavigate } from "react-router-dom";
 import { authStorage } from "@/api/authStorage";
 import { logout as logoutApi } from "@/api/auth";
@@ -97,7 +98,9 @@ export default function Dashboard() {
         </div>
 
         <div className="sh-band-visual">
-          <img className="sh-band-hero" src={hero2} alt="Synergy Hub brand" />
+          <GlassCircle className="glass-circle--lg">
+            <img src={hero2} alt="Synergy Hub brand" />
+          </GlassCircle>
         </div>
       </section>
 

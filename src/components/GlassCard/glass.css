@@ -144,6 +144,63 @@
   color: #0f172a;
 }
 
+.glass-circle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* size mặc định, muốn khác thì override bằng className */
+  width: 260px;
+  height: 260px;
+  border-radius: 999px; /* = tròn */
+
+  /* y chang glass-pill */
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: -6px -6px 20px -8px rgba(0, 0, 0, 0.16),
+    inset 1px 1px 6px rgba(255, 255, 255, 0.4);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.2) 40%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  color: #0f172a;
+  overflow: hidden; /* để highlight/children gọn trong hình tròn */
+}
+
+.glass-circle img {
+  width: 62%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.glass-circle--sm {
+  width: 200px;
+  height: 200px;
+}
+
+.glass-circle--md {
+  width: 360px;
+  height: 360px;
+}
+
+.glass-circle--lg {
+  width: 460px;
+  height: 460px;
+}
+
+.glass-circle--xl {
+  width: 560px;
+  height: 560px;
+}
+
 @media (max-width: 640px) {
   .glass-upload {
     padding: 22px 22px 26px;
