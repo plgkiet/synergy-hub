@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { login as loginApi } from "@/api/auth";
+import EyeOutlined from "@/assets/icon/EyeOutlined.svg";
+import EyeInvisibleOutlined from "@/assets/icon/EyeInvisibleOutlined.svg";
 
 export default function LoginForm({ onSwitch }) {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ export default function LoginForm({ onSwitch }) {
     rememberMe: false,
   });
 
+  const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onChange = (key) => (e) => {
@@ -78,15 +81,29 @@ export default function LoginForm({ onSwitch }) {
 
         <label className="field">
           <span className="field-label">Password</span>
-          <input
-            type="password"
-            autoComplete="new-password"
-            name="login-password"
-            placeholder="Enter your password"
-            className="login-input"
-            value={form.password}
-            onChange={onChange("password")}
-          />
+
+          <div className="pw-wrap">
+            <input
+              type={showPw ? "text" : "password"}
+              autoComplete="new-password"
+              name="login-password"
+              placeholder="Enter your password"
+              className="login-input pw-input"
+              value={form.password}
+              onChange={onChange("password")}
+            />
+
+            <button
+              type="button"
+              className="pw-toggle"
+              onClick={() => setShowPw((v) => !v)}
+              disabled={loading}
+              aria-label={showPw ? "Hide password" : "Show password"}
+              title={showPw ? "Hide password" : "Show password"}
+            >
+              <img src={showPw ? EyeInvisibleOutlined : EyeOutlined} alt="" />
+            </button>
+          </div>
         </label>
 
         {/*
