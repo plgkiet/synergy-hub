@@ -101,7 +101,15 @@ export default function LoginForm({ onSwitch }) {
         */}
 
         <button type="submit" className="btn-submit" disabled={loading}>
-          {loading ? "SIGNING IN..." : "SIGN IN"}
+          {loading ? (
+            <span className="typing-dots">
+              <i></i>
+              <i></i>
+              <i></i>
+            </span>
+          ) : (
+            "SIGN IN"
+          )}
         </button>
 
         {/* <p className="signup-hint">
