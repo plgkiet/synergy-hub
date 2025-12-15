@@ -394,8 +394,41 @@
 }
 
 .upload-root .sh-band-cta:hover {
-  color: #1d4ed8;
+  color: #f9fafb;
   text-decoration: underline;
+}
+
+.upload-go-search {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-home-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+
+  color: #000;
+}
+
+.upload-home-btn:hover {
+  color: #f9fafb;
+}
+
+.home-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.home-icon,
+.home-icon * {
+  fill: currentColor !important;
+  stroke: currentColor !important;
 }
 
 @media (max-width: 640px) {

@@ -5,6 +5,7 @@ import "./UploadPage.css";
 import GlassCard from "@/components/GlassCard/GlassUpload";
 
 import fileIcon from "@/assets/icon/file.svg";
+import HomeIcon from "@/assets/icon/HomeFilled.svg?react";
 import deleteIcon from "@/assets/icon/delete.png";
 import { uploadCvs } from "@/api/cvDocument";
 import { useNavigate } from "react-router-dom";
@@ -235,6 +236,12 @@ export default function UploadPage() {
         <div className="upload-go-search">
           <button className="sh-band-cta" onClick={() => navigate("/search")}>
             Go to search page →
+          </button>
+          <button
+            className="upload-home-btn"
+            onClick={() => navigate("/dashboard")}
+          >
+            <HomeIcon className="home-icon" />
           </button>
         </div>
       </div>
