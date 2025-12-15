@@ -7,7 +7,7 @@ import LeftOutlinedIcon from "@/assets/icon/LeftOutlined.svg";
 import RightOutlinedIcon from "@/assets/icon/RightOutlined.svg";
 import DownloadIcon from "@/assets/icon/download.svg";
 import { useSnackbar } from "notistack";
-
+import { useNavigate } from "react-router-dom";
 import { searchCvs } from "@/api/cvSearch";
 import { downloadCvByCode } from "@/api/fileService";
 import { PRESET_KEYWORDS } from "@/constants/presetKeywords";
@@ -16,6 +16,7 @@ const LIMIT = 50;
 
 export default function SearchPage() {
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -102,6 +103,13 @@ export default function SearchPage() {
 
   return (
     <div className="search-root">
+      <button
+        type="button"
+        className="search-back-dashboard"
+        onClick={() => navigate("/dashboard")}
+      >
+        ← Go to dashboard
+      </button>
       <div className="search-left">
         <h1 className="search-title">Search for the talent...</h1>
 

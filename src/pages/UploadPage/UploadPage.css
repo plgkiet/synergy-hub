@@ -394,7 +394,7 @@
 }
 
 .upload-root .sh-band-cta:hover {
-  color: #f9fafb;
+  /* color: #f9fafb; */
   text-decoration: underline;
 }
 
@@ -411,7 +411,6 @@
   background: transparent;
   padding: 0;
   cursor: pointer;
-
   color: #000;
 }
 
