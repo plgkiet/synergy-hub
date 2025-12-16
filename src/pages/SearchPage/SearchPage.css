@@ -1,6 +1,6 @@
 .search-root {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: 1fr 1fr;
   height: 100vh;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
     sans-serif;
@@ -172,7 +172,7 @@
 
 .search-result-wrapper {
   width: 100%;
-  max-width: 520px;
+  /* max-width: 620px; */
   display: flex;
   flex-direction: column;
   align-items: center;
