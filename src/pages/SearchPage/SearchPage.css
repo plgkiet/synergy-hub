@@ -172,7 +172,7 @@
 
 .search-result-wrapper {
   width: 100%;
-  max-width: 520px;
+  /* max-width: 620px; */
   display: flex;
   flex-direction: column;
   align-items: center;
