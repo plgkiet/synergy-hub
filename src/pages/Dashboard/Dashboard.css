@@ -260,13 +260,22 @@
 }
 
 .sh-footer-inner {
-  max-width: 1200px;
-  margin: 0 auto 40px auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 6vw;
+  max-width: none;
+  width: 100%;
+  margin: 0 auto 40px;
+
+  display: grid;
+  grid-template-columns:
+    minmax(260px, 1.4fr)  /* brand */
+    minmax(160px, 1fr)    /* platform */
+    minmax(160px, 1fr)    /* legals */
+    minmax(160px, 1fr)    /* sh for */
+    minmax(260px, 1.4fr); /* contact */
+
+  column-gap: clamp(32px, 4vw, 80px);
+  align-items: start;
 }
+
 
 .sh-footer-brand {
   flex: 1;
@@ -292,10 +301,7 @@
 }
 
 .sh-footer-columns {
-  flex: 2;
-  display: flex;
-  justify-content: center;
-  gap: 5vw;
+display: contents;
 }
 
 .sh-footer-col {
@@ -389,7 +395,7 @@
 }
 
 .sh-footer-bottom {
-  max-width: 1200px;
+  max-width: none;
   margin: 0 auto;
   padding-top: 16px;
   border-top: 1px solid rgba(15, 23, 42, 0.22);
