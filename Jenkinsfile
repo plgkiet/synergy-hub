@@ -7,7 +7,7 @@ pipeline {
 
   environment {
     BRANCH_NAME = 'develop'
-    DOCKER_IMAGE = 'user_management'
+    DOCKER_IMAGE = 'synergy-hub'
 
     REMOTE_HOST = 'cvprojecthost1.ddns.net'
     REMOTE_USER = 'chicuong'
@@ -66,17 +66,17 @@ pipeline {
               echo "🚀 Starting deployment..."
               echo "🖥️  Server: ${REMOTE_HOST}"
               echo "👤 User: ${REMOTE_USER}"
-              if docker ps -a --format '{{.Names}}' | grep -qx "cv_service"; then
+              if docker ps -a --format '{{.Names}}' | grep -qx "synergy-hub"; then
                 echo "🧹 Stopping existing container..."
-                docker stop cv_service || true
-                docker rm cv_service || true
+                docker stop synergy-hub || true
+                docker rm synergy-hub || true
               fi
 
               echo "📥 Pulling latest image..."
               docker pull ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest
 
               echo "🚀 Running new container..."
-              docker run -d --name cv_service -p 80:80 ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest
+              docker run -d --name synergy-hub -p 80:80 ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest
               
             """
           }
