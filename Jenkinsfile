@@ -61,10 +61,13 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKERHUB_TOKEN')]) {
           sshagent([env.SSH_CREDENTIALS_ID]) {
             sh """
-              ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'set -e
+              ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} << 'EOF'
+              set -e
+
               echo "🚀 Starting deployment..."
               echo "🖥️  Server: ${REMOTE_HOST}"
               echo "👤 User: ${REMOTE_USER}"
+
               if docker ps -a --format '{{.Names}}' | grep -qx "synergy-hub"; then
                 echo "🧹 Stopping existing container..."
                 docker stop synergy-hub || true
@@ -76,8 +79,9 @@ pipeline {
 
               echo "🚀 Running new container..."
               docker run -d --name synergy-hub -p 80:80 ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest
-              
-            """
+
+              EOF
+              """
           }
         }
       }
