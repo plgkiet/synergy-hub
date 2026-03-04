@@ -75,7 +75,7 @@ pipeline {
                 -o UserKnownHostsFile=/dev/null \
                 -o PreferredAuthentications=password \
                 -o PubkeyAuthentication=no \
-                $SSH_USER@${REMOTE_HOST} << EOF
+                $SSH_USER@${REMOTE_HOST} <<EOF
               set -e
 
               echo "🚀 Starting deployment..."
