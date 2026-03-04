@@ -16,6 +16,8 @@ pipeline {
     SSH_CREDENTIALS_ID = 'linux_server_home'
     GIT_CREDENTIALS_ID = 'github-cred'
     DOCKER_CREDENTIALS_ID = 'DOCKER_CRED'
+
+    SERVER_PASSWORD_ID = 'server-password'
   }
 
   stages {
