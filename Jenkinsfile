@@ -60,7 +60,14 @@ pipeline {
         branch env.BRANCH_NAME
       }
       steps {
-        withCredentials([usernamePassword(credentialsId: env.SERVER_PASSWORD_ID, usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
+        withCredentials([usernamePassword(credentialsId: env.SERVER_PASSWORD_ID, usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS'),
+          ,
+          usernamePassword(
+            credentialsId: env.DOCKER_CREDENTIALS_ID,
+            usernameVariable: 'DOCKER_USERNAME',
+            passwordVariable: 'DOCKERHUB_TOKEN'
+          )
+        ]) {
           sshagent([env.SSH_CREDENTIALS_ID]) {
             sh """
               sshpass -p "$SSH_PASS" ssh \
