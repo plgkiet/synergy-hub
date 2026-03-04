@@ -93,8 +93,6 @@ pipeline {
 
               echo "🚀 Running new container..."
               docker run -d --name synergy-hub -p 80:80 ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest
-
-              EOF
               """
           }
         }
