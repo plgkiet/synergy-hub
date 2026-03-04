@@ -10,7 +10,7 @@ pipeline {
     DOCKER_IMAGE = 'synergy-hub'
 
     REMOTE_HOST = 'cvprojecthost1.ddns.net'
-    REMOTE_USER = 'chicuong'
+    REMOTE_USER = 'cuong'
     REMOTE_DIR = '/opt/usermanagement'
 
     SSH_CREDENTIALS_ID = 'linux_server_home'
@@ -58,10 +58,15 @@ pipeline {
         branch env.BRANCH_NAME
       }
       steps {
-        withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKERHUB_TOKEN')]) {
+        withCredentials([usernamePassword(credentialsId: env.SERVER_PASSWORD_ID, usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS')]) {
           sshagent([env.SSH_CREDENTIALS_ID]) {
             sh """
-              ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} << 'EOF'
+              sshpass -p "$SSH_PASS" ssh \
+                -o StrictHostKeyChecking=no \
+                -o UserKnownHostsFile=/dev/null \
+                -o PreferredAuthentications=password \
+                -o PubkeyAuthentication=no \
+                $SSH_USER@${REMOTE_HOST} << EOF
               set -e
 
               echo "🚀 Starting deployment..."
