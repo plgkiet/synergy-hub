@@ -49,7 +49,6 @@ export const PRESET_KEYWORDS = [
   "SaaS",
   "API",
   "Microservices",
-  "Cloud Native",
   "DevTools",
 
   "Intern",
