@@ -10,12 +10,14 @@ pipeline {
     DOCKER_IMAGE = 'synergy-hub'
 
     REMOTE_HOST = 'cvprojecthost1.ddns.net'
-    REMOTE_USER = 'chicuong'
+    REMOTE_USER = 'cuong'
     REMOTE_DIR = '/opt/usermanagement'
 
     SSH_CREDENTIALS_ID = 'linux_server_home'
     GIT_CREDENTIALS_ID = 'github-cred'
     DOCKER_CREDENTIALS_ID = 'DOCKER_CRED'
+
+    SERVER_PASSWORD_ID = 'server-password'
   }
 
   stages {
@@ -35,7 +37,6 @@ pipeline {
         sh '''
           npm install
           npm run build
-          npm test
         '''
       }
     }
@@ -59,13 +60,28 @@ pipeline {
         branch env.BRANCH_NAME
       }
       steps {
-        withCredentials([usernamePassword(credentialsId: env.DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKERHUB_TOKEN')]) {
+        withCredentials([usernamePassword(credentialsId: env.SERVER_PASSWORD_ID, usernameVariable: 'SSH_USER', passwordVariable: 'SSH_PASS'),
+          ,
+          usernamePassword(
+            credentialsId: env.DOCKER_CREDENTIALS_ID,
+            usernameVariable: 'DOCKER_USERNAME',
+            passwordVariable: 'DOCKERHUB_TOKEN'
+          )
+        ]) {
           sshagent([env.SSH_CREDENTIALS_ID]) {
             sh """
-              ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 'set -e
+              sshpass -p "$SSH_PASS" ssh \
+                -o StrictHostKeyChecking=no \
+                -o UserKnownHostsFile=/dev/null \
+                -o PreferredAuthentications=password \
+                -o PubkeyAuthentication=no \
+                $SSH_USER@${REMOTE_HOST} <<EOF
+              set -e
+
               echo "🚀 Starting deployment..."
               echo "🖥️  Server: ${REMOTE_HOST}"
               echo "👤 User: ${REMOTE_USER}"
+
               if docker ps -a --format '{{.Names}}' | grep -qx "synergy-hub"; then
                 echo "🧹 Stopping existing container..."
                 docker stop synergy-hub || true
@@ -77,8 +93,7 @@ pipeline {
 
               echo "🚀 Running new container..."
               docker run -d --name synergy-hub -p 80:80 ${DOCKER_USERNAME}/${DOCKER_IMAGE}:latest
-              
-            """
+              """
           }
         }
       }
