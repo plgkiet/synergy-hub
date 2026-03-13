@@ -19,3 +19,23 @@ export async function login({ userName, password, rememberMe = false }) {
 export function logout() {
   authStorage.clearAll();
 }
+
+export async function register({
+  username,
+  email,
+  password,
+  confirmPassword,
+  roleId = 0,
+}) {
+  return http("/api/Auth/register", {
+    method: "POST",
+    body: {
+      username,
+      email,
+      password,
+      confirmPassword,
+      roleId,
+    },
+    auth: false,
+  });
+}

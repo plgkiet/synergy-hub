@@ -129,7 +129,7 @@ export default function LoginForm({ onSwitch }) {
           )}
         </button>
 
-        {/* <p className="signup-hint">
+        <p className="signup-hint">
           If you don't have an account,{" "}
           <button
             type="button"
@@ -139,14 +139,14 @@ export default function LoginForm({ onSwitch }) {
           >
             Sign up
           </button>
-        </p> */}
+        </p>
 
-        <p className="signup-hint">
+        {/* <p className="signup-hint">
           Don’t have an account?{" "}
           <span className="signup-link-strong">
             Contact your administrator.
           </span>
-        </p>
+        </p> */}
       </form>
     </>
   );
