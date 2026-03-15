@@ -73,9 +73,7 @@ export default function SignUpForm({ onSwitch }) {
         variant: "success",
       });
 
-      navigate("/activate", {
-        state: { email: form.email },
-      });
+      navigate("/login");
     } catch (err) {
       console.log("REGISTER ERROR:", err);
 

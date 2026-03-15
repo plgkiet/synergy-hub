@@ -338,3 +338,27 @@
   cursor: not-allowed;
   transform: none;
 }
+
+.activate-message {
+  font-size: 14px;
+  text-align: center;
+  color: #334155;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+.activate-spinner {
+  width: 36px;
+  height: 36px;
+  margin: 0 auto;
+  border: 3px solid rgba(30, 165, 224, 0.2);
+  border-top-color: #1ea5e0;
+  border-radius: 50%;
+  animation: activate-spin 0.8s linear infinite;
+}
+
+@keyframes activate-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

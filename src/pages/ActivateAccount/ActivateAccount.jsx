@@ -1,132 +1,136 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSnackbar } from "notistack";
 import GlassCard from "@/components/GlassCard/GlassCard";
 import { activateAccount, resendActivation } from "@/api/auth";
 import "./ActivateAccount.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 
 export default function ActivateAccount() {
   const { enqueueSnackbar } = useSnackbar();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const email = location.state?.email;
-  const [token, setToken] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [countdown, setCountdown] = useState(60);
+  const ranRef = useRef(false);
+
+  const email = searchParams.get("email") ?? "";
+  const code = searchParams.get("code") ?? "";
+
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error | invalid_link
+  const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
     if (countdown <= 0) return;
-
-    const timer = setInterval(() => {
-      setCountdown((v) => v - 1);
-    }, 1000);
-
+    const timer = setInterval(() => setCountdown((v) => v - 1), 1000);
     return () => clearInterval(timer);
   }, [countdown]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (ranRef.current) return;
 
-    if (!token.trim()) {
-      enqueueSnackbar("Please enter activation code", {
-        variant: "warning",
-      });
+    if (!email.trim() || !code.trim()) {
+      setStatus("invalid_link");
       return;
     }
 
-    try {
-      setLoading(true);
+    ranRef.current = true;
+    setStatus("loading");
 
-      await activateAccount({
-        email,
-        token,
+    activateAccount({ email: email.trim(), token: code.trim() })
+      .then(() => {
+        setStatus("success");
+        enqueueSnackbar("Account activated. You can now log in.", {
+          variant: "success",
+        });
+        setTimeout(() => navigate("/login", { replace: true }), 1500);
+      })
+      .catch((err) => {
+        setStatus("error");
+        const msg =
+          err?.data?.message ??
+          err?.message ??
+          "Activation failed. The link may be expired or invalid.";
+        enqueueSnackbar(String(msg), { variant: "error" });
       });
-
-      enqueueSnackbar("Account activated. You can now log in.", {
-        variant: "success",
-      });
-
-      navigate("/login", { replace: true });
-    } catch (err) {
-      const msg =
-        err?.response?.data?.message ||
-        err?.response?.data ||
-        err?.message ||
-        "Activation failed";
-
-      enqueueSnackbar(String(msg), { variant: "error" });
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [email, code, enqueueSnackbar, navigate]);
 
   const handleResend = async () => {
+    if (!email.trim()) return;
     try {
-      await resendActivation({
-        email,
-      });
-
-      enqueueSnackbar("Activation email sent again", {
-        variant: "success",
-      });
-
+      await resendActivation({ email: email.trim() });
+      enqueueSnackbar("Activation email sent again.", { variant: "success" });
       setCountdown(60);
-    } catch (err) {
-      enqueueSnackbar("Failed to resend activation email", {
-        variant: "error",
-      });
+    } catch {
+      enqueueSnackbar("Failed to resend activation email.", { variant: "error" });
     }
   };
 
-  return (
-    <div className="auth-root">
-      <GlassCard className="auth-card">
-        <h2 className="login-title">Activate Account</h2>
+  if (status === "loading") {
+    return (
+      <div className="auth-root">
+        <GlassCard className="auth-card">
+          <h2 className="login-title">Activating your account</h2>
+          <p className="activate-message">Please wait…</p>
+          <div className="activate-spinner" aria-hidden />
+        </GlassCard>
+      </div>
+    );
+  }
 
-        <form className="login-form" onSubmit={handleSubmit}>
-          <p
-            style={{
-              fontSize: 13,
-              textAlign: "center",
-              marginBottom: 8,
-              color: "#334155",
-            }}
-          >
-            Enter the activation code sent to your email
+  if (status === "success") {
+    return (
+      <div className="auth-root">
+        <GlassCard className="auth-card">
+          <h2 className="login-title">Account activated</h2>
+          <p className="activate-message">Redirecting you to login…</p>
+        </GlassCard>
+      </div>
+    );
+  }
+
+  if (status === "invalid_link") {
+    return (
+      <div className="auth-root">
+        <GlassCard className="auth-card">
+          <h2 className="login-title">Invalid activation link</h2>
+          <p className="activate-message">
+            This link is missing email or code. Please use the link from your
+            activation email, or request a new one.
           </p>
+          <Link to="/login" className="signup-link">
+            Back to login
+          </Link>
+        </GlassCard>
+      </div>
+    );
+  }
 
-          <input
-            type="text"
-            placeholder="Activation code"
-            className="login-input"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-          />
+  if (status === "error") {
+    return (
+      <div className="auth-root">
+        <GlassCard className="auth-card">
+          <h2 className="login-title">Activation failed</h2>
+          <p className="activate-message">
+            We couldn’t activate your account. The link may be expired or
+            already used.
+          </p>
+          {email && (
+            <button
+              type="button"
+              className="resend-btn"
+              disabled={countdown > 0}
+              onClick={handleResend}
+            >
+              {countdown > 0
+                ? `Resend in ${countdown}s`
+                : "Resend activation email"}
+            </button>
+          )}
+          <Link to="/login" className="signup-link" style={{ marginTop: 12 }}>
+            Back to login
+          </Link>
+        </GlassCard>
+      </div>
+    );
+  }
 
-          <button type="submit" className="btn-submit" disabled={loading}>
-            {loading ? (
-              <span className="typing-dots">
-                <i></i>
-                <i></i>
-                <i></i>
-              </span>
-            ) : (
-              "VERIFY"
-            )}
-          </button>
-
-          <button
-            type="button"
-            className="resend-btn"
-            disabled={countdown > 0}
-            onClick={handleResend}
-          >
-            {countdown > 0
-              ? `Resend available in ${countdown}s`
-              : "Resend activation email"}
-          </button>
-        </form>
-      </GlassCard>
-    </div>
-  );
+  return null;
 }
