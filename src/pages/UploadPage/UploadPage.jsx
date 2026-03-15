@@ -41,7 +41,7 @@ export default function UploadPage() {
         if (existed.has(key)) continue;
 
         next.push({
-          id: crypto.randomUUID(),
+          id: generateId(),
           file: f,
           status: "ready",
           progress: 0,
@@ -52,6 +52,13 @@ export default function UploadPage() {
       return next;
     });
   };
+
+  function generateId() {
+    if (typeof crypto !== "undefined" && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  }
 
   const removeItem = (id) => {
     if (uploading) return;
@@ -168,9 +175,8 @@ export default function UploadPage() {
               items.map((it) => (
                 <div
                   key={it.id}
-                  className={`upload-item ${
-                    it.status === "error" ? "upload-item--error" : ""
-                  }`}
+                  className={`upload-item ${it.status === "error" ? "upload-item--error" : ""
+                    }`}
                 >
                   <div className="upload-item-left">
                     <span className="upload-file-icon">
@@ -181,9 +187,8 @@ export default function UploadPage() {
                       <div className="upload-file-name">{it.file.name}</div>
 
                       <div
-                        className={`upload-file-meta ${
-                          it.status === "error" ? "upload-file-meta--error" : ""
-                        }`}
+                        className={`upload-file-meta ${it.status === "error" ? "upload-file-meta--error" : ""
+                          }`}
                       >
                         {formatBytes(it.file.size)} ·{" "}
                         {it.status === "ready" && "Ready"}
@@ -195,15 +200,14 @@ export default function UploadPage() {
 
                       <div className="upload-progress">
                         <div
-                          className={`upload-progress-bar ${
-                            it.status === "done"
+                          className={`upload-progress-bar ${it.status === "done"
                               ? "is-done"
                               : it.status === "error"
-                              ? "is-error"
-                              : it.status === "uploading"
-                              ? "is-loading"
-                              : ""
-                          }`}
+                                ? "is-error"
+                                : it.status === "uploading"
+                                  ? "is-loading"
+                                  : ""
+                            }`}
                           style={{ width: `${it.progress}%` }}
                         />
                       </div>

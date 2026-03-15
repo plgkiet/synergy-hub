@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "./Auth.css";
-
 import hero from "@/assets/img/login-left.png";
 import GlassCard from "@/components/GlassCard/GlassCard";
 import LoginForm from "./LoginForm";
@@ -16,11 +15,9 @@ export default function Auth() {
       </div>
 
       <GlassCard className="auth-card">
-        {mode === "login" ? (
-          <LoginForm onSwitch={() => setMode("signup")} />
-        ) : (
-          <SignUpForm onSwitch={() => setMode("login")} />
-        )}
+        {mode === "login" && <LoginForm onSwitch={() => setMode("signup")} />}
+
+        {mode === "signup" && <SignUpForm onSwitch={() => setMode("login")} />}
       </GlassCard>
     </div>
   );
