@@ -52,3 +52,13 @@ export async function resendActivation({ email }) {
     auth: false,
   });
 }
+
+export async function requestNewActivationCode({ email }) {
+  return http("/api/Auth/resend-activation", {
+    method: "POST",
+    body: {
+      email,
+    },
+    auth: false,
+  });
+}

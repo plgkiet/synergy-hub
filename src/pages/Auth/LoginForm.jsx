@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { login as loginApi } from "@/api/auth";
+import { login as loginApi, requestNewActivationCode as requestNewActivationCodeApi } from "@/api/auth";
 import EyeOutlined from "@/assets/icon/EyeOutlined.svg";
 import EyeInvisibleOutlined from "@/assets/icon/EyeInvisibleOutlined.svg";
+import { acceleratedValues } from "framer-motion";
 
 export default function LoginForm({ onSwitch }) {
   const navigate = useNavigate();
@@ -11,17 +12,39 @@ export default function LoginForm({ onSwitch }) {
 
   const [form, setForm] = useState({
     userName: "",
+    email: "",
     password: "",
     rememberMe: false,
   });
 
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [requestNewActivationCode, setRequestNewActivationCode] = useState(false);
 
   const onChange = (key) => (e) => {
     const value =
       e?.target?.type === "checkbox" ? e.target.checked : e.target.value;
     setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleRequestNewActivationCode = async () => {
+    setLoading(true);
+    await requestNewActivationCodeApi({ email: form.email })
+      .then(() => {
+        enqueueSnackbar("Activation code sent. Please check your email.", { variant: "success" });
+        setRequestNewActivationCode(false);
+        setForm({
+          ...form,
+          email: "",
+          password: "",
+          userName: ""
+        });
+      }).catch((err) => {
+        enqueueSnackbar(err?.message || "Failed to request new activation code.", { variant: "error" });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleSubmit = async (e) => {
@@ -48,12 +71,17 @@ export default function LoginForm({ onSwitch }) {
     } catch (err) {
       console.log("LOGIN ERROR RAW:", err);
 
-      const msg =
+      let msg =
         err?.response?.data?.message ||
         err?.response?.data?.title ||
         err?.response?.data ||
         err?.message ||
         "Login failed";
+
+      if (msg === "ACCOUNT_NOT_ACTIVE" || msg === "Account is not active") {
+        setRequestNewActivationCode(true);
+        msg = "Account not active. Please request a new activation code.";
+      }
 
       enqueueSnackbar(String(msg), { variant: "error" });
     } finally {
@@ -118,7 +146,7 @@ export default function LoginForm({ onSwitch }) {
         */}
 
         <button type="submit" className="btn-submit" disabled={loading}>
-          {loading ? (
+          {loading && !requestNewActivationCode ? (
             <span className="typing-dots">
               <i></i>
               <i></i>
@@ -147,6 +175,36 @@ export default function LoginForm({ onSwitch }) {
             Contact your administrator.
           </span>
         </p> */}
+        {requestNewActivationCode && (
+          <form className="login-form">
+            <label className="field">
+          <span className="field-label">Email</span>
+          <input
+            type="email"
+            autoComplete="off"
+            name="login-email"
+            placeholder="Enter your email"
+            className="login-input"
+            value={form.email}
+            onChange={onChange("email")}
+          />
+        </label>
+            <button
+              type="button"
+              className="inline-link signup-link"
+              onClick={handleRequestNewActivationCode}
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="typing-dots">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </span>
+              ) : "Request new activation code"}
+            </button>
+          </form>
+        )}
       </form>
     </>
   );

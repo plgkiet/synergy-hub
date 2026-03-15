@@ -21,14 +21,14 @@ export default function Dashboard() {
       <header className="sh-nav">
         <div className="sh-nav-left">
           <GlassPill className="sh-logo-pill">
-            <img src={logo} alt="Synergy Hub" />
+            <img src={logo} alt="Synergy Hub" />id
           </GlassPill>
         </div>
 
         <nav className="sh-nav-center">
           <GlassPill className="sh-nav-glass">
             <button onClick={() => navigate("/upload")}>Upload</button>
-            <button onClick={() => navigate("/search")}>Search</button>
+            {user?.role?.id != 3 && <button onClick={() => navigate("/search")}>Search</button>}
             <button>About Us</button>
             <button>Contact Us</button>
           </GlassPill>
