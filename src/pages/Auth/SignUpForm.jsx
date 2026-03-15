@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useSnackbar } from "notistack";
 import { register } from "@/api/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUpForm({ onSwitch }) {
   const { enqueueSnackbar } = useSnackbar();
-
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -66,13 +67,15 @@ export default function SignUpForm({ onSwitch }) {
         username: form.username,
         email: form.email,
         password: form.password,
-        confirmPassword: form.confirmPassword,
-        roleId: 1,
       });
 
-      enqueueSnackbar("Register successful!", { variant: "success" });
+      enqueueSnackbar("Please check your email for the activation code.", {
+        variant: "success",
+      });
 
-      onSwitch();
+      navigate("/activate", {
+        state: { email: form.email },
+      });
     } catch (err) {
       console.log("REGISTER ERROR:", err);
 
