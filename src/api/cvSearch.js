@@ -1,6 +1,6 @@
 import { storage } from "@/api/http";
 
-export async function searchCvs(searchQuery, limit = 50) {
+export async function searchCvs(searchQuery, limit = 1000) {
   const token = storage.getToken();
   const base = import.meta.env.VITE_CV_API_BASE_URL || "/cvapi";
 
@@ -17,7 +17,7 @@ export async function searchCvs(searchQuery, limit = 50) {
   if (!res.ok)
     throw Object.assign(
       new Error(data?.message || `Request failed (${res.status})`),
-      { data, status: res.status }
+      { data, status: res.status },
     );
   return data;
 }

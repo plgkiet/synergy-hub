@@ -40,8 +40,11 @@ export default function SearchPage() {
       setLoading(true);
       setCurrentIndex(0);
 
-      const res = await searchCvs(q, LIMIT);
-      setResults(Array.isArray(res?.metadata) ? res.metadata : []);
+      // const res = await searchCvs(q, LIMIT);
+      // setResults(Array.isArray(res?.metadata) ? res.metadata : []);
+      const res = await searchCvs(q);
+      const filtered = (res?.metadata || []).filter((cv) => cv.score > 0.8);
+      setResults(filtered);
 
       if (!res?.metadata?.length) {
         enqueueSnackbar("No results found.", { variant: "info" });
