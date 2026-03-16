@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { authStorage } from "@/api/authStorage";
 import { logout as logoutApi } from "@/api/auth";
 import { BubbleBackground } from "@/components/ui/BubbleBackground";
+import NotificationBell from "@/components/Notifications/NotificationBell";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export default function Dashboard() {
       <header className="sh-nav">
         <div className="sh-nav-left">
           <GlassPill className="sh-logo-pill">
-            <img src={logo} alt="Synergy Hub" />id
+            <img src={logo} alt="Synergy Hub" />
           </GlassPill>
         </div>
 
@@ -39,6 +40,7 @@ export default function Dashboard() {
             <span className="user-greeting">
               Hi, {user?.username || "User"}!
             </span>
+            <NotificationBell />
 
             <GlassButton
               onClick={() => {
