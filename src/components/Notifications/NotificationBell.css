@@ -475,7 +475,7 @@
   transition: all 0.15s ease;
 }
 
-.notif-primary:hover {
+.notif-primary:hover:not(:disabled) {
   transform: translateY(-1px);
 
   background: linear-gradient(
@@ -515,7 +515,7 @@
   transition: all 0.15s ease;
 }
 
-.notif-secondary:hover {
+.notif-secondary:hover:not(:disabled) {
   transform: translateY(-1px);
 
   background: linear-gradient(
