@@ -204,10 +204,24 @@
 }
 
 .notif-header-btn--ghost {
-  border-color: rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.2);
-  color: #0f172a !important;
-  box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.45) 45%,
+    rgba(255, 255, 255, 0.25) 100%
+  );
+
+  backdrop-filter: blur(14px);
+
+  color: #1e293b !important;
+
+  box-shadow:
+    0 6px 14px rgba(15, 23, 42, 0.18),
+    inset 0 2px 6px rgba(255, 255, 255, 0.55);
+
+  font-weight: 500;
 }
 
 .notif-header-btn--ghost:hover:enabled {
@@ -438,36 +452,79 @@
 }
 
 .notif-primary {
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: #123ea4;
-  color: #fff;
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(255, 255, 255, 0.45) 40%,
+    rgba(255, 255, 255, 0.25) 100%
+  );
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  color: #0f172a !important;
+
   font-weight: 400;
-  letter-spacing: 0.03em;
+
+  box-shadow:
+    0 8px 18px rgba(15, 23, 42, 0.18),
+    inset 0 2px 6px rgba(255, 255, 255, 0.55);
+
+  transition: all 0.15s ease;
 }
 
-.notif-primary:hover:enabled {
-  color: #0f172a !important;
+.notif-primary:hover {
+  transform: translateY(-1px);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(255, 255, 255, 0.55) 40%,
+    rgba(255, 255, 255, 0.32) 100%
+  );
 }
 
 .notif-primary:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-}
-
-.notif-secondary {
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  background: rgba(255, 255, 255, 0.65);
-  color: #0f172a;
-  box-shadow: inset 0 1px 4px rgba(255, 255, 255, 0.35);
-  font-weight: 400;
-  letter-spacing: 0.03em;
-}
-
-.notif-secondary:hover {
   color: #0f172a !important;
 }
 
+.notif-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.35) 40%,
+    rgba(255, 255, 255, 0.18) 100%
+  );
+
+  backdrop-filter: blur(18px);
+
+  color: #0f172a !important;
+
+  font-weight: 500;
+
+  box-shadow:
+    0 6px 14px rgba(15, 23, 42, 0.12),
+    inset 0 2px 6px rgba(255, 255, 255, 0.45);
+
+  transition: all 0.15s ease;
+}
+
+.notif-secondary:hover {
+  transform: translateY(-1px);
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.7) 0%,
+    rgba(255, 255, 255, 0.45) 40%,
+    rgba(255, 255, 255, 0.25) 100%
+  );
+}
 .notif-detail--read .notif-detail-title {
   font-weight: 500;
 }
