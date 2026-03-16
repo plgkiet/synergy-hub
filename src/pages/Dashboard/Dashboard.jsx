@@ -29,7 +29,10 @@ export default function Dashboard() {
         <nav className="sh-nav-center">
           <GlassPill className="sh-nav-glass">
             <button onClick={() => navigate("/upload")}>Upload</button>
-            {user?.role?.id != 3 && <button onClick={() => navigate("/search")}>Search</button>}
+            {user?.role?.id != 3 && (
+              <button onClick={() => navigate("/search")}>Search</button>
+            )}
+            <button>Career Map</button>
             <button>About Us</button>
             <button>Contact Us</button>
           </GlassPill>

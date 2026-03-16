@@ -83,9 +83,7 @@ export default function NotificationBell() {
         aria-label="Open notifications"
       >
         <i className="fa-regular fa-bell" aria-hidden="true" />
-        {unreadCount > 0 && (
-          <span className="notif-badge">{unreadCount}</span>
-        )}
+        {unreadCount > 0 && <span className="notif-badge">{unreadCount}</span>}
       </button>
 
       {open && (
@@ -97,7 +95,9 @@ export default function NotificationBell() {
               </span>
               <span className="notif-header-sub">
                 {selectedView
-                  ? (selectedView.isRead ? "Read" : "Unread")
+                  ? selectedView.isRead
+                    ? "Read"
+                    : "Unread"
                   : unreadCount > 0
                     ? `${unreadCount} unread`
                     : "All caught up"}
@@ -148,14 +148,17 @@ export default function NotificationBell() {
             </div>
           </div>
           {selectedView ? (
-            <div className="notif-detail">
+            <div
+              className={`notif-detail ${
+                selectedView?.isRead ? "notif-detail--read" : ""
+              }`}
+            >
               <div className="notif-detail-title">
                 {selectedView.title || "Notification"}
               </div>
               <div className="notif-detail-body">
                 {selectedView.message || selectedView.content || "(No content)"}
               </div>
-
               <div className="notif-detail-actions">
                 <button
                   type="button"
@@ -187,9 +190,7 @@ export default function NotificationBell() {
                 <button
                   key={n.id ?? n.notificationId}
                   type="button"
-                  className={`notif-item ${
-                    n.isRead ? "notif-item--read" : ""
-                  }`}
+                  className={`notif-item ${n.isRead ? "notif-item--read" : ""}`}
                   onClick={() => handleItemClick(n)}
                 >
                   <div className="notif-row">
