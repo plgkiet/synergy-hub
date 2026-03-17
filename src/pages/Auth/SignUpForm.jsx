@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useSnackbar } from "notistack";
 import { register } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
+import EyeOutlined from "@/assets/icon/EyeOutlined.svg";
+import EyeInvisibleOutlined from "@/assets/icon/EyeInvisibleOutlined.svg";
 
 export default function SignUpForm({ onSwitch }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -12,6 +14,8 @@ export default function SignUpForm({ onSwitch }) {
     password: "",
     confirmPassword: "",
   });
+  const [showPw, setShowPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -121,26 +125,51 @@ export default function SignUpForm({ onSwitch }) {
 
         <label className="field">
           <span className="field-label">Password</span>
-          <input
-            type="password"
-            autoComplete="new-password"
-            placeholder="Enter your password"
-            className="login-input"
-            value={form.password}
-            onChange={onChange("password")}
-          />
+          <div className="pw-wrap">
+            <input
+              type={showPw ? "text" : "password"}
+              autoComplete="new-password"
+              placeholder="Enter your password"
+              className="login-input pw-input"
+              value={form.password}
+              onChange={onChange("password")}
+            />
+
+            <button
+              type="button"
+              className="pw-toggle"
+              onClick={() => setShowPw((v) => !v)}
+              disabled={loading}
+            >
+              <img src={showPw ? EyeOutlined : EyeInvisibleOutlined} alt="" />
+            </button>
+          </div>
         </label>
 
         <label className="field">
           <span className="field-label">Confirm Password</span>
-          <input
-            type="password"
-            autoComplete="new-password"
-            placeholder="Re-enter your password"
-            className="login-input"
-            value={form.confirmPassword}
-            onChange={onChange("confirmPassword")}
-          />
+          <div className="pw-wrap">
+            <input
+              type={showConfirmPw ? "text" : "password"}
+              autoComplete="new-password"
+              placeholder="Re-enter your password"
+              className="login-input pw-input"
+              value={form.confirmPassword}
+              onChange={onChange("confirmPassword")}
+            />
+
+            <button
+              type="button"
+              className="pw-toggle"
+              onClick={() => setShowConfirmPw((v) => !v)}
+              disabled={loading}
+            >
+              <img
+                src={showConfirmPw ? EyeOutlined : EyeInvisibleOutlined}
+                alt=""
+              />
+            </button>
+          </div>
         </label>
 
         <button type="submit" className="btn-submit" disabled={loading}>
