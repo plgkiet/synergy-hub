@@ -4,6 +4,7 @@ import { register } from "@/api/auth";
 import { useNavigate } from "react-router-dom";
 import EyeOutlined from "@/assets/icon/EyeOutlined.svg";
 import EyeInvisibleOutlined from "@/assets/icon/EyeInvisibleOutlined.svg";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function SignUpForm({ onSwitch }) {
   const { enqueueSnackbar } = useSnackbar();
@@ -174,11 +175,7 @@ export default function SignUpForm({ onSwitch }) {
 
         <button type="submit" className="btn-submit" disabled={loading}>
           {loading ? (
-            <span className="typing-dots">
-              <i></i>
-              <i></i>
-              <i></i>
-            </span>
+            <LoadingSpinner size="sm" inline variant="light" label="Signing up" />
           ) : (
             "SIGN UP"
           )}

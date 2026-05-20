@@ -2,7 +2,9 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Auth from "./pages/Auth/Auth";
 import UploadPage from "./pages/UploadPage/UploadPage";
 import SearchPage from "./pages/SearchPage/SearchPage";
+import UsersPage from "./pages/UsersPage/UsersPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import AdminLayout from "./layouts/AdminLayout/AdminLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ActivateAccount from "./pages/ActivateAccount/ActivateAccount";
 import NotificationProvider from "./realtime/NotificationContext";
@@ -18,6 +20,11 @@ export default function AppRoutes() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/search" element={<SearchPage />} />
+          <Route path="/users" element={<Navigate to="/admin/users" replace />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<Navigate to="users" replace />} />
+            <Route path="users" element={<UsersPage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />

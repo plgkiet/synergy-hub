@@ -32,6 +32,9 @@ export default function Dashboard() {
             {user?.role?.id != 3 && (
               <button onClick={() => navigate("/search")}>Search</button>
             )}
+            {user?.role?.id != 3 && (
+              <button onClick={() => navigate("/admin")}>Admin</button>
+            )}
             <button>Career Map</button>
             <button>About Us</button>
             <button>Contact Us</button>

@@ -1,0 +1,82 @@
+.fdt-wrap {
+  width: 100%;
+}
+
+.fdt-scroll {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+.fdt-grid {
+  display: grid;
+  align-items: center;
+  gap: 0;
+  min-width: min(100%, 640px);
+}
+
+.fdt-grid--header {
+  background: rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.fdt-grid--row {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.fdt-grid--row:last-child {
+  border-bottom: none;
+}
+
+.fdt-cell {
+  padding: 12px 14px;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.fdt-cell--actions,
+.fdt-cell--actions-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.fdt-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fdt-empty {
+  padding: 32px 16px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.fdt-btn {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.35);
+  color: #0f172a;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.fdt-btn:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.fdt-btn--danger {
+  border-color: rgba(220, 38, 38, 0.35);
+  color: #b91c1c;
+  background: rgba(254, 226, 226, 0.5);
+}
