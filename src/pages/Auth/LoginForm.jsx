@@ -4,7 +4,7 @@ import { useSnackbar } from "notistack";
 import { login as loginApi, requestNewActivationCode as requestNewActivationCodeApi } from "@/api/auth";
 import EyeOutlined from "@/assets/icon/EyeOutlined.svg";
 import EyeInvisibleOutlined from "@/assets/icon/EyeInvisibleOutlined.svg";
-import { acceleratedValues } from "framer-motion";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function LoginForm({ onSwitch }) {
   const navigate = useNavigate();
@@ -147,11 +147,7 @@ export default function LoginForm({ onSwitch }) {
 
         <button type="submit" className="btn-submit" disabled={loading}>
           {loading && !requestNewActivationCode ? (
-            <span className="typing-dots">
-              <i></i>
-              <i></i>
-              <i></i>
-            </span>
+            <LoadingSpinner size="sm" inline variant="light" label="Signing in" />
           ) : (
             "SIGN IN"
           )}
@@ -196,11 +192,7 @@ export default function LoginForm({ onSwitch }) {
               disabled={loading}
             >
               {loading ? (
-                <span className="typing-dots">
-                  <i></i>
-                  <i></i>
-                  <i></i>
-                </span>
+                <LoadingSpinner size="sm" inline label="Sending code" />
               ) : "Request new activation code"}
             </button>
           </form>

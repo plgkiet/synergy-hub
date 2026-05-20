@@ -1,0 +1,92 @@
+.app-snackbar-root {
+  min-width: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.app-snackbar {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: min(360px, calc(100vw - 32px));
+  max-width: 420px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.12),
+    0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+.app-snackbar__icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-top: 1px;
+}
+
+.app-snackbar__message {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #0f172a;
+}
+
+.app-snackbar__close {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.app-snackbar__close:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.app-snackbar--success .app-snackbar__icon {
+  color: #16a34a;
+}
+
+.app-snackbar--error .app-snackbar__icon {
+  color: #dc2626;
+}
+
+.app-snackbar--warning .app-snackbar__icon {
+  color: #d97706;
+}
+
+.app-snackbar--info .app-snackbar__icon {
+  color: #0ea5e9;
+}
+
+.app-snackbar--success {
+  border-left: 4px solid #16a34a;
+}
+
+.app-snackbar--error {
+  border-left: 4px solid #dc2626;
+}
+
+.app-snackbar--warning {
+  border-left: 4px solid #d97706;
+}
+
+.app-snackbar--info {
+  border-left: 4px solid #0ea5e9;
+}

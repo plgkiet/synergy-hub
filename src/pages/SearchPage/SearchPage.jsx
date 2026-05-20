@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { searchCvs } from "@/api/cvSearch";
 import { downloadCvByCode } from "@/api/fileService";
 import { PRESET_KEYWORDS } from "@/constants/presetKeywords";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const LIMIT = 50;
 
@@ -140,11 +141,7 @@ export default function SearchPage() {
 
           <button type="submit" className="search-btn" disabled={loading}>
             {loading ? (
-              <span className="typing-dots">
-                <i></i>
-                <i></i>
-                <i></i>
-              </span>
+              <LoadingSpinner size="sm" inline variant="light" label="Searching" />
             ) : (
               "search"
             )}

@@ -11,17 +11,11 @@ body {
     sans-serif;
 }
 
-.snackbar-close {
-  background: transparent;
-  border: none;
-  color: white;
-  margin-left: 12px;
-  cursor: pointer;
-  font-size: 16px;
-  opacity: 0.85;
+/* notistack container spacing */
+.notistack-SnackbarContainer {
+  top: 72px !important;
 }
 
-.snackbar-close:hover {
-  opacity: 1;
-  transform: scale(1.05);
+.notistack-Snackbar {
+  min-width: 0 !important;
 }

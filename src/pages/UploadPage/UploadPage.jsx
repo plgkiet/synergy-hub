@@ -9,6 +9,7 @@ import HomeIcon from "@/assets/icon/HomeFilled.svg?react";
 import deleteIcon from "@/assets/icon/delete.png";
 import { uploadCvs } from "@/api/cvDocument";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 function formatBytes(bytes = 0) {
   if (!bytes) return "0 B";
@@ -234,7 +235,11 @@ export default function UploadPage() {
             onClick={handleUpload}
             disabled={uploading || items.length === 0}
           >
-            {uploading ? "Uploading..." : "Upload"}
+            {uploading ? (
+              <LoadingSpinner size="sm" inline variant="light" label="Uploading" />
+            ) : (
+              "Upload"
+            )}
           </button>
         </GlassCard>
         <div className="upload-go-search">
