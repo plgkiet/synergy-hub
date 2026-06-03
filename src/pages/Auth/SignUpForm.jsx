@@ -175,7 +175,11 @@ export default function SignUpForm({ onSwitch }) {
 
         <button type="submit" className="btn-submit" disabled={loading}>
           {loading ? (
-            <LoadingSpinner size="sm" inline variant="light" label="Signing up" />
+            <span className="typing-dots">
+              <i></i>
+              <i></i>
+              <i></i>
+            </span>
           ) : (
             "SIGN UP"
           )}

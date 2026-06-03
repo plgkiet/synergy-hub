@@ -89,7 +89,12 @@ export default function UploadPage() {
       setUploading(true);
 
       setItems((prev) =>
-        prev.map((x) => ({ ...x, status: "uploading", progress: 0, error: "" }))
+        prev.map((x) => ({
+          ...x,
+          status: "uploading",
+          progress: 0,
+          error: "",
+        })),
       );
 
       const res = await uploadCvs(files, {
@@ -101,7 +106,7 @@ export default function UploadPage() {
       enqueueSnackbar("Upload successful!", { variant: "success" });
 
       setItems((prev) =>
-        prev.map((x) => ({ ...x, status: "done", progress: 100 }))
+        prev.map((x) => ({ ...x, status: "done", progress: 100 })),
       );
 
       return res;
@@ -119,7 +124,7 @@ export default function UploadPage() {
           ...x,
           status: "error",
           error: apiMsg,
-        }))
+        })),
       );
     } finally {
       setUploading(false);
@@ -176,8 +181,9 @@ export default function UploadPage() {
               items.map((it) => (
                 <div
                   key={it.id}
-                  className={`upload-item ${it.status === "error" ? "upload-item--error" : ""
-                    }`}
+                  className={`upload-item ${
+                    it.status === "error" ? "upload-item--error" : ""
+                  }`}
                 >
                   <div className="upload-item-left">
                     <span className="upload-file-icon">
@@ -188,8 +194,9 @@ export default function UploadPage() {
                       <div className="upload-file-name">{it.file.name}</div>
 
                       <div
-                        className={`upload-file-meta ${it.status === "error" ? "upload-file-meta--error" : ""
-                          }`}
+                        className={`upload-file-meta ${
+                          it.status === "error" ? "upload-file-meta--error" : ""
+                        }`}
                       >
                         {formatBytes(it.file.size)} ·{" "}
                         {it.status === "ready" && "Ready"}
@@ -201,14 +208,15 @@ export default function UploadPage() {
 
                       <div className="upload-progress">
                         <div
-                          className={`upload-progress-bar ${it.status === "done"
+                          className={`upload-progress-bar ${
+                            it.status === "done"
                               ? "is-done"
                               : it.status === "error"
                                 ? "is-error"
                                 : it.status === "uploading"
                                   ? "is-loading"
                                   : ""
-                            }`}
+                          }`}
                           style={{ width: `${it.progress}%` }}
                         />
                       </div>
@@ -236,7 +244,11 @@ export default function UploadPage() {
             disabled={uploading || items.length === 0}
           >
             {uploading ? (
-              <LoadingSpinner size="sm" inline variant="light" label="Uploading" />
+              <span className="typing-dots">
+                <i></i>
+                <i></i>
+                <i></i>
+              </span>
             ) : (
               "Upload"
             )}

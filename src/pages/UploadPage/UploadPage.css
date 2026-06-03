@@ -32,7 +32,8 @@
   opacity: 0.9;
   z-index: -2;
 
-  animation: blobMorph 12s ease-in-out infinite alternate,
+  animation:
+    blobMorph 12s ease-in-out infinite alternate,
     blobColor 18s ease-in-out infinite alternate;
 }
 
@@ -439,4 +440,24 @@
   .upload-progress {
     width: 160px;
   }
+}
+
+.typing-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.typing-dots i {
+  width: 4px;
+  height: 4px;
+  background: currentColor;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.typing-dots i:nth-child(1) {
+  animation-delay: -0.32s;
+}
+.typing-dots i:nth-child(2) {
+  animation-delay: -0.16s;
 }

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
-import { login as loginApi, requestNewActivationCode as requestNewActivationCodeApi } from "@/api/auth";
+import {
+  login as loginApi,
+  requestNewActivationCode as requestNewActivationCodeApi,
+} from "@/api/auth";
 import EyeOutlined from "@/assets/icon/EyeOutlined.svg";
 import EyeInvisibleOutlined from "@/assets/icon/EyeInvisibleOutlined.svg";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -19,7 +22,8 @@ export default function LoginForm({ onSwitch }) {
 
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [requestNewActivationCode, setRequestNewActivationCode] = useState(false);
+  const [requestNewActivationCode, setRequestNewActivationCode] =
+    useState(false);
 
   const onChange = (key) => (e) => {
     const value =
@@ -31,16 +35,22 @@ export default function LoginForm({ onSwitch }) {
     setLoading(true);
     await requestNewActivationCodeApi({ email: form.email })
       .then(() => {
-        enqueueSnackbar("Activation code sent. Please check your email.", { variant: "success" });
+        enqueueSnackbar("Activation code sent. Please check your email.", {
+          variant: "success",
+        });
         setRequestNewActivationCode(false);
         setForm({
           ...form,
           email: "",
           password: "",
-          userName: ""
+          userName: "",
         });
-      }).catch((err) => {
-        enqueueSnackbar(err?.message || "Failed to request new activation code.", { variant: "error" });
+      })
+      .catch((err) => {
+        enqueueSnackbar(
+          err?.message || "Failed to request new activation code.",
+          { variant: "error" },
+        );
       })
       .finally(() => {
         setLoading(false);
@@ -147,7 +157,11 @@ export default function LoginForm({ onSwitch }) {
 
         <button type="submit" className="btn-submit" disabled={loading}>
           {loading && !requestNewActivationCode ? (
-            <LoadingSpinner size="sm" inline variant="light" label="Signing in" />
+            <span className="typing-dots">
+              <i></i>
+              <i></i>
+              <i></i>
+            </span>
           ) : (
             "SIGN IN"
           )}
@@ -174,17 +188,17 @@ export default function LoginForm({ onSwitch }) {
         {requestNewActivationCode && (
           <form className="login-form">
             <label className="field">
-          <span className="field-label">Email</span>
-          <input
-            type="email"
-            autoComplete="off"
-            name="login-email"
-            placeholder="Enter your email"
-            className="login-input"
-            value={form.email}
-            onChange={onChange("email")}
-          />
-        </label>
+              <span className="field-label">Email</span>
+              <input
+                type="email"
+                autoComplete="off"
+                name="login-email"
+                placeholder="Enter your email"
+                className="login-input"
+                value={form.email}
+                onChange={onChange("email")}
+              />
+            </label>
             <button
               type="button"
               className="inline-link signup-link"
@@ -192,8 +206,14 @@ export default function LoginForm({ onSwitch }) {
               disabled={loading}
             >
               {loading ? (
-                <LoadingSpinner size="sm" inline label="Sending code" />
-              ) : "Request new activation code"}
+                <span className="typing-dots">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </span>
+              ) : (
+                "Request new activation code"
+              )}
             </button>
           </form>
         )}

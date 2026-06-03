@@ -47,9 +47,7 @@ export default function SearchPage() {
 
       const res = await searchCvs(q, LIMIT);
       const hits = extractSearchResults(res).map(mapCvToSearchView);
-      const filtered = hits.filter(
-        (cv) => cv.score == null || cv.score > 0.8
-      );
+      const filtered = hits.filter((cv) => cv.score == null || cv.score > 0.8);
       setResults(filtered);
 
       if (!hits.length) {
@@ -146,7 +144,11 @@ export default function SearchPage() {
 
           <button type="submit" className="search-btn" disabled={loading}>
             {loading ? (
-              <LoadingSpinner size="sm" inline variant="light" label="Searching" />
+              <span className="typing-dots">
+                <i></i>
+                <i></i>
+                <i></i>
+              </span>
             ) : (
               "search"
             )}
