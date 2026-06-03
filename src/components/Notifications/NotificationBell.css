@@ -81,7 +81,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 40;
+  z-index: 10000;
   transform-origin: top right;
 }
 
@@ -180,7 +180,7 @@
 
 .notif-header-btn {
   border: 1px solid rgba(15, 23, 42, 0.25);
-  background: rgba(15, 23, 42, 0.85);
+  /* background: rgba(15, 23, 42, 0.85); */
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;

@@ -7,11 +7,7 @@ import "./AdminJobsPage.css";
 import FlexibleDataTable from "@/components/DataTable/FlexibleDataTable";
 import Pagination from "@/components/Pagination/Pagination";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {
-  createCvPost,
-  getPublicApplyUrl,
-  listMyCvPosts,
-} from "@/api/cvPost";
+import { createCvPost, getPublicApplyUrl, listMyCvPosts } from "@/api/cvPost";
 import { formatJobDate } from "@/utils/jobDisplay";
 
 const PAGE_SIZE = 10;
@@ -65,7 +61,9 @@ export default function AdminJobsPage() {
       setTotalCount(res?.totalCount ?? 0);
       setTotalPages(res?.totalPages ?? 1);
     } catch (err) {
-      enqueueSnackbar(err?.message || "Failed to load jobs", { variant: "error" });
+      enqueueSnackbar(err?.message || "Failed to load jobs", {
+        variant: "error",
+      });
       setJobs([]);
     } finally {
       setLoading(false);
@@ -79,7 +77,9 @@ export default function AdminJobsPage() {
   const filtered = useMemo(() => {
     const q = filter.trim().toLowerCase();
     if (!q) return jobs;
-    return jobs.filter((j) => `${j.title} ${j.description || ""}`.toLowerCase().includes(q));
+    return jobs.filter((j) =>
+      `${j.title} ${j.description || ""}`.toLowerCase().includes(q),
+    );
   }, [jobs, filter]);
 
   const copyApplyLink = async (publicCode) => {
@@ -121,7 +121,7 @@ export default function AdminJobsPage() {
 
   return (
     <div className="admin-jobs-page">
-      <h1 className="admin-jobs-title">Jobs</h1>
+      {/* <h1 className="admin-jobs-title">Jobs</h1> */}
 
       <div className="admin-jobs-panel">
         <div className="admin-jobs-toolbar">
@@ -240,9 +240,18 @@ export default function AdminJobsPage() {
               >
                 Cancel
               </button>
-              <button type="submit" className="admin-btn admin-btn--primary" disabled={creating}>
+              <button
+                type="submit"
+                className="admin-btn admin-btn--primary"
+                disabled={creating}
+              >
                 {creating ? (
-                  <LoadingSpinner size="sm" inline variant="light" label="Creating" />
+                  <LoadingSpinner
+                    size="sm"
+                    inline
+                    variant="light"
+                    label="Creating"
+                  />
                 ) : (
                   "Create"
                 )}
