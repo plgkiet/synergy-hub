@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import "./SearchPage.css";
 import GlassCard from "@/components/GlassCard/GlassUpload";
 import GlassButton from "@/components/GlassCard/GlassButton";
@@ -12,6 +12,10 @@ import { searchCvs } from "@/api/cvSearch";
 import { downloadCvByCode } from "@/api/fileService";
 import { PRESET_KEYWORDS } from "@/constants/presetKeywords";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import {
+  extractSearchResults,
+  mapCvToSearchView,
+} from "@/utils/mapCvSearchResult";
 
 const LIMIT = 50;
 
@@ -41,13 +45,14 @@ export default function SearchPage() {
       setLoading(true);
       setCurrentIndex(0);
 
-      // const res = await searchCvs(q, LIMIT);
-      // setResults(Array.isArray(res?.metadata) ? res.metadata : []);
-      const res = await searchCvs(q);
-      const filtered = (res?.metadata || []).filter((cv) => cv.score > 0.8);
+      const res = await searchCvs(q, LIMIT);
+      const hits = extractSearchResults(res).map(mapCvToSearchView);
+      const filtered = hits.filter(
+        (cv) => cv.score == null || cv.score > 0.8
+      );
       setResults(filtered);
 
-      if (!res?.metadata?.length) {
+      if (!hits.length) {
         enqueueSnackbar("No results found.", { variant: "info" });
       }
     } catch (err) {
