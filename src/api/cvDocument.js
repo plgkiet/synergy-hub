@@ -1,14 +1,5 @@
 import { storage } from "./http";
-
-const CV_API_BASE_URL =
-  import.meta.env.VITE_CV_API_BASE_URL?.replace(/\/$/, "") || "/cvapi";
-
-function buildCvUrl(path) {
-  if (!path) return CV_API_BASE_URL;
-  if (path.startsWith("http")) return path;
-  if (!CV_API_BASE_URL) return path;
-  return `${CV_API_BASE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
-}
+import { buildCvUrl, cvResultFetch } from "./cvHttp";
 
 function parseMaybeJson(text) {
   try {
@@ -62,5 +53,12 @@ export function uploadCvs(files, { onProgress } = {}) {
 
     xhr.onerror = () => reject(new Error("Network error while uploading."));
     xhr.send(formData);
+  });
+}
+
+export async function confirmPredictedRole(cvId, confirmedPredictedRole) {
+  return cvResultFetch(`/CVDocument/${cvId}/confirm-predicted-role`, {
+    method: "PATCH",
+    body: { confirmedPredictedRole },
   });
 }

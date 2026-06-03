@@ -12,6 +12,7 @@ const MENU_SECTIONS = [
     title: "Management",
     items: [
       { to: "/admin/users", label: "Users", icon: "fa-users", end: false },
+      { to: "/admin/jobs", label: "Jobs", icon: "fa-briefcase", end: false },
     ],
   },
 ];

@@ -1,0 +1,106 @@
+.apply-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  color: #111827;
+  background: linear-gradient(160deg, #f8fafc 0%, #e0e7ff 50%, #f5f3ff 100%);
+}
+
+.apply-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 32px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 24px 60px rgba(99, 102, 241, 0.12);
+}
+
+.apply-card h1 {
+  margin: 0 0 8px;
+  font-size: 24px;
+}
+
+.apply-card p {
+  margin: 0 0 20px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.apply-field {
+  margin-bottom: 14px;
+}
+
+.apply-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.apply-field input[type="text"],
+.apply-field input[type="email"],
+.apply-field input[type="tel"] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.apply-file {
+  border: 2px dashed rgba(99, 102, 241, 0.35);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.apply-file input {
+  display: none;
+}
+
+.apply-file-btn {
+  border: none;
+  background: transparent;
+  color: #6366f1;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.apply-submit {
+  width: 100%;
+  margin-top: 8px;
+  border: none;
+  border-radius: 999px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+}
+
+.apply-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.apply-success {
+  text-align: center;
+}
+
+.apply-success h1 {
+  color: #065f46;
+}
+
+.apply-error {
+  color: #b91c1c;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
