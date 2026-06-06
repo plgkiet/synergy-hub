@@ -1,67 +1,100 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 import "./JobsPage.css";
 import JobCard from "@/components/Jobs/JobCard";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { listMyCvPosts } from "@/api/cvPost";
-import {
-  JOB_FILTER_GROUPS,
-  jobMatchesPills,
-  jobMatchesSearch,
-} from "@/utils/jobDisplay";
-
+import { getPublicJobFilterOptions, listPublicJobs } from "@/api/publicJobs";
 const FETCH_SIZE = 50;
+const SEARCH_DEBOUNCE_MS = 350;
 
 export default function JobsPage() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const [jobs, setJobs] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [activePills, setActivePills] = useState(() => new Set());
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [filterOptions, setFilterOptions] = useState(null);
+  const [locationIds, setLocationIds] = useState(() => new Set());
+  const [jobTypeIds, setJobTypeIds] = useState(() => new Set());
+  const [organizationIds, setOrganizationIds] = useState(() => new Set());
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
+    return () => window.clearTimeout(timer);
+  }, [search]);
+
+  const loadFilterOptions = useCallback(async () => {
+    try {
+      const data = await getPublicJobFilterOptions();
+      setFilterOptions(data);
+    } catch (err) {
+      enqueueSnackbar(err?.message || "Failed to load filters", { variant: "error" });
+      setFilterOptions(null);
+    }
+  }, [enqueueSnackbar]);
 
   const loadJobs = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await listMyCvPosts({ pageNumber: 1, pageSize: FETCH_SIZE });
-      const rows = Array.isArray(res?.data) ? res.data : [];
-      setJobs(rows.filter((j) => j.isActive !== false));
+      const res = await listPublicJobs({
+        pageNumber: 1,
+        pageSize: FETCH_SIZE,
+        search: debouncedSearch || undefined,
+        locationIds: [...locationIds],
+        jobTypeIds: [...jobTypeIds],
+        organizationIds: [...organizationIds],
+      });
+      setJobs(Array.isArray(res?.data) ? res.data : []);
+      setTotalCount(res?.totalCount ?? 0);
     } catch (err) {
       enqueueSnackbar(err?.message || "Failed to load jobs", { variant: "error" });
       setJobs([]);
+      setTotalCount(0);
     } finally {
       setLoading(false);
     }
-  }, [enqueueSnackbar]);
+  }, [debouncedSearch, locationIds, jobTypeIds, organizationIds, enqueueSnackbar]);
+
+  useEffect(() => {
+    loadFilterOptions();
+  }, [loadFilterOptions]);
 
   useEffect(() => {
     loadJobs();
   }, [loadJobs]);
 
-  const filtered = useMemo(
-    () =>
-      jobs.filter(
-        (job) => jobMatchesSearch(job, search) && jobMatchesPills(job, activePills)
-      ),
-    [jobs, search, activePills]
-  );
-
-  const togglePill = (pill) => {
-    setActivePills((prev) => {
+  const toggleFilter = (setter, id) => {
+    setter((prev) => {
       const next = new Set(prev);
-      if (next.has(pill)) next.delete(pill);
-      else next.add(pill);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
       return next;
     });
   };
 
   const clearFilters = () => {
     setSearch("");
-    setActivePills(new Set());
+    setDebouncedSearch("");
+    setLocationIds(new Set());
+    setJobTypeIds(new Set());
+    setOrganizationIds(new Set());
   };
+
+  const hasFilters =
+    Boolean(search) ||
+    locationIds.size > 0 ||
+    jobTypeIds.size > 0 ||
+    organizationIds.size > 0;
+
+  const locations = filterOptions?.locations || [];
+  const jobTypes = filterOptions?.jobTypes || [];
+  const organizations = filterOptions?.organizations || [];
+  const availableCount = hasFilters ? totalCount : filterOptions?.totalActiveJobs ?? totalCount;
 
   return (
     <div className="jobs-page">
@@ -91,9 +124,9 @@ export default function JobsPage() {
 
           <div className="jobs-sidebar__stats">
             <span>
-              {filtered.length} job{filtered.length === 1 ? "" : "s"} available
+              {availableCount} job{availableCount === 1 ? "" : "s"} available
             </span>
-            {(search || activePills.size > 0) && (
+            {hasFilters && (
               <button type="button" className="jobs-sidebar__clear" onClick={clearFilters}>
                 Clear all
               </button>
@@ -103,14 +136,14 @@ export default function JobsPage() {
           <div className="jobs-filter-group">
             <h3>Location</h3>
             <div className="jobs-filter-pills">
-              {JOB_FILTER_GROUPS.location.map((pill) => (
+              {locations.map((item) => (
                 <button
-                  key={pill}
+                  key={item.id}
                   type="button"
-                  className={`jobs-pill${activePills.has(pill) ? " is-active" : ""}`}
-                  onClick={() => togglePill(pill)}
+                  className={`jobs-pill${locationIds.has(item.id) ? " is-active" : ""}`}
+                  onClick={() => toggleFilter(setLocationIds, item.id)}
                 >
-                  {pill}
+                  {item.name}
                 </button>
               ))}
             </div>
@@ -119,14 +152,14 @@ export default function JobsPage() {
           <div className="jobs-filter-group">
             <h3>Job Types</h3>
             <div className="jobs-filter-pills">
-              {JOB_FILTER_GROUPS.jobType.map((pill) => (
+              {jobTypes.map((item) => (
                 <button
-                  key={pill}
+                  key={item.id}
                   type="button"
-                  className={`jobs-pill${activePills.has(pill) ? " is-active" : ""}`}
-                  onClick={() => togglePill(pill)}
+                  className={`jobs-pill${jobTypeIds.has(item.id) ? " is-active" : ""}`}
+                  onClick={() => toggleFilter(setJobTypeIds, item.id)}
                 >
-                  {pill}
+                  {item.name}
                 </button>
               ))}
             </div>
@@ -135,13 +168,16 @@ export default function JobsPage() {
           <div className="jobs-filter-group">
             <h3>Organizations</h3>
             <div className="jobs-filter-pills">
-              <button
-                type="button"
-                className={`jobs-pill${activePills.has("Synergy Hub") ? " is-active" : ""}`}
-                onClick={() => togglePill("Synergy Hub")}
-              >
-                Synergy Hub
-              </button>
+              {organizations.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`jobs-pill${organizationIds.has(item.id) ? " is-active" : ""}`}
+                  onClick={() => toggleFilter(setOrganizationIds, item.id)}
+                >
+                  {item.name}
+                </button>
+              ))}
             </div>
           </div>
         </aside>
@@ -151,10 +187,10 @@ export default function JobsPage() {
             <div className="jobs-list__loading">
               <LoadingSpinner label="Loading jobs" />
             </div>
-          ) : filtered.length === 0 ? (
+          ) : jobs.length === 0 ? (
             <p className="jobs-list__empty">No open jobs match your filters.</p>
           ) : (
-            filtered.map((job) => <JobCard key={job.id} job={job} />)
+            jobs.map((job) => <JobCard key={job.publicCode} job={job} />)
           )}
         </section>
       </div>

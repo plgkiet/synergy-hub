@@ -1,3 +1,48 @@
+.admin-jobs-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.admin-jobs-tabs--sub {
+  margin-bottom: 0;
+  padding: 16px 20px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.admin-jobs-tab {
+  border: none;
+  background: transparent;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.admin-jobs-tab:hover {
+  color: #0f172a;
+}
+
+.admin-jobs-tab.is-active {
+  color: #0ea5e9;
+  border-bottom-color: #0ea5e9;
+}
+
+.admin-jobs-lookup__add {
+  position: relative;
+  z-index: 1;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.admin-jobs-lookup__add .admin-jobs-modal__row {
+  margin-bottom: 12px;
+}
+
 .admin-jobs-page {
   min-height: 100%;
   /* padding: 24px;
@@ -281,8 +326,9 @@
   color: #334155;
 }
 
-.admin-jobs-field input,
-.admin-jobs-field textarea {
+.admin-jobs-field input:not([type="checkbox"]),
+.admin-jobs-field textarea,
+.admin-jobs-field select {
   width: 100%;
   box-sizing: border-box;
 
@@ -304,17 +350,48 @@
 }
 
 .admin-jobs-field textarea {
-  min-height: 120px;
+  min-height: 72px;
   resize: vertical;
 }
 
-.admin-jobs-field input:focus,
-.admin-jobs-field textarea:focus {
+.admin-jobs-field label.admin-jobs-field__check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+}
+
+.admin-jobs-field__check input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.admin-jobs-field input:not([type="checkbox"]):focus,
+.admin-jobs-field textarea:focus,
+.admin-jobs-field select:focus {
   outline: none;
 
   border-color: #38bdf8;
 
   box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+}
+
+.admin-jobs-modal__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.admin-jobs-modal__row .admin-jobs-field {
+  margin-bottom: 0;
 }
 
 .admin-jobs-modal-actions {
@@ -342,5 +419,9 @@
   .admin-jobs-modal {
     padding: 22px;
     border-radius: 22px;
+  }
+
+  .admin-jobs-modal__row {
+    grid-template-columns: 1fr;
   }
 }

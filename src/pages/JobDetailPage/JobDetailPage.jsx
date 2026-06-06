@@ -3,22 +3,35 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
 import "./JobDetailPage.css";
+import ApplyModal from "@/components/Jobs/ApplyModal";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { getCvPostById, getPublicApplyUrl } from "@/api/cvPost";
-import { formatJobDate, inferJobMeta } from "@/utils/jobDisplay";
+import { getPublicApplyUrl } from "@/api/cvPost";
+import { getPublicJobByCode } from "@/api/publicJobs";
+import { formatJobDate, publicJobDetailMeta } from "@/utils/jobDisplay";
+
+function Section({ title, content }) {
+  if (!content?.trim()) return null;
+  return (
+    <>
+      <h2>{title}</h2>
+      <div className="job-detail__desc">{content}</div>
+    </>
+  );
+}
 
 export default function JobDetailPage() {
-  const { id } = useParams();
+  const { publicCode } = useParams();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showApply, setShowApply] = useState(false);
 
   const loadJob = useCallback(async () => {
     try {
       setLoading(true);
-      const data = await getCvPostById(id);
+      const data = await getPublicJobByCode(publicCode);
       setJob(data);
     } catch (err) {
       enqueueSnackbar(err?.message || "Job not found", { variant: "error" });
@@ -26,7 +39,7 @@ export default function JobDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [id, navigate, enqueueSnackbar]);
+  }, [publicCode, navigate, enqueueSnackbar]);
 
   useEffect(() => {
     loadJob();
@@ -42,12 +55,13 @@ export default function JobDetailPage() {
     );
   }
 
-  const meta = inferJobMeta(job);
-  const canApply = job?.isActive !== false && job?.publicCode;
+  const meta = publicJobDetailMeta(job);
+  const canApply = Boolean(job?.publicCode);
+  const showRefer = job?.isReferralEnabled !== false;
 
   const handleApply = () => {
     if (!canApply) return;
-    navigate(`/apply/${job.publicCode}`);
+    setShowApply(true);
   };
 
   const handleRefer = async () => {
@@ -61,6 +75,8 @@ export default function JobDetailPage() {
     }
   };
 
+  const orgName = job?.organization?.name || "Synergy Hub";
+
   return (
     <div className="job-detail">
       <button type="button" className="job-detail__back" onClick={() => navigate("/jobs")}>
@@ -73,10 +89,10 @@ export default function JobDetailPage() {
           <div>
             <h1 className="job-detail__title">{job?.title}</h1>
             <p className="job-detail__meta">
-              <span>Full-time</span>
+              <span>{meta.employmentType}</span>
               <span>{meta.location}</span>
               <span className="job-detail__dept">{meta.department}</span>
-              <span>{formatJobDate(job?.createdDate)}</span>
+              <span>{formatJobDate(meta.date)}</span>
             </p>
             {meta.workMode && <span className="job-detail__tag">{meta.workMode}</span>}
           </div>
@@ -90,40 +106,48 @@ export default function JobDetailPage() {
             >
               Apply for this job
             </button>
-            <button type="button" className="job-detail__refer" onClick={handleRefer}>
-              Refer a friend
-            </button>
+            {showRefer && (
+              <button type="button" className="job-detail__refer" onClick={handleRefer}>
+                Refer a friend
+              </button>
+            )}
           </div>
         </div>
       </header>
 
       <article className="job-detail__body">
-        {job?.isActive === false && (
-          <p className="job-detail__closed">This position is no longer accepting applications.</p>
-        )}
-
         <p className="job-detail__overview">
-          <strong>Synergy Hub</strong> connects talented professionals with teams that need
-          their skills. We help organizations collect CVs, organize candidate profiles, and hire
-          with confidence.
+          {job?.companyDescription ? (
+            job.companyDescription
+          ) : (
+            <>
+              <strong>{orgName}</strong> connects talented professionals with teams that need
+              their skills. We help organizations collect CVs, organize candidate profiles, and
+              hire with confidence.
+            </>
+          )}
         </p>
 
-        <h2>About this role</h2>
-        {job?.description ? (
-          <div className="job-detail__desc">{job.description}</div>
-        ) : (
+        <Section title="About this role" content={job?.aboutThisRole || job?.description} />
+        <Section title="Responsibilities" content={job?.responsibilities} />
+        <Section title="Qualifications" content={job?.qualifications} />
+        <Section title="Benefits" content={job?.benefits} />
+
+        {!job?.aboutThisRole && !job?.description && !job?.responsibilities && (
           <p className="job-detail__desc">
             Details for this role will be updated soon. Use the apply button above to submit
             your CV.
           </p>
         )}
-
-        <h2>Responsibilities</h2>
-        <p>
-          Review the role description above and submit your application with an up-to-date CV.
-          Our team will process your profile and match you with the hiring team.
-        </p>
       </article>
+
+      {showApply && (
+        <ApplyModal
+          publicCode={job.publicCode}
+          jobTitle={job.title}
+          onClose={() => setShowApply(false)}
+        />
+      )}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import FlexibleDataTable from "@/components/DataTable/FlexibleDataTable";
 import Pagination from "@/components/Pagination/Pagination";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { getAllDepartments } from "@/api/departments";
+import ModalPortal from "@/components/ui/ModalPortal";
 import { getAllRoles } from "@/api/roles";
 import {
   createUser,
@@ -15,6 +15,8 @@ import {
   getUsers,
   updateUser,
 } from "@/api/users";
+import { usePermissions } from "@/auth/usePermissions";
+import { canDo } from "@/utils/permissions";
 
 const USER_STATUSES = [
   { value: "Active", label: "Active" },
@@ -70,7 +72,6 @@ const EMPTY_FORM = {
   email: "",
   password: "",
   roleId: "",
-  departmentId: "",
   displayName: "",
   status: "",
 };
@@ -81,7 +82,6 @@ const EMPTY_FILTERS = {
   email: "",
   phone: "",
   roleId: "",
-  departmentId: "",
   status: "",
 };
 
@@ -92,8 +92,7 @@ function toApiFilter(filters) {
     email: filters.email,
     phone: filters.phone,
     status: filters.status,
-    roleIds: filters.roleId ? [Number(filters.roleId)] : [],
-    departments: filters.departmentId ? [Number(filters.departmentId)] : [],
+    roleIds: filters.roleId ? [filters.roleId] : [],
   };
 }
 
@@ -104,7 +103,6 @@ function hasFilterValues(filters) {
     filters.email.trim() ||
     filters.phone.trim() ||
     filters.roleId ||
-    filters.departmentId ||
     filters.status
   );
 }
@@ -125,12 +123,18 @@ function normalizeUser(user) {
     displayName: user.displayName ?? user.display_name ?? "—",
     email: user.email ?? "",
     phone: user.phone ?? user.phoneNumber ?? "—",
-    roleName: user.role?.name ?? user.roleName ?? String(user.role?.id ?? user.roleId ?? ""),
+    roleName: user.role?.name ?? user.roleName ?? "—",
     status,
     roleId: user.role?.id ?? user.roleId ?? "",
-    departmentId: user.departmentId ?? user.department?.id ?? "",
-    departmentName: user.department?.name ?? user.departmentName ?? "—",
   };
+}
+
+function resolveRoleId(row, roleList) {
+  if (row.roleId && roleList.some((role) => String(role.id) === String(row.roleId))) {
+    return String(row.roleId);
+  }
+  const byName = roleList.find((role) => role.name === row.roleName);
+  return byName ? String(byName.id) : row.roleId ? String(row.roleId) : "";
 }
 
 function validateCreateForm(form) {
@@ -172,10 +176,9 @@ function buildCreatePayload(form) {
     username: form.username.trim(),
     email: form.email.trim(),
     password: form.password,
-    roleId: Number(form.roleId),
+    roleId: form.roleId,
   };
 
-  if (form.departmentId) payload.departmentId = Number(form.departmentId);
   if (form.displayName.trim()) payload.displayName = form.displayName.trim();
 
   return payload;
@@ -185,8 +188,7 @@ function buildUpdatePayload(form) {
   const payload = {};
 
   if (form.email.trim()) payload.email = form.email.trim();
-  if (form.roleId) payload.roleId = Number(form.roleId);
-  if (form.departmentId) payload.departmentId = Number(form.departmentId);
+  if (form.roleId) payload.roleId = form.roleId;
   if (form.displayName.trim()) payload.displayName = form.displayName.trim();
   if (form.status) payload.status = form.status;
 
@@ -195,6 +197,11 @@ function buildUpdatePayload(form) {
 
 export default function UsersPage() {
   const { enqueueSnackbar } = useSnackbar();
+  const { permissions } = usePermissions();
+  const canCreateUser = canDo(permissions, "User", "Create");
+  const canUpdateUser = canDo(permissions, "User", "Update");
+  const canDeleteUser = canDo(permissions, "User", "Delete");
+  const showUserActions = canUpdateUser || canDeleteUser;
 
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(1);
@@ -209,7 +216,6 @@ export default function UsersPage() {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(EMPTY_FORM);
   const [roles, setRoles] = useState([]);
-  const [departments, setDepartments] = useState([]);
   const [optionsLoading, setOptionsLoading] = useState(false);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [appliedFilters, setAppliedFilters] = useState(EMPTY_FILTERS);
@@ -217,16 +223,15 @@ export default function UsersPage() {
   useEffect(() => {
     let cancelled = false;
     setOptionsLoading(true);
-    Promise.all([getAllRoles(), getAllDepartments()])
-      .then(([roleList, deptList]) => {
+    getAllRoles()
+      .then((roleList) => {
         if (cancelled) return;
         setRoles(Array.isArray(roleList) ? roleList : []);
-        setDepartments(Array.isArray(deptList) ? deptList : []);
       })
-      .catch(() => {
+      .catch((err) => {
         if (!cancelled) {
           setRoles([]);
-          setDepartments([]);
+          enqueueSnackbar(err?.message || "Failed to load roles", { variant: "error" });
         }
       })
       .finally(() => {
@@ -235,7 +240,7 @@ export default function UsersPage() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [enqueueSnackbar]);
 
   const loadUsers = useCallback(
     async (pageIndex = page, size = pageSize, filter = appliedFilters) => {
@@ -317,8 +322,7 @@ export default function UsersPage() {
       username: row.username,
       email: row.email === "—" ? "" : row.email,
       password: "",
-      roleId: row.roleId ? String(row.roleId) : "",
-      departmentId: row.departmentId ? String(row.departmentId) : "",
+      roleId: resolveRoleId(row, roles),
       displayName: row.displayName === "—" ? "" : row.displayName,
       status: row.status === "—" ? "" : row.status,
     });
@@ -442,19 +446,6 @@ export default function UsersPage() {
               ))}
             </select>
             <select
-              value={filters.departmentId}
-              onChange={onFilterSelectChange("departmentId")}
-              disabled={optionsLoading}
-              aria-label="Department"
-            >
-              <option value="">Department</option>
-              {departments.map((dept) => (
-                <option key={dept.id} value={String(dept.id)}>
-                  {dept.name}
-                </option>
-              ))}
-            </select>
-            <select
               value={filters.status}
               onChange={onFilterSelectChange("status")}
               aria-label="Status"
@@ -477,7 +468,13 @@ export default function UsersPage() {
               <i className="fa-solid fa-xmark" aria-hidden />
             </button>
           </div>
-          <button type="button" className="admin-btn admin-btn--primary" onClick={openCreate}>
+          <button
+            type="button"
+            className="admin-btn admin-btn--primary"
+            onClick={openCreate}
+            disabled={!canCreateUser}
+            hidden={!canCreateUser}
+          >
             + New user
           </button>
         </div>
@@ -493,27 +490,35 @@ export default function UsersPage() {
           data={rows}
           rowKey="id"
           emptyMessage={loading ? "" : "No users found."}
-          actionsColumnWidth="minmax(150px, auto)"
-          renderActions={(row) => (
-            <>
-              <button
-                type="button"
-                className="admin-btn admin-btn--ghost admin-btn--sm"
-                onClick={() => openEdit(row)}
-                disabled={loading}
-              >
-                Edit
-              </button>
-              <button
-                type="button"
-                className="admin-btn admin-btn--danger admin-btn--sm"
-                onClick={() => handleDeleteClick(row)}
-                disabled={loading}
-              >
-                Delete
-              </button>
-            </>
-          )}
+          actionsColumnWidth={showUserActions ? "minmax(150px, auto)" : undefined}
+          renderActions={
+            showUserActions
+              ? (row) => (
+                  <>
+                    {canUpdateUser && (
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--ghost admin-btn--sm"
+                        onClick={() => openEdit(row)}
+                        disabled={loading}
+                      >
+                        Edit
+                      </button>
+                    )}
+                    {canDeleteUser && (
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--danger admin-btn--sm"
+                        onClick={() => handleDeleteClick(row)}
+                        disabled={loading}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </>
+                )
+              : undefined
+          }
         />
         <Pagination
           page={page}
@@ -526,124 +531,118 @@ export default function UsersPage() {
       </div>
 
       {modalOpen && (
-        <div className="users-modal-backdrop" onClick={closeModal}>
-          <div className="users-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>{editingId ? "Edit user" : "New user"}</h3>
-            <form className="users-form" onSubmit={handleSubmit}>
-              <label>
-                <span>Username{editingId ? "" : " *"}</span>
-                <input
-                  value={form.username}
-                  onChange={onFormChange("username")}
-                  placeholder="3–50 characters"
-                  minLength={editingId ? undefined : 3}
-                  maxLength={50}
-                  required={!editingId}
-                  readOnly={Boolean(editingId)}
-                  disabled={Boolean(editingId)}
-                />
-              </label>
-              <label>
-                <span>Display name</span>
-                <input
-                  value={form.displayName}
-                  onChange={onFormChange("displayName")}
-                  placeholder="Display name"
-                />
-              </label>
-              <label>
-                <span>Email{editingId ? "" : " *"}</span>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={onFormChange("email")}
-                  placeholder="email@example.com"
-                  maxLength={100}
-                  required={!editingId}
-                />
-              </label>
-              {!editingId && (
+        <ModalPortal>
+          <div className="users-modal-backdrop" onClick={closeModal}>
+            <div className="users-modal" onClick={(e) => e.stopPropagation()}>
+              <h3>{editingId ? "Edit user" : "New user"}</h3>
+              <form className="users-form" onSubmit={handleSubmit}>
                 <label>
-                  <span>Password *</span>
+                  <span>Username{editingId ? "" : " *"}</span>
                   <input
-                    type="password"
-                    value={form.password}
-                    onChange={onFormChange("password")}
-                    placeholder="6–100 characters"
-                    minLength={6}
-                    maxLength={100}
-                    required
+                    value={form.username}
+                    onChange={onFormChange("username")}
+                    placeholder="3–50 characters"
+                    minLength={editingId ? undefined : 3}
+                    maxLength={50}
+                    required={!editingId}
+                    readOnly={Boolean(editingId)}
+                    disabled={Boolean(editingId)}
                   />
                 </label>
-              )}
-              <label>
-                <span>Role{editingId ? "" : " *"}</span>
-                <select
-                  value={form.roleId}
-                  onChange={onFormChange("roleId")}
-                  required={!editingId}
-                  disabled={optionsLoading}
-                >
-                  <option value="">
-                    {editingId ? "No change" : "Select a role"}
-                  </option>
-                  {roles.map((role) => (
-                    <option key={role.id} value={String(role.id)}>
-                      {role.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                <span>Department</span>
-                <select
-                  value={form.departmentId}
-                  onChange={onFormChange("departmentId")}
-                  disabled={optionsLoading}
-                >
-                  <option value="">None</option>
-                  {departments.map((dept) => (
-                    <option key={dept.id} value={String(dept.id)}>
-                      {dept.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {editingId && (
                 <label>
-                  <span>Status</span>
-                  <select value={form.status} onChange={onFormChange("status")}>
-                    <option value="">No change</option>
-                    {USER_STATUSES.map((item) => (
-                      <option key={item.value} value={item.value}>
-                        {item.label}
+                  <span>Display name</span>
+                  <input
+                    value={form.displayName}
+                    onChange={onFormChange("displayName")}
+                    placeholder="Display name"
+                  />
+                </label>
+                <label>
+                  <span>Email{editingId ? "" : " *"}</span>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={onFormChange("email")}
+                    placeholder="email@example.com"
+                    maxLength={100}
+                    required={!editingId}
+                  />
+                </label>
+                {!editingId && (
+                  <label>
+                    <span>Password *</span>
+                    <input
+                      type="password"
+                      value={form.password}
+                      onChange={onFormChange("password")}
+                      placeholder="6–100 characters"
+                      minLength={6}
+                      maxLength={100}
+                      required
+                    />
+                  </label>
+                )}
+                <label>
+                  <span>Role{editingId ? "" : " *"}</span>
+                  <select
+                    value={form.roleId}
+                    onChange={onFormChange("roleId")}
+                    required={!editingId}
+                    disabled={optionsLoading}
+                  >
+                    <option value="">
+                      {optionsLoading
+                        ? "Loading roles..."
+                        : editingId
+                          ? "— Keep current —"
+                          : "Select a role"}
+                    </option>
+                    {roles.map((role) => (
+                      <option key={role.id} value={String(role.id)}>
+                        {role.name}
                       </option>
                     ))}
                   </select>
-                </label>
-              )}
-              <div className="users-form-actions">
-                <button
-                  type="button"
-                  className="admin-btn admin-btn--ghost"
-                  onClick={closeModal}
-                  disabled={saving}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="admin-btn admin-btn--primary" disabled={saving}>
-                  {saving ? (
-                    <LoadingSpinner size="sm" inline variant="light" label="Saving" />
-                  ) : editingId ? (
-                    "Update"
-                  ) : (
-                    "Create"
+                  {!optionsLoading && roles.length === 0 && (
+                    <span className="users-form-hint">No roles available from the API.</span>
                   )}
-                </button>
-              </div>
-            </form>
+                </label>
+                {editingId && (
+                  <label>
+                    <span>Status</span>
+                    <select value={form.status} onChange={onFormChange("status")}>
+                      <option value="">No change</option>
+                      {USER_STATUSES.map((item) => (
+                        <option key={item.value} value={item.value}>
+                          {item.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                )}
+                <div className="users-form-actions">
+                  <button
+                    type="button"
+                    className="admin-btn admin-btn--ghost"
+                    onClick={closeModal}
+                    disabled={saving}
+                  >
+                    Cancel
+                  </button>
+                  <button type="submit" className="admin-btn admin-btn--primary" disabled={saving}>
+                    {saving ? (
+                      <LoadingSpinner size="sm" inline variant="light" label="Saving" />
+                    ) : editingId ? (
+                      "Update"
+                    ) : (
+                      "Create"
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
+        </ModalPortal>
       )}
 
       <ConfirmDialog

@@ -1,4 +1,5 @@
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import ModalPortal from "@/components/ui/ModalPortal";
 import "@/styles/admin-ui.css";
 import "./ConfirmDialog.css";
 
@@ -16,7 +17,8 @@ export default function ConfirmDialog({
   if (!open) return null;
 
   return (
-    <div className="confirm-backdrop" onClick={loading ? undefined : onCancel}>
+    <ModalPortal>
+      <div className="confirm-backdrop" onClick={loading ? undefined : onCancel}>
       <div
         className="confirm-dialog"
         role="dialog"
@@ -45,6 +47,7 @@ export default function ConfirmDialog({
           </button>
         </div>
       </div>
-    </div>
+      </div>
+    </ModalPortal>
   );
 }

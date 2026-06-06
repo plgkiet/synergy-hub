@@ -4,6 +4,8 @@ import logo from "@/assets/img/logo/logo.png";
 import NotificationBell from "@/components/Notifications/NotificationBell";
 import { authStorage } from "@/api/authStorage";
 import { logout as logoutApi } from "@/api/auth";
+import { usePermissions } from "@/auth/usePermissions";
+import { hasModule } from "@/utils/permissions";
 import "@/styles/admin-ui.css";
 import "./AdminLayout.css";
 
@@ -11,16 +13,37 @@ const MENU_SECTIONS = [
   {
     title: "Management",
     items: [
-      { to: "/admin/users", label: "Users", icon: "fa-users", end: false },
-      { to: "/admin/jobs", label: "Jobs", icon: "fa-briefcase", end: false },
+      {
+        to: "/admin/users",
+        label: "Users",
+        icon: "fa-users",
+        end: false,
+        module: "User",
+      },
+      {
+        to: "/admin/jobs",
+        label: "Jobs",
+        icon: "fa-briefcase",
+        end: false,
+        module: "Job",
+      },
     ],
   },
 ];
+
+function filterMenuSections(permissions) {
+  return MENU_SECTIONS.map((section) => ({
+    ...section,
+    items: section.items.filter((item) => hasModule(permissions, item.module)),
+  })).filter((section) => section.items.length > 0);
+}
 
 export default function AdminLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const user = authStorage.getUser();
+  const { permissions } = usePermissions();
+  const menuSections = filterMenuSections(permissions);
 
   useEffect(() => {
     document.documentElement.classList.add("admin-route");
@@ -33,7 +56,7 @@ export default function AdminLayout() {
   };
 
   const pageTitle =
-    MENU_SECTIONS.flatMap((s) => s.items).find((item) =>
+    menuSections.flatMap((s) => s.items).find((item) =>
       location.pathname.startsWith(item.to)
     )?.label ?? "Administration";
 
@@ -51,7 +74,7 @@ export default function AdminLayout() {
         </div>
 
         <div className="admin-sidebar-body">
-          {MENU_SECTIONS.map((section) => (
+          {menuSections.map((section) => (
             <div key={section.title} className="admin-sidebar-section">
               <p className="admin-sidebar-section-title">{section.title}</p>
               <nav className="admin-sidebar-nav">

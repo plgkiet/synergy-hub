@@ -20,10 +20,7 @@ export function buildUserFilterPayload(filter = {}) {
   if (filter.phone?.trim()) payload.phone = filter.phone.trim();
   if (filter.status?.trim()) payload.status = filter.status.trim();
   if (Array.isArray(filter.roleIds) && filter.roleIds.length > 0) {
-    payload.roleIds = filter.roleIds.map(Number);
-  }
-  if (Array.isArray(filter.departments) && filter.departments.length > 0) {
-    payload.departments = filter.departments.map(Number);
+    payload.roleIds = filter.roleIds;
   }
 
   return payload;
@@ -41,7 +38,6 @@ function buildUsersQuery({ pageIndex = 1, pageSize = 10, filter = {} } = {}) {
   if (payload.phone) search.set("phone", payload.phone);
   if (payload.status) search.set("status", payload.status);
   payload.roleIds?.forEach((id) => search.append("roleIds", String(id)));
-  payload.departments?.forEach((id) => search.append("departments", String(id)));
 
   return search.toString();
 }

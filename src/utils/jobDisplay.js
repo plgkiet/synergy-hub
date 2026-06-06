@@ -1,19 +1,3 @@
-const LOCATIONS = [
-  "Ho Chi Minh",
-  "Da Nang",
-  "Guadalajara",
-  "United States",
-  "Remote Work",
-  "Hybrid Work",
-];
-
-const JOB_TYPES = ["Experienced", "Fresher", "Intern"];
-
-export const JOB_FILTER_GROUPS = {
-  location: LOCATIONS,
-  jobType: JOB_TYPES,
-};
-
 export function formatJobDate(iso) {
   if (!iso) return "—";
   return new Date(iso).toLocaleDateString("en-US", {
@@ -23,45 +7,26 @@ export function formatJobDate(iso) {
   });
 }
 
-function haystack(job) {
-  return `${job?.title || ""} ${job?.description || ""}`.toLowerCase();
+export function jobCardMeta(job) {
+  return {
+    jobType: job?.primaryJobType?.name || job?.jobTypes?.[0]?.name || "—",
+    location: job?.primaryLocation?.name || "—",
+    department: job?.functionalTeam || "—",
+    workMode: job?.workMode || null,
+    employmentType: job?.employmentType || null,
+    organization: job?.organization?.name || "—",
+    date: job?.displayDate || job?.postedDate || job?.createdDate,
+  };
 }
 
-export function inferJobMeta(job) {
-  const text = haystack(job);
-  let location = "—";
-  for (const loc of LOCATIONS) {
-    if (loc === "Remote Work" || loc === "Hybrid Work") continue;
-    if (text.includes(loc.toLowerCase())) {
-      location = loc;
-      break;
-    }
-  }
-
-  let workMode = null;
-  if (text.includes("hybrid")) workMode = "Hybrid work";
-  else if (text.includes("remote")) workMode = "Remote work";
-
-  let jobType = "Experienced";
-  if (text.includes("intern")) jobType = "Intern";
-  else if (text.includes("fresher") || text.includes("junior")) jobType = "Fresher";
-
-  return { location, workMode, jobType, department: "Engineering" };
-}
-
-export function jobMatchesSearch(job, query) {
-  const q = query.trim().toLowerCase();
-  if (!q) return true;
-  return haystack(job).includes(q);
-}
-
-export function jobMatchesPills(job, activePills) {
-  if (!activePills?.size) return true;
-  const text = haystack(job);
-  for (const pill of activePills) {
-    if (!text.includes(pill.toLowerCase())) return false;
-  }
-  return true;
+export function publicJobDetailMeta(job) {
+  return {
+    employmentType: job?.employmentType || "—",
+    location: job?.primaryLocation?.name || "—",
+    department: job?.functionalTeam || "—",
+    workMode: job?.workMode || null,
+    date: job?.displayDate || job?.postedDate,
+  };
 }
 
 export function formatRoleName(role) {
@@ -75,4 +40,33 @@ export function slugifyTitle(title) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 60);
+}
+
+export function parseCommaList(value) {
+  if (!value?.trim()) return [];
+  return value
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+export function joinCommaList(value) {
+  return Array.isArray(value) ? value.join(", ") : "";
+}
+
+export function toDateInput(iso) {
+  if (!iso) return "";
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "";
+  return date.toISOString().slice(0, 10);
+}
+
+export function fromDateInput(value) {
+  if (!value) return undefined;
+  return `${value}T00:00:00Z`;
+}
+
+export function toggleId(list, id) {
+  const current = Array.isArray(list) ? list : [];
+  return current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
 }
