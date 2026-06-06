@@ -1,4 +1,5 @@
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
+import ModalPortal from "@/components/ui/ModalPortal";
 import "@/styles/admin-ui.css";
 import "./ConfirmDialog.css";
 import "./ConfirmRoleDialog.css";
@@ -15,10 +16,11 @@ export default function ConfirmRoleDialog({
   if (!open) return null;
 
   return (
-    <div
-      className="confirm-backdrop"
-      onClick={loading ? undefined : onCancel}
-    >
+    <ModalPortal>
+      <div
+        className="confirm-backdrop"
+        onClick={loading ? undefined : onCancel}
+      >
       <form
         className="confirm-dialog confirm-role-dialog"
         role="dialog"
@@ -70,6 +72,7 @@ export default function ConfirmRoleDialog({
           </button>
         </div>
       </form>
-    </div>
+      </div>
+    </ModalPortal>
   );
 }

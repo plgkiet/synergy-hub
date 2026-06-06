@@ -10,12 +10,17 @@ import hero2 from "@/assets/img/whiteLogo.png";
 import { useNavigate } from "react-router-dom";
 import { authStorage } from "@/api/authStorage";
 import { logout as logoutApi } from "@/api/auth";
+import { usePermissions } from "@/auth/usePermissions";
+import { canAccessAdmin, canUploadCv } from "@/utils/permissions";
 import { BubbleBackground } from "@/components/ui/BubbleBackground";
 import NotificationBell from "@/components/Notifications/NotificationBell";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const user = authStorage.getUser();
+  const { permissions } = usePermissions();
+  const showAdmin = canAccessAdmin(permissions);
+  const showUpload = canUploadCv(permissions);
 
   return (
     <div className="sh-root">
@@ -28,12 +33,14 @@ export default function Dashboard() {
 
         <nav className="sh-nav-center">
           <GlassPill className="sh-nav-glass">
-            <button onClick={() => navigate("/upload")}>Upload</button>
+            {showUpload && (
+              <button onClick={() => navigate("/upload")}>Upload</button>
+            )}
             <button onClick={() => navigate("/jobs")}>Jobs</button>
             {user?.role?.id != 3 && (
               <button onClick={() => navigate("/search")}>Search</button>
             )}
-            {user?.role?.id != 3 && (
+            {showAdmin && (
               <button onClick={() => navigate("/admin")}>Admin</button>
             )}
             {/* <button>Career Map</button> */}
@@ -101,9 +108,11 @@ export default function Dashboard() {
             hiring and focus on what matters most—building great organizations.
           </p>
 
-          <button className="sh-band-cta" onClick={() => navigate("/upload")}>
-            Upload your CVs →
-          </button>
+          {showUpload && (
+            <button className="sh-band-cta" onClick={() => navigate("/upload")}>
+              Upload your CVs →
+            </button>
+          )}
         </div>
 
         <div className="sh-band-visual">

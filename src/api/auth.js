@@ -1,6 +1,19 @@
 import { http } from "./http";
 import { authStorage } from "./authStorage";
 
+function normalizePermissions(res) {
+  if (Array.isArray(res?.data)) return res.data;
+  if (Array.isArray(res)) return res;
+  return [];
+}
+
+export async function loadPermissions() {
+  const res = await http("/api/Auth/list-functions", { method: "GET" });
+  const permissions = normalizePermissions(res);
+  authStorage.setPermissions(permissions);
+  return permissions;
+}
+
 export async function login({ userName, password, rememberMe = false }) {
   const res = await http("/api/Auth/login", {
     method: "POST",
@@ -12,6 +25,12 @@ export async function login({ userName, password, rememberMe = false }) {
 
   if (accessToken) authStorage.setToken(accessToken);
   if (user) authStorage.setUser(user);
+
+  try {
+    await loadPermissions();
+  } catch {
+    authStorage.setPermissions([]);
+  }
 
   return res;
 }

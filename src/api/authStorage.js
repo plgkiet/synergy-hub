@@ -1,5 +1,6 @@
 const USER_KEY = "auth_user";
 const TOKEN_KEY = "accessToken";
+const PERMISSIONS_KEY = "auth_permissions";
 
 export const authStorage = {
   getToken() {
@@ -23,8 +24,20 @@ export const authStorage = {
     localStorage.removeItem(USER_KEY);
   },
 
+  getPermissions() {
+    const raw = localStorage.getItem(PERMISSIONS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  },
+  setPermissions(permissions) {
+    localStorage.setItem(PERMISSIONS_KEY, JSON.stringify(permissions ?? []));
+  },
+  clearPermissions() {
+    localStorage.removeItem(PERMISSIONS_KEY);
+  },
+
   clearAll() {
     this.clearToken();
     this.clearUser();
+    this.clearPermissions();
   },
 };

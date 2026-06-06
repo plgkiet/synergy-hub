@@ -1,11 +1,5 @@
 import { cvApiFetch, cvApiForm } from "./cvHttp";
-
-function pageQuery({ pageNumber = 1, pageSize = 10 } = {}) {
-  return new URLSearchParams({
-    pageNumber: String(pageNumber),
-    pageSize: String(pageSize),
-  }).toString();
-}
+import { appendArrayParams, pageQuery } from "./queryParams";
 
 export function getPublicApplyUrl(publicCode) {
   if (!publicCode) return "";
@@ -13,6 +7,14 @@ export function getPublicApplyUrl(publicCode) {
     return `${window.location.origin}/apply/${publicCode}`;
   }
   return `/apply/${publicCode}`;
+}
+
+export function getPublicJobUrl(publicCode) {
+  if (!publicCode) return "";
+  if (typeof window !== "undefined" && window.location?.origin) {
+    return `${window.location.origin}/jobs/${publicCode}`;
+  }
+  return `/jobs/${publicCode}`;
 }
 
 export function getApiSubmissionUrl(submissionUrl) {
@@ -24,15 +26,32 @@ export function getApiSubmissionUrl(submissionUrl) {
   return `${base}${path}`;
 }
 
-export async function createCvPost({ title, description }) {
+export async function createCvPost(body) {
   return cvApiFetch("/CVPost/Create", {
     method: "POST",
-    body: { title, description: description || undefined },
+    body,
   });
 }
 
-export async function listMyCvPosts({ pageNumber = 1, pageSize = 10 } = {}) {
-  return cvApiFetch(`/CVPost?${pageQuery({ pageNumber, pageSize })}`);
+export async function listCvPosts({
+  pageNumber = 1,
+  pageSize = 10,
+  search,
+  locationIds,
+  jobTypeIds,
+  organizationIds,
+} = {}) {
+  const params = pageQuery({ pageNumber, pageSize });
+  if (search?.trim()) params.set("search", search.trim());
+  appendArrayParams(params, "locationIds", locationIds);
+  appendArrayParams(params, "jobTypeIds", jobTypeIds);
+  appendArrayParams(params, "organizationIds", organizationIds);
+  return cvApiFetch(`/CVPost?${params}`);
+}
+
+/** @deprecated Use listCvPosts */
+export async function listMyCvPosts(opts = {}) {
+  return listCvPosts(opts);
 }
 
 export async function getCvPostById(id) {

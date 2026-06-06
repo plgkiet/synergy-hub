@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
-import { formatJobDate, inferJobMeta, slugifyTitle } from "@/utils/jobDisplay";
+import { formatJobDate, jobCardMeta, slugifyTitle } from "@/utils/jobDisplay";
 import "./JobCard.css";
 
 export default function JobCard({ job }) {
-  const meta = inferJobMeta(job);
+  const meta = jobCardMeta(job);
   const slug = slugifyTitle(job.title);
 
   return (
     <Link
-      to={`/jobs/${job.id}`}
+      to={`/jobs/${job.publicCode}`}
       className="job-card"
       state={{ slug }}
     >
@@ -26,7 +26,7 @@ export default function JobCard({ job }) {
         <span className="job-card__sep" aria-hidden>
           |
         </span>
-        <span>{formatJobDate(job.createdDate)}</span>
+        <span>{formatJobDate(meta.date)}</span>
       </p>
       {meta.workMode && <span className="job-card__tag">{meta.workMode}</span>}
     </Link>

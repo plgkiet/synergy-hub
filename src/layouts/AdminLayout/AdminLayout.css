@@ -414,12 +414,21 @@ html.admin-route #root {
   box-sizing: border-box;
 }
 
+.admin-content-inner {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
+}
+
 .admin-content-inner::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
+}
+
+.admin-content-inner::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .admin-content-inner::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.12);
+  background: rgba(148, 163, 184, 0.4);
   border-radius: 999px;
 }
 
