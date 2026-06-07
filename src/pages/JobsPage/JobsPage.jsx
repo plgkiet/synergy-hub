@@ -24,7 +24,10 @@ export default function JobsPage() {
   const [organizationIds, setOrganizationIds] = useState(() => new Set());
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setDebouncedSearch(search), SEARCH_DEBOUNCE_MS);
+    const timer = window.setTimeout(
+      () => setDebouncedSearch(search),
+      SEARCH_DEBOUNCE_MS,
+    );
     return () => window.clearTimeout(timer);
   }, [search]);
 
@@ -33,7 +36,9 @@ export default function JobsPage() {
       const data = await getPublicJobFilterOptions();
       setFilterOptions(data);
     } catch (err) {
-      enqueueSnackbar(err?.message || "Failed to load filters", { variant: "error" });
+      enqueueSnackbar(err?.message || "Failed to load filters", {
+        variant: "error",
+      });
       setFilterOptions(null);
     }
   }, [enqueueSnackbar]);
@@ -52,13 +57,21 @@ export default function JobsPage() {
       setJobs(Array.isArray(res?.data) ? res.data : []);
       setTotalCount(res?.totalCount ?? 0);
     } catch (err) {
-      enqueueSnackbar(err?.message || "Failed to load jobs", { variant: "error" });
+      enqueueSnackbar(err?.message || "Failed to load jobs", {
+        variant: "error",
+      });
       setJobs([]);
       setTotalCount(0);
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, locationIds, jobTypeIds, organizationIds, enqueueSnackbar]);
+  }, [
+    debouncedSearch,
+    locationIds,
+    jobTypeIds,
+    organizationIds,
+    enqueueSnackbar,
+  ]);
 
   useEffect(() => {
     loadFilterOptions();
@@ -94,7 +107,9 @@ export default function JobsPage() {
   const locations = filterOptions?.locations || [];
   const jobTypes = filterOptions?.jobTypes || [];
   const organizations = filterOptions?.organizations || [];
-  const availableCount = hasFilters ? totalCount : filterOptions?.totalActiveJobs ?? totalCount;
+  const availableCount = hasFilters
+    ? totalCount
+    : (filterOptions?.totalActiveJobs ?? totalCount);
 
   return (
     <div className="jobs-page">
@@ -127,7 +142,11 @@ export default function JobsPage() {
               {availableCount} job{availableCount === 1 ? "" : "s"} available
             </span>
             {hasFilters && (
-              <button type="button" className="jobs-sidebar__clear" onClick={clearFilters}>
+              <button
+                type="button"
+                className="jobs-sidebar__clear"
+                onClick={clearFilters}
+              >
                 Clear all
               </button>
             )}

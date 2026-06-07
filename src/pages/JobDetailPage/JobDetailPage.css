@@ -4,16 +4,17 @@
   background:
     radial-gradient(
       circle at left top,
-      rgba(52, 211, 153, 0.28) 0%,
+      rgba(52, 211, 153, 0.18) 0%,
       transparent 35%
     ),
     radial-gradient(
       circle at right top,
-      rgba(96, 165, 250, 0.25) 0%,
+      rgba(96, 165, 250, 0.16) 0%,
       transparent 40%
     ),
-    #f8fafc;
+    url("/src/assets/img/bg.png") top center / cover no-repeat;
 
+  background-attachment: fixed;
   font-family:
     system-ui,
     -apple-system,

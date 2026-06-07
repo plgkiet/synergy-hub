@@ -17,6 +17,7 @@ import AdminJobDetailPage from "./pages/AdminJobDetailPage/AdminJobDetailPage";
 import ApplyPage from "./pages/ApplyPage/ApplyPage";
 import NotificationProvider from "./realtime/NotificationContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
+import ContactPage from "./pages/ContactPage/ContactPage";
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/activate" element={<ActivateAccount />} />
         <Route path="/apply/:publicCode" element={<ApplyPage />} />
         <Route
