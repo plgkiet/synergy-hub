@@ -82,11 +82,10 @@ export default function ContactPage() {
       </section>
 
       <section className="contact-actions">
-        <GlassButton onClick={() => navigate("/about")}>About Us</GlassButton>
-
         <GlassButton onClick={() => navigate("/dashboard")}>
-          Back Home
+          ← Go to dashboard
         </GlassButton>
+        <GlassButton onClick={() => navigate("/about")}>→ About Us</GlassButton>
       </section>
     </div>
   );

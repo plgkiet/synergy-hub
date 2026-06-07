@@ -210,10 +210,11 @@ export default function AboutPage() {
         </p>
 
         <div className="about-actions">
-          <GlassButton onClick={() => navigate("/jobs")}>View Jobs</GlassButton>
-
           <GlassButton onClick={() => navigate("/dashboard")}>
-            Back Home
+            ← Go to dashboard
+          </GlassButton>
+          <GlassButton onClick={() => navigate("/jobs")}>
+            → View Jobs
           </GlassButton>
         </div>
       </section>
