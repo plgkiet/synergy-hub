@@ -836,7 +836,7 @@ export default function AdminJobDetailPage() {
                 columns={SUBMISSION_COLUMNS}
                 data={submissions}
                 emptyMessage="No applications yet."
-                actionsColumnWidth="minmax(160px, auto)"
+                actionsColumnWidth="220px"
                 renderActions={(row) => (
                   <div className="admin-job-detail__row-actions">
                     {row.code && (

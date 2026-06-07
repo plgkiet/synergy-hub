@@ -44,7 +44,7 @@ export default function Dashboard() {
               <button onClick={() => navigate("/admin")}>Admin</button>
             )}
             {/* <button>Career Map</button> */}
-            <button>About Us</button>
+            <button onClick={() => navigate("/about")}>About Us</button>{" "}
             {/* <button>Contact Us</button> */}
           </GlassPill>
         </nav>

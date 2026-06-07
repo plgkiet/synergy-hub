@@ -16,6 +16,7 @@ import AdminJobsPage from "./pages/AdminJobsPage/AdminJobsPage";
 import AdminJobDetailPage from "./pages/AdminJobDetailPage/AdminJobDetailPage";
 import ApplyPage from "./pages/ApplyPage/ApplyPage";
 import NotificationProvider from "./realtime/NotificationContext";
+import AboutPage from "./pages/AboutPage/AboutPage";
 
 export default function AppRoutes() {
   return (
@@ -23,27 +24,66 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Auth />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/activate" element={<ActivateAccount />} />
         <Route path="/apply/:publicCode" element={<ApplyPage />} />
-        <Route element={<NotificationProvider><ProtectedRoute /></NotificationProvider>}>
+        <Route
+          element={
+            <NotificationProvider>
+              <ProtectedRoute />
+            </NotificationProvider>
+          }
+        >
           <Route element={<PermissionsProvider />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route element={<PermissionRoute module="CVDocument" action="Upload" />}>
+            <Route
+              element={<PermissionRoute module="CVDocument" action="Upload" />}
+            >
               <Route path="/upload" element={<UploadPage />} />
             </Route>
             <Route path="/jobs" element={<JobsPage />} />
             <Route path="/jobs/:publicCode" element={<JobDetailPage />} />
             <Route path="/posts" element={<Navigate to="/jobs" replace />} />
-            <Route path="/posts/:id" element={<Navigate to="/jobs" replace />} />
+            <Route
+              path="/posts/:id"
+              element={<Navigate to="/jobs" replace />}
+            />
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/users" element={<Navigate to="/admin/users" replace />} />
-            <Route element={<PermissionRoute module="AdminPage" anyAction redirectTo="/dashboard" />}>
+            <Route
+              path="/users"
+              element={<Navigate to="/admin/users" replace />}
+            />
+            <Route
+              element={
+                <PermissionRoute
+                  module="AdminPage"
+                  anyAction
+                  redirectTo="/dashboard"
+                />
+              }
+            >
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminIndexRedirect />} />
-                <Route element={<PermissionRoute module="User" action="Read" redirectTo="/admin" />}>
+                <Route
+                  element={
+                    <PermissionRoute
+                      module="User"
+                      action="Read"
+                      redirectTo="/admin"
+                    />
+                  }
+                >
                   <Route path="users" element={<UsersPage />} />
                 </Route>
-                <Route element={<PermissionRoute module="Job" action="Read" redirectTo="/admin" />}>
+                <Route
+                  element={
+                    <PermissionRoute
+                      module="Job"
+                      action="Read"
+                      redirectTo="/admin"
+                    />
+                  }
+                >
                   <Route path="jobs" element={<AdminJobsPage />} />
                   <Route path="jobs/:id" element={<AdminJobDetailPage />} />
                 </Route>

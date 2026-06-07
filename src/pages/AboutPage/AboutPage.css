@@ -1,0 +1,287 @@
+.about-page {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  padding: 60px 8%;
+  color: #fff;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(56, 189, 248, 0.35),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 15%,
+      rgba(147, 197, 253, 0.28),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 70% 80%,
+      rgba(168, 85, 247, 0.2),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(34, 211, 238, 0.15),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #020617 0%, #07122b 35%, #081c3c 70%, #031525 100%);
+}
+
+.about-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 60px;
+  margin-bottom: 80px;
+}
+
+.about-label {
+  display: inline-block;
+  margin-bottom: 20px;
+  letter-spacing: 3px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.about-hero h1 {
+  font-size: clamp(48px, 6vw, 82px);
+  line-height: 1;
+  margin-bottom: 24px;
+}
+
+.about-hero h1 span {
+  background: linear-gradient(90deg, #ffffff, #87cefa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.about-hero p {
+  font-size: 20px;
+  opacity: 0.85;
+}
+
+.about-meta {
+  display: flex;
+  gap: 32px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.about-meta div {
+  display: flex;
+  flex-direction: column;
+}
+
+.about-meta strong {
+  margin-bottom: 6px;
+}
+
+.about-logo-circle {
+  width: 360px;
+  height: 360px;
+}
+
+.about-logo-circle img {
+  width: 70%;
+}
+
+.about-section {
+  margin-bottom: 80px;
+}
+
+.section-heading {
+  margin-bottom: 24px;
+  font-size: 36px;
+}
+
+.about-card {
+  padding: 32px;
+}
+
+.about-section-title {
+  font-size: 24px;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.timeline {
+  display: grid;
+  gap: 24px;
+}
+
+.timeline-item {
+  padding: 28px;
+}
+
+.timeline-year {
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  margin-bottom: 12px;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.skill-card {
+  padding: 24px;
+}
+
+.skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.skill-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.skill-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #7dd3fc, #38bdf8);
+}
+
+.tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tech-stack span {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.about-signature {
+  text-align: center;
+  padding: 80px 0;
+}
+
+.about-signature img {
+  width: 140px;
+  margin-bottom: 20px;
+}
+
+.about-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+  .about-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .about-meta {
+    justify-content: center;
+  }
+
+  .about-logo-circle {
+    width: 260px;
+    height: 260px;
+  }
+}
+
+.company-profile-card {
+  width: min(620px, 100%);
+  margin-top: 28px;
+}
+
+.company-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.company-profile-tag {
+  font-size: 11px;
+  letter-spacing: 3px;
+  opacity: 0.65;
+  margin-bottom: 8px;
+}
+
+.company-profile-header h2 {
+  margin: 0;
+  font-size: 42px;
+  font-weight: 700;
+}
+
+.company-status {
+  padding: 8px 16px;
+  border-radius: 999px;
+
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+
+  color: #6ee7b7;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.company-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-item span {
+  font-size: 12px;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.profile-item strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.company-summary {
+  margin-top: 28px;
+  padding-top: 24px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+  font-size: 15px;
+  line-height: 1.8;
+  opacity: 0.85;
+}
+
+.about-hero__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  flex: 1;
+  min-height: 360px; /* bằng với logo */
+}
+
+.about-logo-circle {
+  flex-shrink: 0;
+}
