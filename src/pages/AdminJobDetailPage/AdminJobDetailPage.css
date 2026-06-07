@@ -90,7 +90,9 @@
   padding: 8px 14px;
 }
 
-.admin-job-detail__panel > .admin-job-detail__tabs .admin-job-detail__tab.is-active {
+.admin-job-detail__panel
+  > .admin-job-detail__tabs
+  .admin-job-detail__tab.is-active {
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
   color: #0f172a;
@@ -466,4 +468,28 @@
     flex-direction: column;
     align-items: stretch;
   }
+}
+
+.admin-job-detail__back {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  margin-bottom: 20px;
+
+  border: none;
+  background: transparent;
+  padding: 0;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+
+  cursor: pointer;
+}
+
+.admin-job-detail__back:hover {
+  text-decoration: underline;
+  color: #0f172a;
 }

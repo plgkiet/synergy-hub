@@ -144,7 +144,10 @@ const SUBMISSION_COLUMNS = [
         <span className="admin-job-detail__role" title={label}>
           {label}
           {row.confirmedPredictedRole && (
-            <span className="admin-job-detail__role-confirmed" title="Confirmed">
+            <span
+              className="admin-job-detail__role-confirmed"
+              title="Confirmed"
+            >
               ✓
             </span>
           )}
@@ -206,7 +209,9 @@ export default function AdminJobDetailPage() {
       setOrganizations(Array.isArray(orgRes) ? orgRes : []);
       setJobTypes(Array.isArray(typeRes) ? typeRes : []);
     } catch (err) {
-      enqueueSnackbar(err?.message || "Failed to load lookup data", { variant: "error" });
+      enqueueSnackbar(err?.message || "Failed to load lookup data", {
+        variant: "error",
+      });
     }
   }, [enqueueSnackbar]);
 
@@ -258,7 +263,8 @@ export default function AdminJobDetailPage() {
     setEditForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const goToLookups = () => navigate("/admin/jobs", { state: { pageTab: "lookups" } });
+  const goToLookups = () =>
+    navigate("/admin/jobs", { state: { pageTab: "lookups" } });
 
   const handleSaveSettings = async (e) => {
     e.preventDefault();
@@ -327,7 +333,9 @@ export default function AdminJobDetailPage() {
   const handleConfirmRole = async () => {
     const value = roleInput.trim();
     if (!value || !roleDialog?.cvId) {
-      enqueueSnackbar("Enter a role before confirming.", { variant: "warning" });
+      enqueueSnackbar("Enter a role before confirming.", {
+        variant: "warning",
+      });
       return;
     }
     try {
@@ -371,7 +379,7 @@ export default function AdminJobDetailPage() {
     <div className="admin-job-detail">
       <button
         type="button"
-        className="admin-btn admin-btn--ghost admin-btn--sm"
+        className="admin-job-detail__back"
         onClick={() => navigate("/admin/jobs")}
       >
         ← All jobs
@@ -421,13 +429,22 @@ export default function AdminJobDetailPage() {
             ))}
           </div>
 
-          <form className="admin-job-detail__form" onSubmit={handleSaveSettings}>
+          <form
+            className="admin-job-detail__form"
+            onSubmit={handleSaveSettings}
+          >
             {settingsSection === "overview" && (
               <>
-                {(!organizations.length || !locations.length || !jobTypes.length) && (
+                {(!organizations.length ||
+                  !locations.length ||
+                  !jobTypes.length) && (
                   <p className="admin-job-detail__hint">
                     Missing lookup options?
-                    <button type="button" className="admin-btn admin-btn--ghost admin-btn--sm" onClick={goToLookups}>
+                    <button
+                      type="button"
+                      className="admin-btn admin-btn--ghost admin-btn--sm"
+                      onClick={goToLookups}
+                    >
                       Manage lookup data
                     </button>
                   </p>
@@ -450,7 +467,9 @@ export default function AdminJobDetailPage() {
                       rows={3}
                       maxLength={500}
                       value={editForm.description}
-                      onChange={(e) => updateField("description", e.target.value)}
+                      onChange={(e) =>
+                        updateField("description", e.target.value)
+                      }
                       readOnly={readOnly}
                     />
                   </div>
@@ -459,7 +478,9 @@ export default function AdminJobDetailPage() {
                     <select
                       id="edit-org"
                       value={editForm.organizationId}
-                      onChange={(e) => updateField("organizationId", e.target.value)}
+                      onChange={(e) =>
+                        updateField("organizationId", e.target.value)
+                      }
                       disabled={readOnly}
                     >
                       <option value="">— Select —</option>
@@ -475,7 +496,9 @@ export default function AdminJobDetailPage() {
                     <select
                       id="edit-primary-loc"
                       value={editForm.primaryLocationId}
-                      onChange={(e) => updateField("primaryLocationId", e.target.value)}
+                      onChange={(e) =>
+                        updateField("primaryLocationId", e.target.value)
+                      }
                       disabled={readOnly}
                     >
                       <option value="">— Select —</option>
@@ -491,7 +514,9 @@ export default function AdminJobDetailPage() {
                     <input
                       id="edit-team"
                       value={editForm.functionalTeam}
-                      onChange={(e) => updateField("functionalTeam", e.target.value)}
+                      onChange={(e) =>
+                        updateField("functionalTeam", e.target.value)
+                      }
                       readOnly={readOnly}
                       placeholder="Engineering"
                     />
@@ -501,7 +526,9 @@ export default function AdminJobDetailPage() {
                     <select
                       id="edit-employment"
                       value={editForm.employmentType}
-                      onChange={(e) => updateField("employmentType", e.target.value)}
+                      onChange={(e) =>
+                        updateField("employmentType", e.target.value)
+                      }
                       disabled={readOnly}
                     >
                       <option value="">— Select —</option>
@@ -534,7 +561,9 @@ export default function AdminJobDetailPage() {
                       id="edit-posted"
                       type="date"
                       value={editForm.postedDate}
-                      onChange={(e) => updateField("postedDate", e.target.value)}
+                      onChange={(e) =>
+                        updateField("postedDate", e.target.value)
+                      }
                       readOnly={readOnly}
                     />
                   </div>
@@ -544,7 +573,9 @@ export default function AdminJobDetailPage() {
                       id="edit-closing"
                       type="date"
                       value={editForm.closingDate}
-                      onChange={(e) => updateField("closingDate", e.target.value)}
+                      onChange={(e) =>
+                        updateField("closingDate", e.target.value)
+                      }
                       readOnly={readOnly}
                     />
                   </div>
@@ -556,7 +587,10 @@ export default function AdminJobDetailPage() {
                         selectedIds={editForm.locationIds}
                         disabled={readOnly}
                         onToggle={(id) =>
-                          updateField("locationIds", toggleId(editForm.locationIds, id))
+                          updateField(
+                            "locationIds",
+                            toggleId(editForm.locationIds, id),
+                          )
                         }
                       />
                     </div>
@@ -569,7 +603,10 @@ export default function AdminJobDetailPage() {
                         selectedIds={editForm.jobTypeIds}
                         disabled={readOnly}
                         onToggle={(id) =>
-                          updateField("jobTypeIds", toggleId(editForm.jobTypeIds, id))
+                          updateField(
+                            "jobTypeIds",
+                            toggleId(editForm.jobTypeIds, id),
+                          )
                         }
                       />
                     </div>
@@ -586,7 +623,9 @@ export default function AdminJobDetailPage() {
                     id="edit-about"
                     rows={5}
                     value={editForm.aboutThisRole}
-                    onChange={(e) => updateField("aboutThisRole", e.target.value)}
+                    onChange={(e) =>
+                      updateField("aboutThisRole", e.target.value)
+                    }
                     readOnly={readOnly}
                   />
                 </div>
@@ -596,7 +635,9 @@ export default function AdminJobDetailPage() {
                     id="edit-company-desc"
                     rows={4}
                     value={editForm.companyDescription}
-                    onChange={(e) => updateField("companyDescription", e.target.value)}
+                    onChange={(e) =>
+                      updateField("companyDescription", e.target.value)
+                    }
                     readOnly={readOnly}
                   />
                 </div>
@@ -606,7 +647,9 @@ export default function AdminJobDetailPage() {
                     id="edit-resp"
                     rows={4}
                     value={editForm.responsibilities}
-                    onChange={(e) => updateField("responsibilities", e.target.value)}
+                    onChange={(e) =>
+                      updateField("responsibilities", e.target.value)
+                    }
                     readOnly={readOnly}
                   />
                 </div>
@@ -616,7 +659,9 @@ export default function AdminJobDetailPage() {
                     id="edit-qual"
                     rows={4}
                     value={editForm.qualifications}
-                    onChange={(e) => updateField("qualifications", e.target.value)}
+                    onChange={(e) =>
+                      updateField("qualifications", e.target.value)
+                    }
                     readOnly={readOnly}
                   />
                 </div>
@@ -640,7 +685,9 @@ export default function AdminJobDetailPage() {
                   <input
                     id="edit-website"
                     value={editForm.companyWebsite}
-                    onChange={(e) => updateField("companyWebsite", e.target.value)}
+                    onChange={(e) =>
+                      updateField("companyWebsite", e.target.value)
+                    }
                     readOnly={readOnly}
                   />
                 </div>
@@ -649,48 +696,68 @@ export default function AdminJobDetailPage() {
                   <input
                     id="edit-linkedin"
                     value={editForm.companyLinkedIn}
-                    onChange={(e) => updateField("companyLinkedIn", e.target.value)}
+                    onChange={(e) =>
+                      updateField("companyLinkedIn", e.target.value)
+                    }
                     readOnly={readOnly}
                   />
                 </div>
                 <div className="admin-job-detail__field">
-                  <label htmlFor="edit-keywords">Search keywords (comma-separated)</label>
+                  <label htmlFor="edit-keywords">
+                    Search keywords (comma-separated)
+                  </label>
                   <input
                     id="edit-keywords"
                     value={editForm.searchKeywords}
-                    onChange={(e) => updateField("searchKeywords", e.target.value)}
+                    onChange={(e) =>
+                      updateField("searchKeywords", e.target.value)
+                    }
                     readOnly={readOnly}
                     placeholder=".NET, C#, Intern"
                   />
                 </div>
                 <div className="admin-job-detail__field">
-                  <label htmlFor="edit-bonuses">Special bonuses (comma-separated)</label>
+                  <label htmlFor="edit-bonuses">
+                    Special bonuses (comma-separated)
+                  </label>
                   <input
                     id="edit-bonuses"
                     value={editForm.specialBonuses}
-                    onChange={(e) => updateField("specialBonuses", e.target.value)}
+                    onChange={(e) =>
+                      updateField("specialBonuses", e.target.value)
+                    }
                     readOnly={readOnly}
                   />
                 </div>
                 <div className="admin-job-detail__field">
-                  <label className="admin-job-detail__field__check" htmlFor="edit-referral">
+                  <label
+                    className="admin-job-detail__field__check"
+                    htmlFor="edit-referral"
+                  >
                     <input
                       id="edit-referral"
                       type="checkbox"
                       checked={editForm.isReferralEnabled}
-                      onChange={(e) => updateField("isReferralEnabled", e.target.checked)}
+                      onChange={(e) =>
+                        updateField("isReferralEnabled", e.target.checked)
+                      }
                       disabled={readOnly}
                     />
                     Enable refer a friend
                   </label>
                 </div>
                 <div className="admin-job-detail__field">
-                  <label className="admin-job-detail__field__check" htmlFor="edit-active">
+                  <label
+                    className="admin-job-detail__field__check"
+                    htmlFor="edit-active"
+                  >
                     <input
                       id="edit-active"
                       type="checkbox"
                       checked={editForm.isActive}
-                      onChange={(e) => updateField("isActive", e.target.checked)}
+                      onChange={(e) =>
+                        updateField("isActive", e.target.checked)
+                      }
                       disabled={readOnly}
                     />
                     Accept new applications
@@ -703,14 +770,27 @@ export default function AdminJobDetailPage() {
               <div className="admin-job-detail__link">
                 <span>Apply link:</span>
                 <code>{getPublicApplyUrl(job?.publicCode)}</code>
-                <button type="button" className="admin-btn admin-btn--ghost admin-btn--sm" onClick={copyApplyLink}>
+                <button
+                  type="button"
+                  className="admin-btn admin-btn--ghost admin-btn--sm"
+                  onClick={copyApplyLink}
+                >
                   Copy
                 </button>
               </div>
               {canUpdateJob && (
-                <button type="submit" className="admin-btn admin-btn--primary" disabled={saving}>
+                <button
+                  type="submit"
+                  className="admin-btn admin-btn--primary"
+                  disabled={saving}
+                >
                   {saving ? (
-                    <LoadingSpinner size="sm" inline variant="light" label="Saving" />
+                    <LoadingSpinner
+                      size="sm"
+                      inline
+                      variant="light"
+                      label="Saving"
+                    />
                   ) : (
                     "Save changes"
                   )}
@@ -732,7 +812,9 @@ export default function AdminJobDetailPage() {
             }}
           >
             <label className="admin-job-detail__filter" htmlFor="role-filter">
-              <span className="admin-job-detail__filter-label">Role filter</span>
+              <span className="admin-job-detail__filter-label">
+                Role filter
+              </span>
               <input
                 id="role-filter"
                 value={roleFilter}
@@ -826,9 +908,18 @@ export default function AdminJobDetailPage() {
                 onChange={(e) => setRoleFilter(e.target.value)}
               />
             </div>
-            <button type="submit" className="admin-btn admin-btn--primary" disabled={searching}>
+            <button
+              type="submit"
+              className="admin-btn admin-btn--primary"
+              disabled={searching}
+            >
               {searching ? (
-                <LoadingSpinner size="sm" inline variant="light" label="Searching" />
+                <LoadingSpinner
+                  size="sm"
+                  inline
+                  variant="light"
+                  label="Searching"
+                />
               ) : (
                 "Search candidates"
               )}
@@ -847,11 +938,15 @@ export default function AdminJobDetailPage() {
               <div key={cv.id || cv.code} className="admin-job-detail__match">
                 <h4>{cv.candidateName || cv.name || "Candidate"}</h4>
                 {cv.score != null && (
-                  <span className="admin-job-detail__score">Score: {cv.score.toFixed(3)}</span>
+                  <span className="admin-job-detail__score">
+                    Score: {cv.score.toFixed(3)}
+                  </span>
                 )}
                 <p>
                   {cv.submitterEmail || cv.email || "—"} ·{" "}
-                  {formatRoleName(cv.confirmedPredictedRole || cv.predictedRole)}
+                  {formatRoleName(
+                    cv.confirmedPredictedRole || cv.predictedRole,
+                  )}
                 </p>
                 {cv.code && (
                   <button

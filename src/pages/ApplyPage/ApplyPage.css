@@ -4,7 +4,12 @@
   align-items: center;
   justify-content: center;
   padding: 48px 20px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    sans-serif;
   color: #111827;
   background: linear-gradient(160deg, #f8fafc 0%, #e0e7ff 50%, #f5f3ff 100%);
 }
@@ -127,7 +132,10 @@
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .apply-modal__close span {
@@ -149,7 +157,7 @@
 }
 
 .apply-file {
-  border: 2px dashed rgba(99, 102, 241, 0.35);
+  border: 2px dashed rgba(48, 209, 138, 0.28);
   border-radius: 12px;
   padding: 16px;
   text-align: center;
@@ -168,7 +176,7 @@
 .apply-file-btn {
   border: none;
   background: transparent;
-  color: #6366f1;
+  color: #30d18a;
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -184,7 +192,7 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #30d18a 23%, #1ea5e0 65%, #163c98 100%);
   color: #fff;
 }
 

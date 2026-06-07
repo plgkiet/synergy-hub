@@ -275,7 +275,7 @@
 
   padding: 20px;
 
-  z-index: 200;
+  z-index: 9999;
 }
 
 .admin-jobs-modal {
