@@ -81,7 +81,7 @@ export default function Dashboard() {
             filter candidates, streamline hiring workflows, and ultimately build
             stronger teams.
           </p>
-          <button className="sh-hero-cta" onClick={() => navigate("/search")}>
+          <button className="sh-hero-cta" onClick={() => navigate("/upload")}>
             Get started →
           </button>
         </div>
@@ -111,8 +111,8 @@ export default function Dashboard() {
           </p>
 
           {showUpload && (
-            <button className="sh-band-cta" onClick={() => navigate("/upload")}>
-              Upload your CVs →
+            <button className="sh-band-cta" onClick={() => navigate("/about")}>
+              Who We Are →
             </button>
           )}
         </div>
@@ -143,7 +143,12 @@ export default function Dashboard() {
               <button className="sh-footer-link">Features</button>
               <button className="sh-footer-link">Pricing</button>
               <button className="sh-footer-link">Community</button>
-              <button className="sh-footer-link">Contact Us</button>
+              <button
+                className="sh-footer-link"
+                onClick={() => navigate("/contact")}
+              >
+                Contact Us
+              </button>{" "}
             </div>
 
             <div className="sh-footer-col">
