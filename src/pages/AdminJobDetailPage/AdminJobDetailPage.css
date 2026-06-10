@@ -503,3 +503,9 @@
   width: 100%;
   min-width: 300px;
 }
+
+.admin-job-detail__toolbar-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}

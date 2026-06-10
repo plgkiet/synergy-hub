@@ -835,22 +835,41 @@ export default function AdminJobDetailPage() {
               />
             </div>
 
-            <button
-              type="submit"
-              className="admin-btn admin-btn--primary"
-              disabled={searching}
-            >
-              {searching ? (
-                <LoadingSpinner
-                  size="sm"
-                  inline
-                  variant="light"
-                  label="Searching"
-                />
-              ) : (
-                "Search candidates"
+            <div className="admin-job-detail__toolbar-actions">
+              <button
+                type="submit"
+                className="admin-btn admin-btn--primary"
+                disabled={searching}
+              >
+                {searching ? (
+                  <LoadingSpinner
+                    size="sm"
+                    inline
+                    variant="light"
+                    label="Searching"
+                  />
+                ) : (
+                  "Search candidates"
+                )}
+              </button>
+
+              {(searchQuery || roleFilter) && (
+                <button
+                  type="button"
+                  className="admin-btn admin-btn--ghost"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setRoleFilter("");
+                    setSearchResult(null);
+                    setSubPage(1);
+
+                    loadSubmissions();
+                  }}
+                >
+                  Clear filters
+                </button>
               )}
-            </button>
+            </div>
           </form>
           {hasQuery ? (
             <>
