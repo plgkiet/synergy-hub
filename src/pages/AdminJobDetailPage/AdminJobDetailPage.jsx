@@ -399,7 +399,8 @@ export default function AdminJobDetailPage() {
         <div>
           <h1>{job?.title}</h1>
           <p className="admin-job-detail__meta">
-            {job?.isActive ? "Open" : "Closed"} · Public code {job?.publicCode}
+            {/* {job?.isActive ? "Open" : "Closed"} · Public code {job?.publicCode} */}
+            {job?.isActive ? "Open" : "Closed"}
           </p>
         </div>
         <button

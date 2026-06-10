@@ -50,7 +50,7 @@ const COLUMNS = [
     width: "130px",
     render: (row) => formatJobDate(row.displayDate || row.postedDate),
   },
-  { key: "publicCode", label: "Code", width: "110px" },
+  // { key: "publicCode", label: "Code", width: "110px" },
 ];
 
 const EMPTY_CREATE = {
@@ -93,7 +93,11 @@ export default function AdminJobsPage() {
   const loadJobs = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await listCvPosts({ pageNumber: page, pageSize, search: filter || undefined });
+      const res = await listCvPosts({
+        pageNumber: page,
+        pageSize,
+        search: filter || undefined,
+      });
       setJobs(Array.isArray(res?.data) ? res.data : []);
       setTotalCount(res?.totalCount ?? 0);
       setTotalPages(res?.totalPages ?? 1);
@@ -118,7 +122,9 @@ export default function AdminJobsPage() {
       setOrganizations(Array.isArray(orgRes) ? orgRes : []);
       setJobTypes(Array.isArray(typeRes) ? typeRes : []);
     } catch (err) {
-      enqueueSnackbar(err?.message || "Failed to load lookup data", { variant: "error" });
+      enqueueSnackbar(err?.message || "Failed to load lookup data", {
+        variant: "error",
+      });
     }
   }, [enqueueSnackbar]);
 
@@ -158,7 +164,9 @@ export default function AdminJobsPage() {
     description: createForm.description.trim() || undefined,
     organizationId: createForm.organizationId || undefined,
     primaryLocationId: createForm.primaryLocationId || undefined,
-    locationIds: createForm.primaryLocationId ? [createForm.primaryLocationId] : undefined,
+    locationIds: createForm.primaryLocationId
+      ? [createForm.primaryLocationId]
+      : undefined,
     jobTypeIds: createForm.jobTypeId ? [createForm.jobTypeId] : undefined,
     functionalTeam: createForm.functionalTeam.trim() || undefined,
     employmentType: createForm.employmentType || undefined,
@@ -308,167 +316,188 @@ export default function AdminJobsPage() {
               onSubmit={handleCreate}
               onClick={(e) => e.stopPropagation()}
             >
-            <h2>Create job</h2>
-            <p style={{ margin: "0 0 16px", fontSize: 13, color: "#64748b" }}>
-              Add the basics now. Full job page content can be filled in on the settings
-              screen after creation.
-            </p>
-            <div className="admin-jobs-field">
-              <label htmlFor="job-title">Title *</label>
-              <input
-                id="job-title"
-                maxLength={200}
-                value={createForm.title}
-                onChange={(e) => updateCreateField("title", e.target.value)}
-                placeholder="Senior DevOps Engineer (AWS), Da Nang"
-                required
-              />
-            </div>
-            <div className="admin-jobs-field">
-              <label htmlFor="job-desc">Short description</label>
-              <textarea
-                id="job-desc"
-                rows={3}
-                maxLength={500}
-                value={createForm.description}
-                onChange={(e) => updateCreateField("description", e.target.value)}
-                placeholder="One-line summary shown on job cards"
-              />
-            </div>
-            <div className="admin-jobs-modal__row">
+              <h2>Create job</h2>
+              <p style={{ margin: "0 0 16px", fontSize: 13, color: "#64748b" }}>
+                Add the basics now. Full job page content can be filled in on
+                the settings screen after creation.
+              </p>
               <div className="admin-jobs-field">
-                <label htmlFor="job-org">Organization</label>
-                <select
-                  id="job-org"
-                  value={createForm.organizationId}
-                  onChange={(e) => updateCreateField("organizationId", e.target.value)}
-                >
-                  <option value="">— Select —</option>
-                  {organizations.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="admin-jobs-field">
-                <label htmlFor="job-primary-loc">Location</label>
-                <select
-                  id="job-primary-loc"
-                  value={createForm.primaryLocationId}
-                  onChange={(e) => updateCreateField("primaryLocationId", e.target.value)}
-                >
-                  <option value="">— Select —</option>
-                  {locations.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="admin-jobs-modal__row">
-              <div className="admin-jobs-field">
-                <label htmlFor="job-type">Job type</label>
-                <select
-                  id="job-type"
-                  value={createForm.jobTypeId}
-                  onChange={(e) => updateCreateField("jobTypeId", e.target.value)}
-                >
-                  <option value="">— Select —</option>
-                  {jobTypes.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="admin-jobs-field">
-                <label htmlFor="job-team">Functional team</label>
+                <label htmlFor="job-title">Title *</label>
                 <input
-                  id="job-team"
-                  value={createForm.functionalTeam}
-                  onChange={(e) => updateCreateField("functionalTeam", e.target.value)}
-                  placeholder="Engineering"
+                  id="job-title"
+                  maxLength={200}
+                  value={createForm.title}
+                  onChange={(e) => updateCreateField("title", e.target.value)}
+                  placeholder="Senior DevOps Engineer (AWS), Da Nang"
+                  required
                 />
               </div>
-            </div>
-            <div className="admin-jobs-modal__row">
               <div className="admin-jobs-field">
-                <label htmlFor="job-employment">Employment type</label>
-                <select
-                  id="job-employment"
-                  value={createForm.employmentType}
-                  onChange={(e) => updateCreateField("employmentType", e.target.value)}
-                >
-                  {EMPLOYMENT_TYPES.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="admin-jobs-field">
-                <label htmlFor="job-work-mode">Work mode</label>
-                <select
-                  id="job-work-mode"
-                  value={createForm.workMode}
-                  onChange={(e) => updateCreateField("workMode", e.target.value)}
-                >
-                  {WORK_MODES.map((item) => (
-                    <option key={item} value={item}>
-                      {item}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="admin-jobs-field">
-              <label htmlFor="job-closing">Closing date (optional)</label>
-              <input
-                id="job-closing"
-                type="date"
-                value={createForm.closingDate}
-                onChange={(e) => updateCreateField("closingDate", e.target.value)}
-              />
-            </div>
-            <div className="admin-jobs-field">
-              <label className="admin-jobs-field__check" htmlFor="job-referral">
-                <input
-                  id="job-referral"
-                  type="checkbox"
-                  checked={createForm.isReferralEnabled}
-                  onChange={(e) => updateCreateField("isReferralEnabled", e.target.checked)}
+                <label htmlFor="job-desc">Short description</label>
+                <textarea
+                  id="job-desc"
+                  rows={3}
+                  maxLength={500}
+                  value={createForm.description}
+                  onChange={(e) =>
+                    updateCreateField("description", e.target.value)
+                  }
+                  placeholder="One-line summary shown on job cards"
                 />
-                Enable refer a friend
-              </label>
-            </div>
-            <div className="admin-jobs-modal-actions">
-              <button
-                type="button"
-                className="admin-btn admin-btn--ghost"
-                disabled={creating}
-                onClick={() => setShowCreate(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="admin-btn admin-btn--primary"
-                disabled={creating}
-              >
-                {creating ? (
-                  <LoadingSpinner
-                    size="sm"
-                    inline
-                    variant="light"
-                    label="Creating"
+              </div>
+              <div className="admin-jobs-modal__row">
+                <div className="admin-jobs-field">
+                  <label htmlFor="job-org">Organization</label>
+                  <select
+                    id="job-org"
+                    value={createForm.organizationId}
+                    onChange={(e) =>
+                      updateCreateField("organizationId", e.target.value)
+                    }
+                  >
+                    <option value="">— Select —</option>
+                    {organizations.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="admin-jobs-field">
+                  <label htmlFor="job-primary-loc">Location</label>
+                  <select
+                    id="job-primary-loc"
+                    value={createForm.primaryLocationId}
+                    onChange={(e) =>
+                      updateCreateField("primaryLocationId", e.target.value)
+                    }
+                  >
+                    <option value="">— Select —</option>
+                    {locations.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="admin-jobs-modal__row">
+                <div className="admin-jobs-field">
+                  <label htmlFor="job-type">Job type</label>
+                  <select
+                    id="job-type"
+                    value={createForm.jobTypeId}
+                    onChange={(e) =>
+                      updateCreateField("jobTypeId", e.target.value)
+                    }
+                  >
+                    <option value="">— Select —</option>
+                    {jobTypes.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="admin-jobs-field">
+                  <label htmlFor="job-team">Functional team</label>
+                  <input
+                    id="job-team"
+                    value={createForm.functionalTeam}
+                    onChange={(e) =>
+                      updateCreateField("functionalTeam", e.target.value)
+                    }
+                    placeholder="Engineering"
                   />
-                ) : (
-                  "Create"
-                )}
-              </button>
-            </div>
+                </div>
+              </div>
+              <div className="admin-jobs-modal__row">
+                <div className="admin-jobs-field">
+                  <label htmlFor="job-employment">Employment type</label>
+                  <select
+                    id="job-employment"
+                    value={createForm.employmentType}
+                    onChange={(e) =>
+                      updateCreateField("employmentType", e.target.value)
+                    }
+                  >
+                    {EMPLOYMENT_TYPES.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="admin-jobs-field">
+                  <label htmlFor="job-work-mode">Work mode</label>
+                  <select
+                    id="job-work-mode"
+                    value={createForm.workMode}
+                    onChange={(e) =>
+                      updateCreateField("workMode", e.target.value)
+                    }
+                  >
+                    {WORK_MODES.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="admin-jobs-field">
+                <label htmlFor="job-closing">Closing date (optional)</label>
+                <input
+                  id="job-closing"
+                  type="date"
+                  value={createForm.closingDate}
+                  onChange={(e) =>
+                    updateCreateField("closingDate", e.target.value)
+                  }
+                />
+              </div>
+              <div className="admin-jobs-field">
+                <label
+                  className="admin-jobs-field__check"
+                  htmlFor="job-referral"
+                >
+                  <input
+                    id="job-referral"
+                    type="checkbox"
+                    checked={createForm.isReferralEnabled}
+                    onChange={(e) =>
+                      updateCreateField("isReferralEnabled", e.target.checked)
+                    }
+                  />
+                  Enable refer a friend
+                </label>
+              </div>
+              <div className="admin-jobs-modal-actions">
+                <button
+                  type="button"
+                  className="admin-btn admin-btn--ghost"
+                  disabled={creating}
+                  onClick={() => setShowCreate(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="admin-btn admin-btn--primary"
+                  disabled={creating}
+                >
+                  {creating ? (
+                    <LoadingSpinner
+                      size="sm"
+                      inline
+                      variant="light"
+                      label="Creating"
+                    />
+                  ) : (
+                    "Create"
+                  )}
+                </button>
+              </div>
             </form>
           </div>
         </ModalPortal>
