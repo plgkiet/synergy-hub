@@ -81,7 +81,7 @@ export default function Dashboard() {
             filter candidates, streamline hiring workflows, and ultimately build
             stronger teams.
           </p>
-          <button className="sh-hero-cta" onClick={() => navigate("/upload")}>
+          <button className="sh-hero-cta" onClick={() => navigate("/search")}>
             Get started →
           </button>
         </div>
