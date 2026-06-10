@@ -63,8 +63,7 @@ import { canDo } from "@/utils/permissions";
 
 const TABS = [
   { id: "settings", label: "Settings" },
-  { id: "submissions", label: "Submissions" },
-  { id: "search", label: "Search" },
+  { id: "submissions", label: "Search" },
 ];
 const PAGE_SIZE = 10;
 
@@ -295,20 +294,29 @@ export default function AdminJobDetailPage() {
   const handleSearch = async (e) => {
     e.preventDefault();
     const q = searchQuery.trim();
-    if (!q) return;
-
+    const role = roleFilter.trim();
     try {
       setSearching(true);
-      const res = await searchPostSubmissions(id, {
-        searchQuery: q,
-        role: roleFilter || undefined,
-      });
-      setSearchResult(res);
-      if (!res?.selectedCvs?.length && !res?.results?.length) {
-        enqueueSnackbar("No matches found.", { variant: "info" });
+      if (q) {
+        const res = await searchPostSubmissions(id, {
+          searchQuery: q,
+          role: role || undefined,
+        });
+        setSearchResult(res);
+        if (!res?.selectedCvs?.length && !res?.results?.length) {
+          enqueueSnackbar("No matches found.", {
+            variant: "info",
+          });
+        }
+        return;
       }
+      setSearchResult(null);
+      setSubPage(1);
+      await loadSubmissions();
     } catch (err) {
-      enqueueSnackbar(err?.message || "Search failed", { variant: "error" });
+      enqueueSnackbar(err?.message || "Search failed", {
+        variant: "error",
+      });
       setSearchResult(null);
     } finally {
       setSearching(false);
@@ -374,6 +382,8 @@ export default function AdminJobDetailPage() {
       : searchResult?.results || [];
 
   const readOnly = !canUpdateJob;
+
+  const hasQuery = Boolean(searchQuery.trim());
 
   return (
     <div className="admin-job-detail">
@@ -803,31 +813,88 @@ export default function AdminJobDetailPage() {
 
       {tab === "submissions" && (
         <div className="admin-job-detail__panel">
-          <form
-            className="admin-job-detail__toolbar"
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSubPage(1);
-              loadSubmissions();
-            }}
-          >
-            <label className="admin-job-detail__filter" htmlFor="role-filter">
-              <span className="admin-job-detail__filter-label">
-                Role filter
-              </span>
+          <form className="admin-job-detail__toolbar" onSubmit={handleSearch}>
+            <div>
+              <label htmlFor="search-q">Search query</label>
               <input
-                id="role-filter"
+                id="search-q"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Describe your ideal candidate..."
+              />
+            </div>
+
+            <div>
+              <label htmlFor="search-role">Role</label>
+              <input
+                id="search-role"
                 value={roleFilter}
                 onChange={(e) => setRoleFilter(e.target.value)}
-                placeholder="e.g. Backend"
+                placeholder="e.g. Backend Developer"
               />
-            </label>
-            <button type="submit" className="admin-btn admin-btn--ghost">
-              Apply filter
+            </div>
+
+            <button
+              type="submit"
+              className="admin-btn admin-btn--primary"
+              disabled={searching}
+            >
+              {searching ? (
+                <LoadingSpinner
+                  size="sm"
+                  inline
+                  variant="light"
+                  label="Searching"
+                />
+              ) : (
+                "Search candidates"
+              )}
             </button>
           </form>
+          {hasQuery ? (
+            <>
+              {searchResult?.aiSelection?.reasoning && (
+                <div className="admin-job-detail__ai">
+                  <strong>AI shortlist</strong>
+                  <p>{searchResult.aiSelection.reasoning}</p>
+                </div>
+              )}
 
-          {loadingSubs ? (
+              <div className="admin-job-detail__matches">
+                {topMatches.map((cv) => (
+                  <div
+                    key={cv.id || cv.code}
+                    className="admin-job-detail__match"
+                  >
+                    <h4>{cv.candidateName || cv.name || "Candidate"}</h4>
+
+                    {cv.score != null && (
+                      <span className="admin-job-detail__score">
+                        Score: {cv.score.toFixed(3)}
+                      </span>
+                    )}
+
+                    <p>
+                      {cv.submitterEmail || cv.email || "—"} ·{" "}
+                      {formatRoleName(
+                        cv.confirmedPredictedRole || cv.predictedRole,
+                      )}
+                    </p>
+
+                    {cv.code && (
+                      <button
+                        type="button"
+                        className="admin-btn admin-btn--ghost admin-btn--sm"
+                        onClick={() => handleDownload(cv.code)}
+                      >
+                        Download CV
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : loadingSubs ? (
             <LoadingSpinner label="Loading submissions" />
           ) : (
             <>
@@ -888,7 +955,7 @@ export default function AdminJobDetailPage() {
         </div>
       )}
 
-      {tab === "search" && (
+      {/* {tab === "search" && (
         <div className="admin-job-detail__panel">
           <form className="admin-job-detail__toolbar" onSubmit={handleSearch}>
             <div>
@@ -961,7 +1028,7 @@ export default function AdminJobDetailPage() {
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
