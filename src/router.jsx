@@ -19,10 +19,12 @@ import NotificationProvider from "./realtime/NotificationContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import AdminCvDetailPage from "./pages/AdminCvDetailPage/AdminCvDetailPage";
+import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Auth />} />
