@@ -1,14 +1,29 @@
-.admin-cv-detail {
+/* .admin-cv-detail {
   padding: 32px;
-}
+} */
 
 .admin-cv-detail__back {
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+
+  margin-bottom: 20px;
+
   border: none;
   background: transparent;
+  padding: 0;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #111827;
+
   cursor: pointer;
-  font-size: 15px;
-  margin-bottom: 20px;
-  color: #64748b;
+}
+
+.admin-cv-detail__back:hover {
+  text-decoration: underline;
+  color: #0f172a;
 }
 
 .admin-cv-detail__card {
