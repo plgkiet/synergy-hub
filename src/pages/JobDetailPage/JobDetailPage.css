@@ -350,6 +350,126 @@
   color: #64748b;
 }
 
+.job-detail__submissions {
+  position: relative;
+  z-index: 2;
+
+  padding: 0 56px 48px;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.job-detail__submissions h2 {
+  margin: 40px 0 20px;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.job-detail__submitted-cvs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.job-detail__submitted-cv {
+  margin: 0;
+}
+
+.job-detail__submitted-cv-link,
+.job-detail__submitted-cv-static {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 16px 18px;
+
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.job-detail__submitted-cv-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.job-detail__submitted-cv-link:hover {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(96, 165, 250, 0.35);
+  transform: translateY(-1px);
+}
+
+.job-detail__submitted-cv-icon {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 12px;
+
+  background: linear-gradient(135deg, rgba(48, 209, 138, 0.18), rgba(30, 165, 224, 0.18));
+  color: #1d4ed8;
+}
+
+.job-detail__submitted-cv-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.job-detail__submitted-cv-title {
+  display: block;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  color: #0f172a;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.job-detail__submitted-cv-meta {
+  display: block;
+  margin-top: 4px;
+
+  font-size: 13px;
+  color: #64748b;
+}
+
+.job-detail__submitted-cv-action {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.job-detail__submitted-cv-score {
+  margin: 0;
+
+  font-size: 14px;
+  font-weight: 400;
+}
+
+
 /* ======================================
    LOADING
 ====================================== */
@@ -377,6 +497,10 @@
 
   .job-detail__body {
     padding: 32px 24px 40px;
+  }
+
+  .job-detail__submissions {
+    padding: 0 24px 32px;
   }
 
   .job-detail__hero-inner {
