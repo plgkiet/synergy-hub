@@ -94,9 +94,9 @@ export default function JobDetailPage() {
       <button
         type="button"
         className="job-detail__back"
-        onClick={() => navigate("/jobs")}
+        onClick={() => navigate(-1)}
       >
-        ← Back to jobs
+        ← Back
       </button>
 
       <div className="job-detail__container">
