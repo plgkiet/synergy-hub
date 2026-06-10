@@ -902,6 +902,7 @@ export default function AdminJobDetailPage() {
                 className="admin-submissions-table"
                 columns={SUBMISSION_COLUMNS}
                 data={submissions}
+                onRowClick={(row) => navigate(`/admin/jobs/${id}/cv/${row.id}`)}
                 emptyMessage="No applications yet."
                 actionsColumnWidth="220px"
                 renderActions={(row) => (
@@ -910,7 +911,10 @@ export default function AdminJobDetailPage() {
                       <button
                         type="button"
                         className="admin-btn admin-btn--ghost admin-btn--sm"
-                        onClick={() => handleDownload(row.code)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownload(row.code);
+                        }}
                       >
                         CV
                       </button>
@@ -919,7 +923,10 @@ export default function AdminJobDetailPage() {
                       <button
                         type="button"
                         className="admin-btn admin-btn--ghost admin-btn--sm"
-                        onClick={() => openRoleDialog(row)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openRoleDialog(row);
+                        }}
                       >
                         Confirm role
                       </button>

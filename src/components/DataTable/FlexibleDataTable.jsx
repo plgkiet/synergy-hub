@@ -27,6 +27,7 @@ export default function FlexibleDataTable({
   className = "",
   actionsColumnWidth = "minmax(120px, auto)",
   renderActions,
+  onRowClick,
 }) {
   const gridTemplate = [
     ...columns.map((col) => col.width || "minmax(100px, 1fr)"),
@@ -62,8 +63,11 @@ export default function FlexibleDataTable({
           data.map((row) => (
             <div
               key={row[rowKey]}
-              className="fdt-grid fdt-grid--row"
+              className={`fdt-grid fdt-grid--row ${
+                onRowClick ? "fdt-grid--clickable" : ""
+              }`}
               style={{ gridTemplateColumns: gridTemplate }}
+              onClick={() => onRowClick?.(row)}
             >
               {columns.map((col) => {
                 const value = row[col.key];

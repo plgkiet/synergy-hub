@@ -18,6 +18,7 @@ import ApplyPage from "./pages/ApplyPage/ApplyPage";
 import NotificationProvider from "./realtime/NotificationContext";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
+import AdminCvDetailPage from "./pages/AdminCvDetailPage/AdminCvDetailPage";
 
 export default function AppRoutes() {
   return (
@@ -88,6 +89,10 @@ export default function AppRoutes() {
                 >
                   <Route path="jobs" element={<AdminJobsPage />} />
                   <Route path="jobs/:id" element={<AdminJobDetailPage />} />
+                  <Route
+                    path="jobs/:id/cv/:cvId"
+                    element={<AdminCvDetailPage />}
+                  />
                 </Route>
               </Route>
             </Route>

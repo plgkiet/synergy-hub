@@ -80,3 +80,11 @@
   color: #b91c1c;
   background: rgba(254, 226, 226, 0.5);
 }
+
+.fdt-grid--clickable {
+  cursor: pointer;
+}
+
+.fdt-grid--clickable:hover {
+  background: rgba(59, 130, 246, 0.05);
+}

@@ -1,0 +1,437 @@
+.admin-cv-detail {
+  padding: 32px;
+}
+
+.admin-cv-detail__back {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 15px;
+  margin-bottom: 20px;
+  color: #64748b;
+}
+
+.admin-cv-detail__card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 28px;
+  padding: 32px;
+}
+
+.admin-cv-detail__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.admin-cv-detail__header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.admin-cv-detail__role {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(14, 165, 233, 0.12);
+  color: #0284c7;
+  font-weight: 600;
+}
+
+.admin-cv-detail__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.admin-cv-detail__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-cv-detail__item label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+.admin-cv-detail__item span {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.admin-cv-detail__section {
+  margin-top: 28px;
+}
+
+.admin-cv-detail__section h3 {
+  margin-bottom: 16px;
+}
+
+.admin-cv-detail__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admin-cv-detail__chip {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  font-size: 14px;
+}
+
+.admin-cv-detail__project {
+  padding: 24px;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.45);
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  backdrop-filter: blur(12px);
+
+  margin-bottom: 20px;
+
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+.admin-cv-detail__project-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 20px;
+}
+
+.admin-cv-detail__project-header h4 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.admin-cv-detail__project-badge {
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-cv-detail__project-meta {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+}
+
+.admin-cv-detail__project-meta strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.admin-cv-detail__project-meta span {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.admin-cv-detail__project-block {
+  margin-top: 20px;
+}
+
+.admin-cv-detail__project-block strong {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #0f172a;
+
+  font-size: 16px;
+}
+
+.admin-cv-detail__project-block ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.admin-cv-detail__project-block li {
+  margin-bottom: 8px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.admin-cv-detail__project p {
+  margin: 6px 0 0;
+  color: #64748b;
+}
+
+.admin-cv-detail__score-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-cv-detail__score-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.admin-cv-detail__recommendation {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-cv-detail__risk-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.admin-cv-detail__chip.is-present {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.admin-cv-detail__chip.is-listed {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.admin-cv-detail__role-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.admin-cv-detail__role-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admin-cv-detail__ai-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.admin-cv-detail__ai-card {
+  padding: 20px;
+
+  border-radius: 18px;
+
+  background: rgba(255, 255, 255, 0.45);
+
+  border: 1px solid rgba(255, 255, 255, 0.65);
+
+  backdrop-filter: blur(12px);
+}
+
+.admin-cv-detail__ai-title {
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  margin-bottom: 12px;
+}
+
+.admin-cv-detail__ai-card p {
+  margin: 0;
+  line-height: 1.7;
+  color: #475569;
+}
+
+.is-strength {
+  border-left: 4px solid #22c55e;
+}
+
+.is-weakness {
+  border-left: 4px solid #f59e0b;
+}
+
+.is-confidence {
+  border-left: 4px solid #3b82f6;
+}
+
+.is-hr {
+  border-left: 4px solid #8b5cf6;
+}
+
+.admin-cv-detail__confidence-pill {
+  display: inline-flex;
+
+  padding: 8px 16px;
+
+  border-radius: 999px;
+
+  background: #dbeafe;
+  color: #1d4ed8;
+
+  font-weight: 700;
+}
+
+.admin-cv-detail__risk-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-cv-detail__risk-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 16px 18px;
+
+  border-radius: 16px;
+
+  background: #fff7ed;
+
+  border: 1px solid #fed7aa;
+}
+
+.admin-cv-detail__risk-icon {
+  font-size: 18px;
+}
+
+.admin-cv-detail__score-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-cv-detail__score-card {
+  padding: 16px 18px;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.45);
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  backdrop-filter: blur(12px);
+}
+
+.admin-cv-detail__score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 10px;
+}
+
+.admin-cv-detail__score-header span {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.admin-cv-detail__score-header strong {
+  font-size: 18px;
+  color: #2563eb;
+}
+
+.admin-cv-detail__score-bar {
+  height: 10px;
+
+  border-radius: 999px;
+
+  background: rgba(148, 163, 184, 0.15);
+
+  overflow: hidden;
+}
+
+.admin-cv-detail__score-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: linear-gradient(90deg, #22c55e 0%, #06b6d4 50%, #2563eb 100%);
+
+  transition: width 0.3s ease;
+}
+
+.is-top-role {
+  border: 2px solid rgba(37, 99, 235, 0.3);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
+}
+
+.admin-cv-detail__actions {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 30px;
+  /* padding-top: 32px; */
+
+  /* border-top: 1px solid rgba(15, 23, 42, 0.08); */
+}
+
+.admin-cv-detail__download-btn {
+  min-width: 220px;
+  height: 52px;
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(18px);
+
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.admin-cv-detail__download-btn:hover {
+  transform: translateY(-2px);
+
+  background: rgba(255, 255, 255, 0.7);
+
+  box-shadow:
+    0 16px 40px rgba(37, 99, 235, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.admin-cv-detail__download-btn:active {
+  transform: translateY(0);
+}
