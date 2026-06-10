@@ -98,3 +98,7 @@ export async function submitCvToPost(publicCode, { file, name, email, phoneNumbe
   formData.append("phoneNumber", phoneNumber);
   return cvApiForm(`/CVPost/submit/${publicCode}`, { formData, auth: false });
 }
+
+export function getSubmittedCvs(publicCode) {
+  return cvApiFetch(`/CVDocument/${publicCode}/MySubmissions`);
+}

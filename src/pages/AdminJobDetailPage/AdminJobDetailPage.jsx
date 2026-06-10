@@ -890,7 +890,7 @@ export default function AdminJobDetailPage() {
 
                     {cv.score != null && (
                       <span className="admin-job-detail__score">
-                        Score: {cv.score.toFixed(3)}
+                        Score: {searchResult.aiSelection.rankings.find(r => r.cv_id === cv.id)?.score}
                       </span>
                     )}
 
@@ -899,6 +899,10 @@ export default function AdminJobDetailPage() {
                       {formatRoleName(
                         cv.confirmedPredictedRole || cv.predictedRole,
                       )}
+                    </p>
+
+                    <p>
+                      Reasoning: {searchResult.aiSelection.rankings.find(r => r.cv_id === cv.id)?.brief_reason}
                     </p>
 
                     {cv.code && (

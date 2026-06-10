@@ -5,7 +5,7 @@ import { useSnackbar } from "notistack";
 import "./JobDetailPage.css";
 import ApplyModal from "@/components/Jobs/ApplyModal";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { getPublicApplyUrl } from "@/api/cvPost";
+import { getPublicApplyUrl, getSubmittedCvs } from "@/api/cvPost";
 import { getPublicJobByCode } from "@/api/publicJobs";
 import { formatJobDate, publicJobDetailMeta } from "@/utils/jobDisplay";
 
@@ -20,6 +20,17 @@ function Section({ title, content }) {
   );
 }
 
+function resolveAttachUrl(url) {
+  if (!url) return null;
+  if (/^https?:\/\//i.test(url)) return url;
+
+  const base = (import.meta.env.VITE_FILE_API_BASE_URL || "/fileapi").replace(
+    /\/$/,
+    "",
+  );
+  return `${base}${url.startsWith("/") ? url : `/${url}`}`;
+}
+
 export default function JobDetailPage() {
   const { publicCode } = useParams();
   const navigate = useNavigate();
@@ -28,6 +39,7 @@ export default function JobDetailPage() {
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showApply, setShowApply] = useState(false);
+  const [submittedCvs, setSubmittedCvs] = useState([]);
 
   const loadJob = useCallback(async () => {
     try {
@@ -36,6 +48,9 @@ export default function JobDetailPage() {
       const data = await getPublicJobByCode(publicCode);
 
       setJob(data);
+
+      const submittedCvs = await getSubmittedCvs(data.publicCode);
+      setSubmittedCvs(submittedCvs.metadata);
     } catch (err) {
       enqueueSnackbar(err?.message || "Job not found", {
         variant: "error",
@@ -175,6 +190,79 @@ export default function JobDetailPage() {
               </div>
             )}
         </article>
+
+        {submittedCvs.length > 0 && (
+          <section className="job-detail__submissions">
+            <h2>Your submissions</h2>
+            <ul className="job-detail__submitted-cvs">
+              {submittedCvs.map((cv) => {
+                const fileName =
+                  cv.attach?.fileName ||
+                  (cv.code ? `CV ${cv.code}` : "Submitted CV");
+                const downloadUrl = resolveAttachUrl(cv.attach?.url);
+                const submittedAt = cv.createdAt || cv.submittedAt;
+
+                const content = (
+                  <>
+                    <span className="job-detail__submitted-cv-icon" aria-hidden>
+                      <svg viewBox="0 0 24 24" width="22" height="22">
+                        <path
+                          fill="currentColor"
+                          d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2 5 5h-5V4zM8 13h8v2H8v-2zm0 4h5v2H8v-2z"
+                        />
+                      </svg>
+                    </span>
+
+                    <div className="job-detail__submitted-cv-info">
+                      <span className="job-detail__submitted-cv-title">
+                        {fileName}
+                      </span>
+                      {(cv.code || submittedAt) && (
+                        <span className="job-detail__submitted-cv-meta">
+                          {cv.code && <>Ref: {cv.code}</>}
+                          {cv.code && submittedAt && " · "}
+                          {submittedAt && formatJobDate(submittedAt)}
+                        </span>
+                      )}
+                    </div>
+
+                    {downloadUrl && (
+                      <span className="job-detail__submitted-cv-action">
+                        Download
+                        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
+                          <path
+                            fill="currentColor"
+                            d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"
+                          />
+                        </svg>
+                      </span>
+                    )}
+                  </>
+                );
+
+                return (
+                  <li key={cv.code || cv.id} className="job-detail__submitted-cv">
+                    {downloadUrl ? (
+                      <a
+                        className="job-detail__submitted-cv-link"
+                        href={downloadUrl}
+                        download={fileName}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <div className="job-detail__submitted-cv-static">
+                        {content}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        )}
       </div>
 
       {showApply && (
