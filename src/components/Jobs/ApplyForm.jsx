@@ -13,6 +13,7 @@ export default function ApplyForm({
   jobTitle,
   onSuccess,
   onClose,
+  isReapply = false,
   idPrefix = "apply",
   className = "",
 }) {
@@ -57,6 +58,7 @@ export default function ApplyForm({
         name: name.trim(),
         email: email.trim(),
         phoneNumber: phoneNumber.trim(),
+        method: isReapply ? "PUT" : "POST",
       });
       setSuccess(res);
       onSuccess?.(res);

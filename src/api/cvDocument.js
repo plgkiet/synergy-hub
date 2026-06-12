@@ -62,3 +62,11 @@ export async function confirmPredictedRole(cvId, confirmedPredictedRole) {
     body: { confirmedPredictedRole },
   });
 }
+
+export async function getCvById(id) {
+  return cvResultFetch(`/CVDocument/GetById/${id}`);
+}
+
+export async function getCvByCode(code) {
+  return cvResultFetch(`/CVDocument/GetByCode/${code}`);
+}

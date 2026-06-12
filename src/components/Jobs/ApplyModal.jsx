@@ -1,7 +1,13 @@
 import ModalPortal from "@/components/ui/ModalPortal";
 import ApplyForm from "@/components/Jobs/ApplyForm";
 
-export default function ApplyModal({ publicCode, jobTitle, onClose }) {
+export default function ApplyModal({
+  publicCode,
+  jobTitle,
+  onClose,
+  onSuccess,
+  isReapply = false,
+}) {
   if (!publicCode) return null;
 
   return (
@@ -22,6 +28,8 @@ export default function ApplyModal({ publicCode, jobTitle, onClose }) {
             publicCode={publicCode}
             jobTitle={jobTitle}
             onClose={onClose}
+            onSuccess={onSuccess}
+            isReapply={isReapply}
             idPrefix="apply-modal"
             className="apply-card--modal"
           />

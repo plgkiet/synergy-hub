@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSnackbar } from "notistack";
 import "./AdminCvDetailPage.css";
+import { getCvById } from "@/api/cvDocument";
+import { downloadCvByCode } from "@/api/fileService";
+import CvPreviewModal from "@/components/CvPreviewModal/CvPreviewModal";
 
 export default function AdminCvDetailPage() {
   const navigate = useNavigate();
   const { cvId } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [loading, setLoading] = useState(true);
   const [cv, setCv] = useState(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   useEffect(() => {
     loadCv();
+
+    return () => {
+      setCv(null);
+    };
   }, [cvId]);
 
   const loadCv = async () => {
@@ -18,139 +28,89 @@ export default function AdminCvDetailPage() {
       setLoading(true);
 
       // TODO:
-      // const res = await getCvById(cvId);
-
-      //   const res = YOUR_API_RESPONSE_HERE;
-
-      //   const item = res.data.data[0];
-
-      const item = {
-        id: cvId,
-        code: "FILE_B3C6A9",
-        status: "done",
-
-        candidateName: "Tran Gia Thuan",
-
-        submitterEmail: "cung0976@gmail.com",
-        submitterPhone: "098765213",
-
-        predictedRole: "Backend Developer",
-        confirmedPredictedRole: null,
-
-        targetRoles: ["Backend_Developer"],
-
-        english: "Basic reading and comprehension of technical documents",
-
-        education: {
-          school: "Nguyen Tat Thanh University",
-          gpa: "3.4 / 4.0",
-        },
-
-        skills: [
-          {
-            name: "Node.js",
-            status: "present",
-          },
-          {
-            name: "Express.js",
-            status: "present",
-          },
-          {
-            name: "ReactJS",
-            status: "present",
-          },
-          {
-            name: "MySQL",
-            status: "present",
-          },
-          {
-            name: "MongoDB",
-            status: "present",
-          },
-          {
-            name: "TypeScript",
-            status: "listed_only",
-          },
-          {
-            name: "Docker",
-            status: "listed_only",
-          },
-        ],
-
-        roleFeatureScores: {
-          Backend_Developer_score: 3.6,
-          Data_Engineer_score: 0.5,
-          Frontend_Developer_score: 0.1,
-          DevOps_Cloud_Engineer_score: 0.1,
-          AI_Engineer_score: 0,
-          Tester_score: 0,
-        },
-
-        projects: [
-          {
-            name: "Seed Business Website",
-            role: "Fullstack Developer",
-
-            tech: ["ReactJS", "Bootstrap", "Node.js", "Express.js", "Mongoose"],
-
-            responsibilities: [
-              "User authentication via JWT",
-              "Order processing and PayPal integration",
-              "Admin dashboard for revenue statistics",
-            ],
-
-            outcomes: ["Implemented full e-commerce shopping functionalities"],
-          },
-
-          {
-            name: "Pharmacy Management Website",
-            role: "Fullstack",
-
-            tech: ["ReactJS", "Bootstrap", "Node.js", "Express.js", "MySQL"],
-
-            responsibilities: [
-              "Inventory management",
-              "Product management",
-              "Shopping cart handling",
-            ],
-
-            outcomes: ["Developed an online pharmaceutical management system"],
-          },
-        ],
-
-        recommendationReasoning: {
-          strengths:
-            "Strong academic foundation with GPA 3.4/4.0. Practical experience with Node.js, Express.js, ReactJS and SQL/NoSQL databases.",
-
-          weaknesses:
-            "Limited English proficiency and no professional working experience yet.",
-
-          confidence_level: "High",
-
-          hr_explanation:
-            "Suitable for Backend Developer internship or junior position. Has demonstrated solid technical ability through academic and personal projects.",
-        },
-
-        riskFlags: ["Limited English proficiency (Basic reading only)"],
-      };
-
-      setCv(item);
-
-      setCv(item);
+      const res = await getCvById(cvId);
+      setCv(res);
     } finally {
       setLoading(false);
     }
   };
 
   if (loading) {
-    return <div className="admin-cv-detail">Loading...</div>;
+    return (
+      <div className="admin-cv-detail">
+        <div
+          className="admin-cv-detail__state admin-cv-detail__state--loading"
+          role="status"
+          aria-label="Loading CV"
+        >
+          <span className="admin-cv-detail__bouncing-dot" aria-hidden="true" />
+          <p className="admin-cv-detail__state-text">Loading CV…</p>
+        </div>
+      </div>
+    );
   }
 
   if (!cv) {
-    return <div className="admin-cv-detail">CV not found.</div>;
+    return (
+      <div className="admin-cv-detail">
+        <button className="admin-cv-detail__back" onClick={() => navigate(-1)}>
+          ← Back
+        </button>
+
+        <div className="admin-cv-detail__state admin-cv-detail__state--empty">
+          <div className="admin-cv-detail__empty-illustration" aria-hidden="true">
+            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect
+                x="24"
+                y="16"
+                width="56"
+                height="72"
+                rx="8"
+                fill="rgba(37, 99, 235, 0.1)"
+                stroke="#93c5fd"
+                strokeWidth="2"
+              />
+              <path
+                d="M40 36h24M40 48h24M40 60h16"
+                stroke="#93c5fd"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+              <circle cx="78" cy="78" r="22" fill="rgba(255,255,255,0.7)" stroke="#cbd5e1" strokeWidth="2" />
+              <path
+                d="M70 70l16 16M86 70l-16 16"
+                stroke="#94a3b8"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+
+          <h2 className="admin-cv-detail__empty-title">CV not found</h2>
+          <p className="admin-cv-detail__empty-message">
+            This CV may have been removed, or the link you followed is no longer
+            valid.
+          </p>
+
+          <button
+            type="button"
+            className="admin-cv-detail__empty-btn"
+            onClick={() => navigate(-1)}
+          >
+            Go back
+          </button>
+        </div>
+      </div>
+    );
   }
 
-  const displayRole = cv.confirmedPredictedRole || cv.predictedRole || "-";
+  async function downloadCv() {
+    try {
+      await downloadCvByCode(cv.code);
+    } catch (err) {
+      enqueueSnackbar(err?.message || "Download failed", { variant: "error" });
+    }
+  }
 
   return (
     <div className="admin-cv-detail">
@@ -204,22 +164,6 @@ export default function AdminCvDetailPage() {
         </div>
 
         <section className="admin-cv-detail__section">
-          <h3>Target Roles</h3>
-
-          <div className="admin-cv-detail__chips">
-            {(cv.targetRoles || []).map((role) => (
-              <span key={role} className="admin-cv-detail__chip">
-                {role
-                  .replaceAll("_", " ")
-                  .split(" ")
-                  .map((word) => word.charAt(0) + word.slice(1).toLowerCase())
-                  .join(" ")}
-              </span>
-            ))}
-          </div>
-        </section>
-
-        <section className="admin-cv-detail__section">
           <h3>Skills</h3>
 
           <div className="admin-cv-detail__chips">
@@ -227,7 +171,7 @@ export default function AdminCvDetailPage() {
               <span
                 key={skill.name}
                 className={`admin-cv-detail__chip ${
-                  skill.status === "present" ? "is-present" : "is-listed"
+                  skill.status === "present" ? "is-present" : "is-listed" 
                 }`}
               >
                 {skill.name}
@@ -243,6 +187,10 @@ export default function AdminCvDetailPage() {
             {Object.entries(cv.roleFeatureScores || {})
               .sort(([, a], [, b]) => b - a)
               .map(([key, value], index) => {
+                if (["Mobile_Developer_score", "Data_Engineer_score", "MLOps_Engineer_score"].includes(key)) {
+                  return null;
+                }
+
                 const label = key.replace("_score", "").replaceAll("_", " ");
 
                 const percent = Math.min((value / 4) * 100, 100);
@@ -373,15 +321,29 @@ export default function AdminCvDetailPage() {
       <div className="admin-cv-detail__actions">
         <button
           type="button"
+          className="admin-cv-detail__view-btn"
+          onClick={() => setPreviewOpen(true)}
+        >
+          View CV
+        </button>
+        <button
+          type="button"
           className="admin-cv-detail__download-btn"
-          onClick={() => {
-            // TODO: downloadCv(cv.code)
-            console.log("download", cv.code);
-          }}
+          onClick={downloadCv}
         >
           ⬇ Download CV
         </button>
       </div>
+
+      <CvPreviewModal
+        open={previewOpen}
+        onClose={() => setPreviewOpen(false)}
+        code={cv.code}
+        title={cv.candidateName}
+        fileType={cv.fileType || cv.cvType || ""}
+        fileName={cv.fileName || cv.attach?.fileName || ""}
+        onDownload={downloadCv}
+      />
     </div>
   );
 }

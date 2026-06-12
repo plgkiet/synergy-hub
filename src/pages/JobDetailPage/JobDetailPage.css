@@ -249,6 +249,18 @@
   cursor: not-allowed;
 }
 
+.job-detail__apply--submitted {
+  background: rgba(255, 255, 255, 0.88);
+  color: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+.job-detail__apply--submitted:hover:not(:disabled) {
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+}
+
 .job-detail__refer {
   border: 1px solid rgba(255, 255, 255, 0.55);
 
@@ -356,15 +368,51 @@
 
   padding: 0 56px 48px;
   border-top: 1px solid rgba(148, 163, 184, 0.12);
+  scroll-margin-top: 24px;
+}
+
+.job-detail__submissions-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  margin: 40px 0 20px;
 }
 
 .job-detail__submissions h2 {
-  margin: 40px 0 20px;
+  margin: 0;
 
   font-size: 24px;
   font-weight: 700;
 
   color: #0f172a;
+}
+
+.job-detail__reapply {
+  min-width: 140px;
+  height: 44px;
+  padding: 0 22px;
+
+  border: none;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #30d18a 23%, #1ea5e0 65%, #163c98 100%);
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.25s ease;
+
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.24);
+}
+
+.job-detail__reapply:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(37, 99, 235, 0.32);
 }
 
 .job-detail__submitted-cvs {

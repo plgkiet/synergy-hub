@@ -1,4 +1,4 @@
-import { cvApiFetch, cvApiForm } from "./cvHttp";
+import { cvApiFetch, cvApiForm, cvResultFetch } from "./cvHttp";
 import { appendArrayParams, pageQuery } from "./queryParams";
 
 export function getPublicApplyUrl(publicCode) {
@@ -90,15 +90,25 @@ export async function searchPostSubmissions(
   return cvApiFetch(`/CVPost/${postId}/submissions/search?${params}`);
 }
 
-export async function submitCvToPost(publicCode, { file, name, email, phoneNumber }) {
+export async function submitCvToPost(
+  publicCode,
+  { file, name, email, phoneNumber, method = "POST" } = {},
+) {
   const formData = new FormData();
   formData.append("file", file);
   formData.append("name", name);
   formData.append("email", email);
   formData.append("phoneNumber", phoneNumber);
-  return cvApiForm(`/CVPost/submit/${publicCode}`, { formData, auth: false });
+  return cvApiForm(`/CVPost/submit/${publicCode}`, {
+    formData,
+    auth: true,
+    method,
+  });
 }
 
-export function getSubmittedCvs(publicCode) {
-  return cvApiFetch(`/CVDocument/${publicCode}/MySubmissions`);
+export async function getSubmittedCvs(publicCode) {
+  const result = await cvResultFetch(`/CVDocument/${publicCode}/MySubmissions`);
+  if (Array.isArray(result)) return result;
+  if (Array.isArray(result?.data)) return result.data;
+  return [];
 }
