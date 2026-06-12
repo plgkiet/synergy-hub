@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
@@ -36,21 +36,35 @@ export default function JobDetailPage() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
+  const submissionsRef = useRef(null);
+
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showApply, setShowApply] = useState(false);
+  const [isReapply, setIsReapply] = useState(false);
   const [submittedCvs, setSubmittedCvs] = useState([]);
+
+  const loadSubmissions = useCallback(async (code) => {
+    if (!code) {
+      setSubmittedCvs([]);
+      return;
+    }
+
+    try {
+      const subs = await getSubmittedCvs(code);
+      setSubmittedCvs(subs);
+    } catch {
+      setSubmittedCvs([]);
+    }
+  }, []);
 
   const loadJob = useCallback(async () => {
     try {
       setLoading(true);
 
       const data = await getPublicJobByCode(publicCode);
-
       setJob(data);
-
-      const submittedCvs = await getSubmittedCvs(data.publicCode);
-      setSubmittedCvs(submittedCvs.metadata);
+      await loadSubmissions(data.publicCode);
     } catch (err) {
       enqueueSnackbar(err?.message || "Job not found", {
         variant: "error",
@@ -60,7 +74,7 @@ export default function JobDetailPage() {
     } finally {
       setLoading(false);
     }
-  }, [publicCode, navigate, enqueueSnackbar]);
+  }, [publicCode, navigate, enqueueSnackbar, loadSubmissions]);
 
   useEffect(() => {
     loadJob();
@@ -80,10 +94,42 @@ export default function JobDetailPage() {
 
   const canApply = Boolean(job?.publicCode);
   const showRefer = job?.isReferralEnabled !== false;
+  const hasSubmissions = submittedCvs.length > 0;
 
   const handleApply = () => {
     if (!canApply) return;
+    setIsReapply(false);
     setShowApply(true);
+  };
+
+  const handleReapply = () => {
+    if (!canApply) return;
+    setIsReapply(true);
+    setShowApply(true);
+  };
+
+  const handleCloseApply = () => {
+    setShowApply(false);
+    setIsReapply(false);
+  };
+
+  const scrollToSubmissions = () => {
+    submissionsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handlePrimaryAction = () => {
+    if (!canApply) return;
+
+    if (hasSubmissions) {
+      scrollToSubmissions();
+      return;
+    }
+
+    handleApply();
+  };
+
+  const handleApplySuccess = async () => {
+    await loadSubmissions(job?.publicCode);
   };
 
   const handleRefer = async () => {
@@ -137,11 +183,13 @@ export default function JobDetailPage() {
             <div className="job-detail__actions">
               <button
                 type="button"
-                className="job-detail__apply"
-                onClick={handleApply}
+                className={`job-detail__apply${
+                  hasSubmissions ? " job-detail__apply--submitted" : ""
+                }`}
+                onClick={handlePrimaryAction}
                 disabled={!canApply}
               >
-                Apply for this job
+                {hasSubmissions ? "View Your Submissions" : "Apply for this job"}
               </button>
 
               {showRefer && (
@@ -191,9 +239,22 @@ export default function JobDetailPage() {
             )}
         </article>
 
-        {submittedCvs.length > 0 && (
-          <section className="job-detail__submissions">
-            <h2>Your submissions</h2>
+        {hasSubmissions && (
+          <section
+            ref={submissionsRef}
+            id="your-submissions"
+            className="job-detail__submissions"
+          >
+            <div className="job-detail__submissions-header">
+              <h2>Your submissions</h2>
+              <button
+                type="button"
+                className="job-detail__reapply"
+                onClick={handleReapply}
+              >
+                Re-apply
+              </button>
+            </div>
             <ul className="job-detail__submitted-cvs">
               {submittedCvs.map((cv) => {
                 const fileName =
@@ -269,7 +330,9 @@ export default function JobDetailPage() {
         <ApplyModal
           publicCode={job.publicCode}
           jobTitle={job.title}
-          onClose={() => setShowApply(false)}
+          onClose={handleCloseApply}
+          onSuccess={handleApplySuccess}
+          isReapply={isReapply}
         />
       )}
     </div>

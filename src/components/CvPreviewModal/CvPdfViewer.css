@@ -1,0 +1,116 @@
+.cv-pdf-viewer {
+  display: flex;
+  flex-direction: column;
+  height: min(72vh, 760px);
+  min-height: 420px;
+}
+
+.cv-pdf-viewer__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+}
+
+.cv-pdf-viewer__toolbar-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cv-pdf-viewer__tool-btn,
+.cv-pdf-viewer__fit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  color: #334155;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cv-pdf-viewer__tool-btn:hover:not(:disabled),
+.cv-pdf-viewer__fit-btn:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.cv-pdf-viewer__tool-btn:disabled,
+.cv-pdf-viewer__fit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cv-pdf-viewer__fit-btn {
+  margin-left: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cv-pdf-viewer__fit-btn.is-active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.cv-pdf-viewer__page-indicator,
+.cv-pdf-viewer__zoom-label {
+  min-width: 72px;
+  padding: 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  text-align: center;
+}
+
+.cv-pdf-viewer__canvas {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 28px 24px;
+  background: linear-gradient(180deg, #eef2f7 0%, #e2e8f0 100%);
+}
+
+.cv-pdf-viewer__loading,
+.cv-pdf-viewer__error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+}
+
+.cv-pdf-viewer__error p {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.cv-pdf-viewer__document {
+  display: flex;
+  justify-content: center;
+}
+
+.cv-pdf-viewer__page-wrap {
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 6px rgba(15, 23, 42, 0.06),
+    0 16px 40px rgba(15, 23, 42, 0.12);
+}
+
+.cv-pdf-viewer__page-wrap canvas {
+  display: block;
+}

@@ -8,7 +8,7 @@ function getFileNameFromDisposition(disposition) {
   return plain?.[1] || "";
 }
 
-export async function downloadCvByCode(code) {
+export async function fetchCvFileByCode(code) {
   const token = storage.getToken();
   const base = import.meta.env.VITE_FILE_API_BASE_URL || "/fileapi";
 
@@ -16,14 +16,23 @@ export async function downloadCvByCode(code) {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
 
-  if (!res.ok) throw new Error(`Download failed (${res.status})`);
+  if (!res.ok) throw new Error(`Failed to load file (${res.status})`);
 
+  const contentType = res.headers.get("content-type") || "";
+  const fileName =
+    getFileNameFromDisposition(res.headers.get("content-disposition")) || code;
   const blob = await res.blob();
+
+  return { blob, contentType, fileName };
+}
+
+export async function downloadCvByCode(code) {
+  const { blob, fileName } = await fetchCvFileByCode(code);
   const url = window.URL.createObjectURL(blob);
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${code}`;
+  a.download = fileName || `${code}`;
   document.body.appendChild(a);
   a.click();
   a.remove();
