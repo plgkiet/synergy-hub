@@ -62,8 +62,8 @@ import { usePermissions } from "@/auth/usePermissions";
 import { canDo } from "@/utils/permissions";
 
 const TABS = [
-  { id: "settings", label: "Settings" },
   { id: "submissions", label: "Search" },
+  { id: "settings", label: "Settings" },
 ];
 const PAGE_SIZE = 10;
 
@@ -172,7 +172,7 @@ export default function AdminJobDetailPage() {
   const { permissions } = usePermissions();
   const canUpdateJob = canDo(permissions, "Job", "Update");
 
-  const [tab, setTab] = useState("settings");
+  const [tab, setTab] = useState("submissions");
   const [settingsSection, setSettingsSection] = useState("overview");
   const [job, setJob] = useState(null);
   const [loadingJob, setLoadingJob] = useState(true);
@@ -890,7 +890,12 @@ export default function AdminJobDetailPage() {
 
                     {cv.score != null && (
                       <span className="admin-job-detail__score">
-                        Score: {searchResult.aiSelection.rankings.find(r => r.cv_id === cv.id)?.score}
+                        Score:{" "}
+                        {
+                          searchResult.aiSelection.rankings.find(
+                            (r) => r.cv_id === cv.id,
+                          )?.score
+                        }
                       </span>
                     )}
 
@@ -902,7 +907,12 @@ export default function AdminJobDetailPage() {
                     </p>
 
                     <p>
-                      Reasoning: {searchResult.aiSelection.rankings.find(r => r.cv_id === cv.id)?.brief_reason}
+                      Reasoning:{" "}
+                      {
+                        searchResult.aiSelection.rankings.find(
+                          (r) => r.cv_id === cv.id,
+                        )?.brief_reason
+                      }
                     </p>
 
                     {cv.code && (
