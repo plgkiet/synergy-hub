@@ -341,10 +341,11 @@ export default function AdminCvDetailPage() {
       <div className="admin-cv-detail__actions">
         <button
           type="button"
-          className="admin-cv-detail__view-btn"
+          // className="admin-cv-detail__view-btn"
+          className="admin-cv-detail__download-btn"
           onClick={() => setPreviewOpen(true)}
         >
-          View CV
+          <i className="fa-solid fa-file-lines" aria-hidden /> View CV
         </button>
         <button
           type="button"
