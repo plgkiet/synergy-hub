@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { usePermissions } from "@/auth/usePermissions";
 import {
+  canAccessDashboardAdmin,
   canAccessJobsAdmin,
   canAccessUsersAdmin,
   getAdminDefaultPath,
@@ -10,6 +11,10 @@ export default function AdminIndexRedirect() {
   const { permissions, loading } = usePermissions();
 
   if (loading) return null;
+
+  if (canAccessDashboardAdmin(permissions)) {
+    return <Navigate to="dashboard" replace />;
+  }
 
   if (canAccessUsersAdmin(permissions)) {
     return <Navigate to="users" replace />;

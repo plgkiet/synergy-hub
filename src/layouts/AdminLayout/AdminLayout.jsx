@@ -14,6 +14,13 @@ const MENU_SECTIONS = [
     title: "Management",
     items: [
       {
+        to: "/admin/dashboard",
+        label: "Dashboard",
+        icon: "fa-chart-pie",
+        end: false,
+        module: "AdminPage",
+      },
+      {
         to: "/admin/users",
         label: "Users",
         icon: "fa-users",
@@ -56,9 +63,10 @@ export default function AdminLayout() {
   };
 
   const pageTitle =
-    menuSections.flatMap((s) => s.items).find((item) =>
-      location.pathname.startsWith(item.to)
-    )?.label ?? "Administration";
+    menuSections
+      .flatMap((s) => s.items)
+      .find((item) => location.pathname.startsWith(item.to))?.label ??
+    "Administration";
 
   return (
     <div className="admin-layout">
@@ -123,7 +131,11 @@ export default function AdminLayout() {
               {user?.username || "User"}
             </span>
             <NotificationBell />
-            <button type="button" className="admin-btn admin-btn--ghost" onClick={handleLogout}>
+            <button
+              type="button"
+              className="admin-btn admin-btn--ghost"
+              onClick={handleLogout}
+            >
               Log out
             </button>
           </div>

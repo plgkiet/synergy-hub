@@ -5,6 +5,7 @@ import "./AdminCvDetailPage.css";
 import { getCvById } from "@/api/cvDocument";
 import { downloadCvByCode } from "@/api/fileService";
 import CvPreviewModal from "@/components/CvPreviewModal/CvPreviewModal";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 export default function AdminCvDetailPage() {
   const navigate = useNavigate();
@@ -43,8 +44,7 @@ export default function AdminCvDetailPage() {
           role="status"
           aria-label="Loading CV"
         >
-          <span className="admin-cv-detail__bouncing-dot" aria-hidden="true" />
-          <p className="admin-cv-detail__state-text">Loading CV…</p>
+          <LoadingSpinner />
         </div>
       </div>
     );
@@ -58,8 +58,15 @@ export default function AdminCvDetailPage() {
         </button>
 
         <div className="admin-cv-detail__state admin-cv-detail__state--empty">
-          <div className="admin-cv-detail__empty-illustration" aria-hidden="true">
-            <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div
+            className="admin-cv-detail__empty-illustration"
+            aria-hidden="true"
+          >
+            <svg
+              viewBox="0 0 120 120"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <rect
                 x="24"
                 y="16"
@@ -76,7 +83,14 @@ export default function AdminCvDetailPage() {
                 strokeWidth="3"
                 strokeLinecap="round"
               />
-              <circle cx="78" cy="78" r="22" fill="rgba(255,255,255,0.7)" stroke="#cbd5e1" strokeWidth="2" />
+              <circle
+                cx="78"
+                cy="78"
+                r="22"
+                fill="rgba(255,255,255,0.7)"
+                stroke="#cbd5e1"
+                strokeWidth="2"
+              />
               <path
                 d="M70 70l16 16M86 70l-16 16"
                 stroke="#94a3b8"
@@ -171,7 +185,7 @@ export default function AdminCvDetailPage() {
               <span
                 key={skill.name}
                 className={`admin-cv-detail__chip ${
-                  skill.status === "present" ? "is-present" : "is-listed" 
+                  skill.status === "present" ? "is-present" : "is-listed"
                 }`}
               >
                 {skill.name}
@@ -187,7 +201,13 @@ export default function AdminCvDetailPage() {
             {Object.entries(cv.roleFeatureScores || {})
               .sort(([, a], [, b]) => b - a)
               .map(([key, value], index) => {
-                if (["Mobile_Developer_score", "Data_Engineer_score", "MLOps_Engineer_score"].includes(key)) {
+                if (
+                  [
+                    "Mobile_Developer_score",
+                    "Data_Engineer_score",
+                    "MLOps_Engineer_score",
+                  ].includes(key)
+                ) {
                   return null;
                 }
 

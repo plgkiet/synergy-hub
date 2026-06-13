@@ -20,6 +20,7 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import ContactPage from "./pages/ContactPage/ContactPage";
 import AdminCvDetailPage from "./pages/AdminCvDetailPage/AdminCvDetailPage";
 import ScrollToTop from "@/components/ScrollToTop/ScrollToTop";
+import AdminDashboardPage from "./pages/AdminDashboardPage/AdminDashboardPage";
 
 export default function AppRoutes() {
   return (
@@ -69,6 +70,7 @@ export default function AppRoutes() {
             >
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminIndexRedirect />} />
+                <Route path="dashboard" element={<AdminDashboardPage />} />
                 <Route
                   element={
                     <PermissionRoute

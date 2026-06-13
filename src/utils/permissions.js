@@ -37,6 +37,13 @@ export function canAccessAdmin(permissions) {
 }
 
 /** @param {FunctionPermission[] | null | undefined} permissions */
+export function canAccessDashboardAdmin(permissions) {
+  return (
+    canDo(permissions, "*", "*") || canDo(permissions, "Dashboard", "Read")
+  );
+}
+
+/** @param {FunctionPermission[] | null | undefined} permissions */
 export function canAccessUsersAdmin(permissions) {
   return canDo(permissions, "*", "*") || canDo(permissions, "User", "Read");
 }
@@ -48,7 +55,9 @@ export function canAccessJobsAdmin(permissions) {
 
 /** @param {FunctionPermission[] | null | undefined} permissions */
 export function canUploadCv(permissions) {
-  return canDo(permissions, "*", "*") || canDo(permissions, "CVDocument", "Upload");
+  return (
+    canDo(permissions, "*", "*") || canDo(permissions, "CVDocument", "Upload")
+  );
 }
 
 /** @param {FunctionPermission[] | null | undefined} permissions */
