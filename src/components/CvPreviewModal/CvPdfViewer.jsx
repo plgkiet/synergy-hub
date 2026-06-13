@@ -5,16 +5,20 @@ import "react-pdf/dist/Page/TextLayer.css";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import "./CvPdfViewer.css";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
 const ZOOM_STEP = 0.15;
 const MIN_ZOOM = 0.5;
 const MAX_ZOOM = 2.5;
 
-export default function CvPdfViewer({ file }) {
+function getPdfFileKey(file) {
+  if (file == null) return "empty";
+  if (typeof file === "string") return file;
+  if (file instanceof Blob) return `${file.size}:${file.type}`;
+  return String(file);
+}
+
+function CvPdfViewerInner({ file }) {
   const containerRef = useRef(null);
 
   const [numPages, setNumPages] = useState(0);
@@ -24,15 +28,6 @@ export default function CvPdfViewer({ file }) {
   const [fitWidth, setFitWidth] = useState(true);
   const [docLoading, setDocLoading] = useState(true);
   const [docError, setDocError] = useState("");
-
-  useEffect(() => {
-    setNumPages(0);
-    setPageNumber(1);
-    setDocLoading(true);
-    setDocError("");
-    setFitWidth(true);
-    setZoom(1);
-  }, [file]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -171,4 +166,8 @@ export default function CvPdfViewer({ file }) {
       </div>
     </div>
   );
+}
+
+export default function CvPdfViewer({ file }) {
+  return <CvPdfViewerInner key={getPdfFileKey(file)} file={file} />;
 }
