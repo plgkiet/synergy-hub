@@ -26,6 +26,12 @@ const { RangePicker } = DatePicker;
 
 const COLORS = ["#2563eb", "#0ea5e9", "#22c55e", "#f59e0b", "#ef4444"];
 
+const STATUS_COLORS = {
+  Done: "#22c55e",
+  Processing: "#2563eb",
+  Failed: "#ef4444",
+};
+
 const getDefaultRange = (type) => {
   switch (type) {
     case "date":
@@ -57,14 +63,12 @@ export default function AdminDashboardPage() {
     { name: "Others", value: 5 },
   ];
 
-  const trendData = [
-    { date: "01 Jun", value: 12 },
-    { date: "02 Jun", value: 18 },
-    { date: "03 Jun", value: 30 },
-    { date: "04 Jun", value: 27 },
-    { date: "05 Jun", value: 35 },
-    { date: "06 Jun", value: 42 },
-    { date: "07 Jun", value: 39 },
+  const experienceData = [
+    { range: "0-1 Years", count: 90 },
+    { range: "1-3 Years", count: 180 },
+    { range: "3-5 Years", count: 120 },
+    { range: "5-8 Years", count: 60 },
+    { range: "8+ Years", count: 25 },
   ];
 
   const jobsVsApplicationsData = [
@@ -295,10 +299,7 @@ export default function AdminDashboardPage() {
                     outerRadius={110}
                   >
                     {statusData.map((item, index) => (
-                      <Cell
-                        key={item.name}
-                        fill={COLORS[index % COLORS.length]}
-                      />
+                      <Cell key={item.name} fill={STATUS_COLORS[item.name]} />
                     ))}
                     <Label
                       position="center"
@@ -333,9 +334,9 @@ export default function AdminDashboardPage() {
               </ResponsiveContainer>
             </div>
             <CustomLegend
-              payload={statusData.map((item, index) => ({
+              payload={statusData.map((item) => ({
                 value: item.name,
-                color: COLORS[index],
+                color: STATUS_COLORS[item.name],
                 payload: item,
               }))}
             />
@@ -410,7 +411,15 @@ export default function AdminDashboardPage() {
         <div className="dashboard-panel-header">Jobs vs Applications Trend</div>
 
         <ResponsiveContainer width="100%" height={360}>
-          <LineChart data={jobsVsApplicationsData}>
+          <LineChart
+            data={jobsVsApplicationsData}
+            margin={{
+              top: 30,
+              right: 20,
+              left: 20,
+              bottom: 10,
+            }}
+          >
             <CartesianGrid strokeDasharray="3 3" />
 
             <XAxis dataKey="period" />
@@ -445,17 +454,27 @@ export default function AdminDashboardPage() {
       </div>
 
       <div className="dashboard-panel">
-        <div className="dashboard-panel-header">CV Upload Trend</div>
+        <div className="dashboard-panel-header">
+          Candidate Experience Distribution
+        </div>
 
         <ResponsiveContainer width="100%" height={360}>
-          <BarChart data={trendData}>
+          <BarChart
+            data={experienceData}
+            margin={{
+              top: 30,
+              right: 20,
+              left: 20,
+              bottom: 10,
+            }}
+          >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
+            <XAxis dataKey="range" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="value" radius={[12, 12, 0, 0]} fill="#2563eb">
+            <Bar dataKey="count" radius={[12, 12, 0, 0]} fill="#2563eb">
               <LabelList
-                dataKey="value"
+                dataKey="count"
                 position="top"
                 className="dashboard-bar-label"
               />
