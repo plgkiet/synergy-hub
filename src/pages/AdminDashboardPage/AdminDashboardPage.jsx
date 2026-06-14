@@ -17,8 +17,28 @@ import {
 } from "recharts";
 import FlexibleDataTable from "@/components/DataTable/FlexibleDataTable";
 import "./AdminDashboardPage.css";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+
+const { RangePicker } = DatePicker;
 
 const COLORS = ["#2563eb", "#0ea5e9", "#22c55e", "#f59e0b", "#ef4444"];
+
+const getDefaultRange = (type) => {
+  switch (type) {
+    case "date":
+      return [dayjs().subtract(6, "day"), dayjs()];
+
+    case "month":
+      return [dayjs().subtract(11, "month"), dayjs()];
+
+    case "year":
+      return [dayjs().subtract(4, "year"), dayjs()];
+
+    default:
+      return [dayjs().subtract(11, "month"), dayjs()];
+  }
+};
 
 export default function AdminDashboardPage() {
   const statusData = [
@@ -149,8 +169,85 @@ export default function AdminDashboardPage() {
     page * PAGE_SIZE,
   );
 
+  const [openFilter, setOpenFilter] = useState(false);
+  const [periodType, setPeriodType] = useState("month");
+  const [dateRange, setDateRange] = useState(getDefaultRange("month"));
+
+  const handlePeriodChange = (value) => {
+    setPeriodType(value);
+    setDateRange(getDefaultRange(value));
+  };
+
   return (
     <div className="admin-dashboard">
+      <div className="dashboard-filters">
+        <div className="dashboard-filter">
+          <button
+            type="button"
+            className="dashboard-filter-trigger"
+            onClick={() => setOpenFilter((v) => !v)}
+          >
+            <span>
+              {periodType === "date"
+                ? "Day"
+                : periodType === "month"
+                  ? "Month"
+                  : "Year"}
+            </span>
+
+            <i
+              className={`fa-solid fa-chevron-down ${
+                openFilter ? "is-open" : ""
+              }`}
+            />
+          </button>
+
+          {openFilter && (
+            <div className="dashboard-filter-menu">
+              <button
+                type="button"
+                className="dashboard-filter-option"
+                onClick={() => {
+                  handlePeriodChange("date");
+                  setOpenFilter(false);
+                }}
+              >
+                Day
+              </button>
+
+              <button
+                type="button"
+                className="dashboard-filter-option"
+                onClick={() => {
+                  handlePeriodChange("month");
+                  setOpenFilter(false);
+                }}
+              >
+                Month
+              </button>
+
+              <button
+                type="button"
+                className="dashboard-filter-option"
+                onClick={() => {
+                  handlePeriodChange("year");
+                  setOpenFilter(false);
+                }}
+              >
+                Year
+              </button>
+            </div>
+          )}
+        </div>
+
+        <RangePicker
+          picker={periodType}
+          value={dateRange}
+          onChange={setDateRange}
+          className="dashboard-filter-range"
+        />
+      </div>
+
       <div className="dashboard-kpis">
         <div className="dashboard-kpi">
           <span>Total CVs</span>

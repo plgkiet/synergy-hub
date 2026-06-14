@@ -276,3 +276,143 @@
   font-size: 15px;
   font-weight: 700;
 }
+
+.dashboard-filters {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dashboard-filter-select {
+  width: 180px;
+}
+
+.dashboard-filter-range {
+  min-width: 420px;
+}
+
+.dashboard-filter-select .ant-select-selector,
+.dashboard-filter-range {
+  height: 52px !important;
+
+  border-radius: 16px !important;
+
+  background: rgba(255, 255, 255, 0.45) !important;
+
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.dashboard-filter-select .ant-select-selection-item {
+  line-height: 50px !important;
+  font-weight: 600;
+}
+
+.dashboard-filter-range .ant-picker-input input {
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .dashboard-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dashboard-filter-select,
+  .dashboard-filter-range {
+    width: 100%;
+  }
+}
+
+.dashboard-filter {
+  position: relative;
+  width: 180px;
+}
+
+.dashboard-filter-trigger {
+  width: 100%;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 18px;
+
+  border-radius: 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.65);
+
+  background: rgba(255, 255, 255, 0.45);
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  color: #0f172a;
+}
+
+.dashboard-filter-trigger i {
+  transition: transform 0.2s ease;
+  color: #94a3b8;
+}
+
+.dashboard-filter-trigger i.is-open {
+  transform: rotate(180deg);
+}
+
+.dashboard-filter-menu {
+  position: absolute;
+
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+
+  z-index: 100;
+
+  padding: 8px;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.75);
+
+  backdrop-filter: blur(24px);
+
+  border: 1px solid rgba(255, 255, 255, 0.65);
+
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+}
+
+.dashboard-filter-option {
+  width: 100%;
+
+  border: none;
+  background: transparent;
+
+  text-align: left;
+
+  padding: 12px 14px;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.dashboard-filter-option:hover {
+  background: rgba(37, 99, 235, 0.08);
+}
