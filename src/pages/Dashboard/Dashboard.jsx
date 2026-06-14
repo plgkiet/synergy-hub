@@ -20,7 +20,7 @@ export default function Dashboard() {
   const user = authStorage.getUser();
   const { permissions } = usePermissions();
   const showAdmin = canAccessAdmin(permissions);
-  const showUpload = canUploadCv(permissions);
+  // const showUpload = canUploadCv(permissions);
 
   return (
     <div className="sh-root">
@@ -33,9 +33,9 @@ export default function Dashboard() {
 
         <nav className="sh-nav-center">
           <GlassPill className="sh-nav-glass">
-            {showUpload && (
+            {/* {showUpload && (
               <button onClick={() => navigate("/upload")}>Upload</button>
-            )}
+            )} */}
             <button onClick={() => navigate("/jobs")}>Jobs</button>
             {user?.role?.id != 3 && (
               <button onClick={() => navigate("/search")}>Search</button>
@@ -110,11 +110,11 @@ export default function Dashboard() {
             hiring and focus on what matters most—building great organizations.
           </p>
 
-          {showUpload && (
+            {/* {showUpload && ( */}
             <button className="sh-band-cta" onClick={() => navigate("/about")}>
               Who We Are →
             </button>
-          )}
+          {/* )} */}
         </div>
 
         <div className="sh-band-visual">
@@ -178,7 +178,7 @@ export default function Dashboard() {
 
         <div className="sh-footer-bottom">
           <span className="sh-footer-copy">
-            ©2025 Synergy Hub. All rights reserved.
+            ©2026 Synergy Hub. All rights reserved.
           </span>
 
           <div className="sh-footer-social">
