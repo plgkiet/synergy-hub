@@ -416,3 +416,16 @@
 .dashboard-filter-option:hover {
   background: rgba(37, 99, 235, 0.08);
 }
+
+.dashboard-panel .recharts-line-curve {
+  filter: drop-shadow(0 4px 10px rgba(37, 99, 235, 0.15));
+}
+
+.dashboard-panel .recharts-dot {
+  transition: all 0.2s ease;
+}
+
+.dashboard-panel .recharts-legend-item-text {
+  color: #475569 !important;
+  font-weight: 600;
+}

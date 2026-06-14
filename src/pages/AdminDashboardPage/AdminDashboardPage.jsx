@@ -14,6 +14,8 @@ import {
   YAxis,
   CartesianGrid,
   Legend,
+  LineChart,
+  Line,
 } from "recharts";
 import FlexibleDataTable from "@/components/DataTable/FlexibleDataTable";
 import "./AdminDashboardPage.css";
@@ -63,6 +65,15 @@ export default function AdminDashboardPage() {
     { date: "05 Jun", value: 35 },
     { date: "06 Jun", value: 42 },
     { date: "07 Jun", value: 39 },
+  ];
+
+  const jobsVsApplicationsData = [
+    { period: "Jan", jobs: 8, applications: 95 },
+    { period: "Feb", jobs: 10, applications: 120 },
+    { period: "Mar", jobs: 12, applications: 160 },
+    { period: "Apr", jobs: 15, applications: 210 },
+    { period: "May", jobs: 18, applications: 280 },
+    { period: "Jun", jobs: 20, applications: 340 },
   ];
 
   const latestApplications = [
@@ -393,6 +404,44 @@ export default function AdminDashboardPage() {
             />
           </div>
         </div>
+      </div>
+
+      <div className="dashboard-panel">
+        <div className="dashboard-panel-header">Jobs vs Applications Trend</div>
+
+        <ResponsiveContainer width="100%" height={360}>
+          <LineChart data={jobsVsApplicationsData}>
+            <CartesianGrid strokeDasharray="3 3" />
+
+            <XAxis dataKey="period" />
+
+            <YAxis />
+
+            <Tooltip />
+
+            <Legend />
+
+            <Line
+              type="monotone"
+              dataKey="jobs"
+              name="Jobs"
+              stroke="#22c55e"
+              strokeWidth={3}
+              dot={{ r: 5 }}
+              activeDot={{ r: 7 }}
+            />
+
+            <Line
+              type="monotone"
+              dataKey="applications"
+              name="Applications"
+              stroke="#2563eb"
+              strokeWidth={3}
+              dot={{ r: 5 }}
+              activeDot={{ r: 7 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
 
       <div className="dashboard-panel">
