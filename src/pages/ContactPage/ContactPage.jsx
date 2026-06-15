@@ -1,9 +1,7 @@
 import "./ContactPage.css";
-
 import GlassCard from "../AboutPage/components/GlassCard";
 import GlassButton from "../AboutPage/components/GlassButton";
 import GlassBallRain from "@/components/GlassBallRain";
-
 // import { BubbleBackground } from "@/components/ui/BubbleBackground";
 import { useNavigate } from "react-router-dom";
 
