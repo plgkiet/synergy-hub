@@ -33,7 +33,7 @@
 ========================== */
 
 .jobs-page__top {
-  max-width: 1400px;
+  /* max-width: 1400px; */
   margin: 0 auto 20px;
 }
 
@@ -62,11 +62,11 @@
 ========================== */
 
 .jobs-page__layout {
-  max-width: 1400px;
+  /* max-width: 1400px; */
   margin: 0 auto;
 
   display: grid;
-  grid-template-columns: 380px 1fr;
+  grid-template-columns: 580px 1fr;
 
   gap: 0;
 

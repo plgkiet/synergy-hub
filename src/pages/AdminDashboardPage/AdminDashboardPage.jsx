@@ -160,10 +160,7 @@ const CustomLegend = ({ payload }) => (
 
 function ChartLoading({ height = 320 }) {
   return (
-    <div
-      className="dashboard-chart-loading"
-      style={{ minHeight: height }}
-    >
+    <div className="dashboard-chart-loading" style={{ minHeight: height }}>
       <LoadingSpinner />
     </div>
   );
@@ -342,28 +339,56 @@ export default function AdminDashboardPage() {
         <div className="dashboard-kpi">
           <span>Total CVs</span>
           <strong>
-            {loading ? <LoadingSpinner inline /> : formatCount(totalCvs)}
+            {loading ? (
+              <LoadingSpinner inline />
+            ) : (
+              <>
+                {formatCount(totalCvs)}
+                <small> CVs</small>
+              </>
+            )}
           </strong>
         </div>
 
         <div className="dashboard-kpi">
           <span>Active Jobs</span>
           <strong>
-            {loading ? <LoadingSpinner inline /> : formatCount(activeJobs)}
+            {loading ? (
+              <LoadingSpinner inline />
+            ) : (
+              <>
+                {formatCount(activeJobs)}
+                <small> Jobs</small>
+              </>
+            )}
           </strong>
         </div>
 
         <div className="dashboard-kpi">
           <span>Applications</span>
           <strong>
-            {loading ? <LoadingSpinner inline /> : formatCount(applications)}
+            {loading ? (
+              <LoadingSpinner inline />
+            ) : (
+              <>
+                {formatCount(applications)}
+                <small> Apps</small>
+              </>
+            )}
           </strong>
         </div>
 
         <div className="dashboard-kpi">
           <span>Users</span>
           <strong>
-            {loading ? <LoadingSpinner inline /> : formatCount(users)}
+            {loading ? (
+              <LoadingSpinner inline />
+            ) : (
+              <>
+                {formatCount(users)}
+                <small> Users</small>
+              </>
+            )}
           </strong>
         </div>
       </div>
