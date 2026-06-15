@@ -8,6 +8,8 @@ import { usePermissions } from "@/auth/usePermissions";
 import { hasModule } from "@/utils/permissions";
 import "@/styles/admin-ui.css";
 import "./AdminLayout.css";
+import { useState } from "react";
+import ConfirmModal from "@/components/ConfirmModal/ConfirmModal";
 
 const MENU_SECTIONS = [
   {
@@ -51,6 +53,7 @@ export default function AdminLayout() {
   const user = authStorage.getUser();
   const { permissions } = usePermissions();
   const menuSections = filterMenuSections(permissions);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.add("admin-route");
@@ -134,7 +137,7 @@ export default function AdminLayout() {
             <button
               type="button"
               className="admin-btn admin-btn--ghost"
-              onClick={handleLogout}
+              onClick={() => setLogoutOpen(true)}
             >
               Log out
             </button>
@@ -146,6 +149,19 @@ export default function AdminLayout() {
             <Outlet />
           </div>
         </main>
+
+        <ConfirmModal
+          open={logoutOpen}
+          title="Confirm Logout"
+          text="Are you sure you want to log out from Synergy Hub?"
+          confirmText="Log out"
+          cancelText="Cancel"
+          onClose={() => setLogoutOpen(false)}
+          onConfirm={() => {
+            logoutApi();
+            navigate("/login", { replace: true });
+          }}
+        />
       </div>
     </div>
   );

@@ -15,6 +15,8 @@ import { canAccessAdmin, canUploadCv } from "@/utils/permissions";
 import { BubbleBackground } from "@/components/ui/BubbleBackground";
 import NotificationBell from "@/components/Notifications/NotificationBell";
 import logoGif from "@/assets/img/logo/logo.gif";
+import ConfirmModal from "@/components/ConfirmModal/ConfirmModal";
+import { useState } from "react";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ export default function Dashboard() {
   const { permissions } = usePermissions();
   const showAdmin = canAccessAdmin(permissions);
   // const showUpload = canUploadCv(permissions);
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   return (
     <div className="sh-root">
@@ -60,12 +63,7 @@ export default function Dashboard() {
             </span>
             <NotificationBell />
 
-            <GlassButton
-              onClick={() => {
-                logoutApi();
-                navigate("/login", { replace: true });
-              }}
-            >
+            <GlassButton onClick={() => setLogoutOpen(true)}>
               Log out
             </GlassButton>
           </GlassPill>
@@ -190,6 +188,17 @@ export default function Dashboard() {
           </div>
         </div>
       </section>
+      <ConfirmModal
+        open={logoutOpen}
+        title="Confirm Logout"
+        text="Are you sure you want to log out from Synergy Hub?"
+        confirmText="Log out"
+        onClose={() => setLogoutOpen(false)}
+        onConfirm={() => {
+          logoutApi();
+          navigate("/login", { replace: true });
+        }}
+      />
     </div>
   );
 }
