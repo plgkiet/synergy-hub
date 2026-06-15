@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import GlassBall from "./GlassBall/GlassBall";
+import GlassBall from "@/components/GlassBall/GlassBall";
 
 export default function GlassBallRain() {
   const [balls, setBalls] = useState([]);
