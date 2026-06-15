@@ -14,6 +14,7 @@ import { usePermissions } from "@/auth/usePermissions";
 import { canAccessAdmin, canUploadCv } from "@/utils/permissions";
 import { BubbleBackground } from "@/components/ui/BubbleBackground";
 import NotificationBell from "@/components/Notifications/NotificationBell";
+import logoGif from "@/assets/img/logo/logo.gif";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -27,7 +28,8 @@ export default function Dashboard() {
       <header className="sh-nav">
         <div className="sh-nav-left">
           <GlassPill className="sh-logo-pill">
-            <img src={logo} alt="Synergy Hub" />
+            {/* <img src={logo} alt="Synergy Hub" /> */}
+            <img src={logoGif} alt="Synergy Hub" />
           </GlassPill>
         </div>
 
@@ -110,10 +112,10 @@ export default function Dashboard() {
             hiring and focus on what matters most—building great organizations.
           </p>
 
-            {/* {showUpload && ( */}
-            <button className="sh-band-cta" onClick={() => navigate("/about")}>
-              Who We Are →
-            </button>
+          {/* {showUpload && ( */}
+          <button className="sh-band-cta" onClick={() => navigate("/about")}>
+            Who We Are →
+          </button>
           {/* )} */}
         </div>
 

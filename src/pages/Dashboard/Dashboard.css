@@ -2,7 +2,11 @@
   position: relative;
   min-height: 100vh;
   color: #111827;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
     sans-serif;
   overflow-x: hidden;
 }
@@ -61,7 +65,7 @@
 }
 
 .sh-logo-pill img {
-  height: 48px !important;
+  height: 54px !important;
   width: auto;
   object-fit: contain;
 }
@@ -266,16 +270,15 @@
 
   display: grid;
   grid-template-columns:
-    minmax(260px, 1.4fr)  /* brand */
-    minmax(160px, 1fr)    /* platform */
-    minmax(160px, 1fr)    /* legals */
-    minmax(160px, 1fr)    /* sh for */
+    minmax(260px, 1.4fr) /* brand */
+    minmax(160px, 1fr) /* platform */
+    minmax(160px, 1fr) /* legals */
+    minmax(160px, 1fr) /* sh for */
     minmax(260px, 1.4fr); /* contact */
 
   column-gap: clamp(32px, 4vw, 80px);
   align-items: start;
 }
-
 
 .sh-footer-brand {
   flex: 1;
@@ -301,7 +304,7 @@
 }
 
 .sh-footer-columns {
-display: contents;
+  display: contents;
 }
 
 .sh-footer-col {
@@ -341,7 +344,8 @@ display: contents;
   width: 200px;
   padding: 18px 22px;
   border-radius: 20px;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at 0% 0%,
       rgba(255, 255, 255, 0.08),
       transparent 55%
