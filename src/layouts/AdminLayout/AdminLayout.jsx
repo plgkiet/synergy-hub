@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
-import logo from "@/assets/img/logo/logo.png";
+import logo from "@/assets/img/whiteLogo.png";
 import NotificationBell from "@/components/Notifications/NotificationBell";
 import { authStorage } from "@/api/authStorage";
 import { logout as logoutApi } from "@/api/auth";
