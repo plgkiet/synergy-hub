@@ -74,6 +74,7 @@ export function mapCvToSearchView(cv) {
       : Array.isArray(cv.education)
         ? cv.education.map((e) => formatEducation(e)).filter(Boolean)
         : [],
+    yearsOfExperience: cv.yearsOfExperience ?? null,
   };
 }
 
