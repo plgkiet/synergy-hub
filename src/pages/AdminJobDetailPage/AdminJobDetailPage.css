@@ -433,6 +433,13 @@
   border-radius: 14px;
   margin-bottom: 10px;
   background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-job-detail__match:hover {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(37, 99, 235, 0.35);
 }
 
 .admin-job-detail__match h4 {

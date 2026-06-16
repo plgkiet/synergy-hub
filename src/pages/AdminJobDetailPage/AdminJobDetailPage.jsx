@@ -885,6 +885,18 @@ export default function AdminJobDetailPage() {
                   <div
                     key={cv.id || cv.code}
                     className="admin-job-detail__match"
+                    role={cv.id ? "button" : undefined}
+                    tabIndex={cv.id ? 0 : undefined}
+                    onClick={() => {
+                      if (cv.id) navigate(`/admin/jobs/${id}/cv/${cv.id}`);
+                    }}
+                    onKeyDown={(e) => {
+                      if (!cv.id) return;
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        navigate(`/admin/jobs/${id}/cv/${cv.id}`);
+                      }
+                    }}
                   >
                     <h4>{cv.candidateName || cv.name || "Candidate"}</h4>
 
@@ -919,7 +931,10 @@ export default function AdminJobDetailPage() {
                       <button
                         type="button"
                         className="admin-btn admin-btn--ghost admin-btn--sm"
-                        onClick={() => handleDownload(cv.code)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownload(cv.code);
+                        }}
                       >
                         Download CV
                       </button>

@@ -12,12 +12,41 @@ import { searchCvs } from "@/api/cvSearch";
 import { downloadCvByCode } from "@/api/fileService";
 import { PRESET_KEYWORDS } from "@/constants/presetKeywords";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import {
-  extractSearchResults,
-  mapCvToSearchView,
-} from "@/utils/mapCvSearchResult";
+import { mapCvToSearchView } from "@/utils/mapCvSearchResult";
 
 const LIMIT = 50;
+
+function getSearchList(res) {
+  console.log(res);
+  
+  if (Array.isArray(res)) return res;
+  if (Array.isArray(res?.selectedCvs) && res.selectedCvs.length > 0) {
+    return res.selectedCvs;
+  }
+  if (Array.isArray(res?.results)) return res.results;
+  if (Array.isArray(res?.metadata?.results)) return res.metadata.results;
+  if (Array.isArray(res?.metadata?.selectedCvs)) return res.metadata.selectedCvs;
+  return [];
+}
+
+function withAiFields(list, res) {
+  const rankings = res?.aiSelection?.rankings ?? res?.metadata?.aiSelection?.rankings;
+  if (!Array.isArray(rankings) || rankings.length === 0) return list;
+
+  const byId = new Map(
+    rankings.map((r) => [String(r.cv_id ?? r.cvId ?? r.id), r]),
+  );
+
+  return list.map((cv) => {
+    const ranking = byId.get(String(cv.id));
+    if (!ranking) return cv;
+    return {
+      ...cv,
+      score: ranking.score ?? cv.score,
+      briefReason: ranking.brief_reason ?? ranking.briefReason ?? null,
+    };
+  });
+}
 
 export default function SearchPage() {
   const { enqueueSnackbar } = useSnackbar();
@@ -46,10 +75,10 @@ export default function SearchPage() {
       setCurrentIndex(0);
 
       const res = await searchCvs(q, LIMIT);
-      const hits = extractSearchResults(res).map(mapCvToSearchView);
-      const filtered = hits.filter((cv) => cv.score == null || cv.score > 0.8);
-      setResults(filtered);
-
+      const list = getSearchList(res);
+      const withAi = withAiFields(list, res);
+      const hits = withAi.map(mapCvToSearchView);
+      setResults(hits);
       if (!hits.length) {
         enqueueSnackbar("No results found.", { variant: "info" });
       }
@@ -247,6 +276,27 @@ export default function SearchPage() {
                       <span className="search-result-label">Education:</span>{" "}
                       {(activeCandidate.education || [])[0] || "-"}
                     </p>
+
+                    <p className="search-result-line">
+                      <span className="search-result-label">Experience:</span>{" "}
+                      {activeCandidate.yearsOfExperience == null
+                        ? "-"
+                        : `${activeCandidate.yearsOfExperience} years`}
+                    </p>
+
+                    {activeCandidate.score != null && (
+                      <p className="search-result-line">
+                        <span className="search-result-label">Score:</span>{" "}
+                        {activeCandidate.score}
+                      </p>
+                    )}
+
+                    {activeCandidate.briefReason && (
+                      <p className="search-result-line">
+                        <span className="search-result-label">Reasoning:</span>{" "}
+                        {activeCandidate.briefReason}
+                      </p>
+                    )}
                   </div>
 
                   <div className="search-download-section">
