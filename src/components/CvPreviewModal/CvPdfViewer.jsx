@@ -5,7 +5,9 @@ import "react-pdf/dist/Page/TextLayer.css";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import "./CvPdfViewer.css";
 
-pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`;
+import workerUrl from "pdfjs-dist/build/pdf.worker.mjs?url";
+
+pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
 
 const ZOOM_STEP = 0.15;
 const MIN_ZOOM = 0.5;
