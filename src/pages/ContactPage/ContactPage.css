@@ -202,8 +202,7 @@
 .glass-rain .glass-ball {
   position: absolute;
   top: -200px;
-
-  animation: dropCrackFade forwards;
+  animation: dropCrackFade 5s linear forwards;
 }
 
 @keyframes dropCrackFade {
@@ -216,28 +215,42 @@
     opacity: 1;
   }
 
-  75% {
+  85% {
     transform: translateY(calc(100vh)) rotate(360deg) scale(1);
     opacity: 1;
   }
 
-  82% {
-    transform: translateY(calc(100vh)) rotate(360deg) scale(1);
+  95% {
+    transform: translateY(calc(100vh - 50px)) rotate(420deg) scale(1.05);
     opacity: 1;
-  }
-
-  88% {
-    transform: translateY(calc(100vh)) rotate(360deg) scale(1.08);
-    opacity: 1;
-  }
-
-  94% {
-    transform: translateY(calc(100vh)) rotate(380deg) scale(1.25);
-    opacity: 0.8;
   }
 
   100% {
-    transform: translateY(calc(100vh)) rotate(420deg) scale(0);
+    transform: translateY(calc(100vh - 50px)) rotate(500deg) scale(1.8);
     opacity: 0;
   }
+
+  /* 95% {
+  transform:
+    translate(
+      calc(var(--dir) * var(--bounce-x)),
+      calc(100vh - 50px)
+    )
+    rotate(420deg)
+    scale(1.05);
+
+  opacity: 1;
+}
+
+100% {
+  transform:
+    translate(
+      calc(var(--dir) * var(--bounce-x)),
+      calc(100vh - 50px)
+    )
+    rotate(500deg)
+    scale(1.8);
+
+  opacity: 0;
+} */
 }

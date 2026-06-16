@@ -11,6 +11,9 @@ export default function GlassBallRain() {
       size: 30 + Math.random() * 20,
       delay: i * 0.4,
       duration: 4 + Math.random() * 2,
+
+      direction: Math.random() > 0.5 ? 1 : -1,
+      bounceX: 20 + Math.random() * 120,
     }));
 
     setBalls(generated);
@@ -33,6 +36,8 @@ export default function GlassBallRain() {
             height: ball.size,
             animationDelay: `${ball.delay}s`,
             animationDuration: `${ball.duration}s`,
+            "--dir": ball.direction,
+            "--bounce-x": `${ball.bounceX}px`,
           }}
         />
       ))}
