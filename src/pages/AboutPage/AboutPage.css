@@ -30,11 +30,11 @@
 }
 
 .about-hero {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 360px;
   align-items: center;
   gap: 60px;
-  margin-bottom: 80px;
+  margin-bottom: 120px;
 }
 
 .about-label {
@@ -202,7 +202,7 @@
 }
 
 .company-profile-card {
-  width: min(620px, 100%);
+  width: 80%;
   margin-top: 28px;
 }
 
