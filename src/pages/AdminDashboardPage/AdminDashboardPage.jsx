@@ -27,6 +27,22 @@ import "./AdminDashboardPage.css";
 
 const { RangePicker } = DatePicker;
 
+const getPickerFormat = (type) => {
+  switch (type) {
+    case "date":
+      return "DD/MM/YYYY";
+
+    case "month":
+      return "MM/YYYY";
+
+    case "year":
+      return "YYYY";
+
+    default:
+      return "DD/MM/YYYY";
+  }
+};
+
 const COLORS = ["#2563eb", "#0ea5e9", "#22c55e", "#f59e0b", "#ef4444"];
 
 const STATUS_COLORS = {
@@ -331,6 +347,7 @@ export default function AdminDashboardPage() {
           picker={periodType}
           value={dateRange}
           onChange={handleDateChange}
+          format={getPickerFormat(periodType)}
           className="dashboard-filter-range"
         />
       </div>
