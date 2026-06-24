@@ -250,15 +250,37 @@
 }
 
 .job-detail__apply--submitted {
-  background: rgba(255, 255, 255, 0.88);
+  background: linear-gradient(
+    135deg,
+    rgba(48, 209, 138, 0.18) 0%,
+    rgba(30, 165, 224, 0.18) 60%,
+    rgba(22, 60, 152, 0.15) 100%
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.55);
+
   color: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.65);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+
+  box-shadow:
+    0 8px 24px rgba(30, 165, 224, 0.12),
+    inset 0 2px 8px rgba(255, 255, 255, 0.35);
+
+  backdrop-filter: blur(16px);
 }
 
 .job-detail__apply--submitted:hover:not(:disabled) {
-  background: #fff;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.16);
+  transform: translateY(-2px);
+
+  background: linear-gradient(
+    135deg,
+    rgba(48, 209, 138, 0.24) 0%,
+    rgba(30, 165, 224, 0.24) 60%,
+    rgba(22, 60, 152, 0.2) 100%
+  );
+
+  box-shadow:
+    0 12px 30px rgba(30, 165, 224, 0.18),
+    inset 0 2px 8px rgba(255, 255, 255, 0.45);
 }
 
 .job-detail__refer {
@@ -447,7 +469,10 @@
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .job-detail__submitted-cv-link:hover {
@@ -468,7 +493,11 @@
 
   border-radius: 12px;
 
-  background: linear-gradient(135deg, rgba(48, 209, 138, 0.18), rgba(30, 165, 224, 0.18));
+  background: linear-gradient(
+    135deg,
+    rgba(48, 209, 138, 0.18),
+    rgba(30, 165, 224, 0.18)
+  );
   color: #1d4ed8;
 }
 
@@ -516,7 +545,6 @@
   font-size: 14px;
   font-weight: 400;
 }
-
 
 /* ======================================
    LOADING
@@ -574,4 +602,23 @@
     margin-bottom: 16px;
     display: inline-block;
   }
+}
+
+.job-detail__refer-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 10px;
+  font-size: 13px;
+  font-weight: 600;
+
+  color: #64748b;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.job-detail__refer-link:hover {
+  color: #1ea5e0;
 }

@@ -189,17 +189,16 @@ export default function JobDetailPage() {
                 onClick={handlePrimaryAction}
                 disabled={!canApply}
               >
-                {hasSubmissions ? "View Your Submissions" : "Apply for this job"}
+                {hasSubmissions
+                  ? "View Your Submissions"
+                  : "Apply for this job"}
               </button>
 
               {showRefer && (
-                <button
-                  type="button"
-                  className="job-detail__refer"
-                  onClick={handleRefer}
-                >
+                <div className="job-detail__refer-link" onClick={handleRefer}>
+                  <i className="fa-solid fa-share-nodes" />
                   Refer a friend
-                </button>
+                </div>
               )}
             </div>
           </div>
@@ -290,7 +289,12 @@ export default function JobDetailPage() {
                     {downloadUrl && (
                       <span className="job-detail__submitted-cv-action">
                         Download
-                        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="16"
+                          height="16"
+                          aria-hidden
+                        >
                           <path
                             fill="currentColor"
                             d="M12 16l-5-5h3V4h4v7h3l-5 5zm-7 4h14v-2H5v2z"
@@ -302,7 +306,10 @@ export default function JobDetailPage() {
                 );
 
                 return (
-                  <li key={cv.code || cv.id} className="job-detail__submitted-cv">
+                  <li
+                    key={cv.code || cv.id}
+                    className="job-detail__submitted-cv"
+                  >
                     {downloadUrl ? (
                       <a
                         className="job-detail__submitted-cv-link"
