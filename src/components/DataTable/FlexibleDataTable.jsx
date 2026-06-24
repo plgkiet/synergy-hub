@@ -25,7 +25,7 @@ export default function FlexibleDataTable({
   rowKey = "id",
   emptyMessage = "No data.",
   className = "",
-  actionsColumnWidth = "minmax(120px, auto)",
+  actionsColumnWidth = "300px",
   renderActions,
   onRowClick,
 }) {

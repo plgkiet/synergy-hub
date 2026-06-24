@@ -127,9 +127,17 @@ const APPLICATION_COLUMNS = [
     key: "status",
     label: "Status",
     width: "160px",
-    render: (row) => (
-      <span className="dashboard-status-badge">{row.status}</span>
-    ),
+    render: (row) => {
+      const statusClass = {
+        Done: "dashboard-badge--on",
+        Failed: "dashboard-badge--danger",
+        Processing: "dashboard-badge--pending",
+      }[row.status];
+
+      return (
+        <span className={`dashboard-badge ${statusClass}`}>{row.status}</span>
+      );
+    },
   },
 ];
 

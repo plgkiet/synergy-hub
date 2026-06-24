@@ -24,17 +24,17 @@ const WORK_MODES = ["On-site", "Hybrid Work", "Remote Work"];
 const PAGE_SIZE = 10;
 
 const COLUMNS = [
-  { key: "title", label: "Job title", width: "minmax(200px, 2fr)" },
+  { key: "title", label: "Job title", width: "minmax(300px, 2fr)" },
   {
     key: "organization",
     label: "Organization",
-    width: "minmax(140px, 1fr)",
+    width: "minmax(200px, 1fr)",
     render: (row) => row.organization?.name || "—",
   },
   {
     key: "isActive",
     label: "Status",
-    width: "100px",
+    width: "200px",
     align: "center",
     render: (row) => (
       <span
@@ -47,7 +47,7 @@ const COLUMNS = [
   {
     key: "displayDate",
     label: "Posted",
-    width: "130px",
+    width: "200px",
     render: (row) => formatJobDate(row.displayDate || row.postedDate),
   },
   // { key: "publicCode", label: "Code", width: "110px" },

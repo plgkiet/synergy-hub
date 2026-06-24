@@ -9,12 +9,7 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import ModalPortal from "@/components/ui/ModalPortal";
 import { getAllRoles } from "@/api/roles";
-import {
-  createUser,
-  deleteUser,
-  getUsers,
-  updateUser,
-} from "@/api/users";
+import { createUser, deleteUser, getUsers, updateUser } from "@/api/users";
 import { usePermissions } from "@/auth/usePermissions";
 import { canDo } from "@/utils/permissions";
 
@@ -50,12 +45,12 @@ const USER_COLUMNS = [
   { key: "username", label: "Username", width: "minmax(120px, 1fr)" },
   { key: "displayName", label: "Display name", width: "minmax(140px, 1.2fr)" },
   { key: "email", label: "Email", width: "minmax(180px, 1.5fr)" },
-  { key: "phone", label: "Phone", width: "120px" },
+  { key: "phone", label: "Phone", width: "180px" },
   { key: "roleName", label: "Role", width: "110px" },
   {
     key: "status",
     label: "Status",
-    width: "100px",
+    width: "250px",
     align: "center",
     render: (row) => (
       <span className={`users-badge ${statusBadgeClass(row.status)}`}>
@@ -130,7 +125,10 @@ function normalizeUser(user) {
 }
 
 function resolveRoleId(row, roleList) {
-  if (row.roleId && roleList.some((role) => String(role.id) === String(row.roleId))) {
+  if (
+    row.roleId &&
+    roleList.some((role) => String(role.id) === String(row.roleId))
+  ) {
     return String(row.roleId);
   }
   const byName = roleList.find((role) => role.name === row.roleName);
@@ -149,7 +147,11 @@ function validateCreateForm(form) {
     return "Enter a valid email (max 100 characters)";
   }
 
-  if (!form.password || form.password.length < 6 || form.password.length > 100) {
+  if (
+    !form.password ||
+    form.password.length < 6 ||
+    form.password.length > 100
+  ) {
     return "Password must be between 6 and 100 characters";
   }
 
@@ -231,7 +233,9 @@ export default function UsersPage() {
       .catch((err) => {
         if (!cancelled) {
           setRoles([]);
-          enqueueSnackbar(err?.message || "Failed to load roles", { variant: "error" });
+          enqueueSnackbar(err?.message || "Failed to load roles", {
+            variant: "error",
+          });
         }
       })
       .finally(() => {
@@ -255,7 +259,9 @@ export default function UsersPage() {
         setTotalCount(result.totalCount);
         setTotalPages(result.totalPages);
       } catch (err) {
-        enqueueSnackbar(err?.message || "Failed to load users", { variant: "error" });
+        enqueueSnackbar(err?.message || "Failed to load users", {
+          variant: "error",
+        });
         setRows([]);
         setTotalCount(0);
         setTotalPages(1);
@@ -263,7 +269,7 @@ export default function UsersPage() {
         setLoading(false);
       }
     },
-    [enqueueSnackbar, appliedFilters]
+    [enqueueSnackbar, appliedFilters],
   );
 
   useEffect(() => {
@@ -400,7 +406,6 @@ export default function UsersPage() {
 
   return (
     <div className="users-page">
-
       <div className={`users-panel${loading ? " users-panel--loading" : ""}`}>
         <div className="users-toolbar">
           <div className="users-filters-inline">
@@ -490,7 +495,9 @@ export default function UsersPage() {
           data={rows}
           rowKey="id"
           emptyMessage={loading ? "" : "No users found."}
-          actionsColumnWidth={showUserActions ? "minmax(150px, auto)" : undefined}
+          actionsColumnWidth={
+            showUserActions ? "minmax(150px, auto)" : undefined
+          }
           renderActions={
             showUserActions
               ? (row) => (
@@ -604,13 +611,18 @@ export default function UsersPage() {
                     ))}
                   </select>
                   {!optionsLoading && roles.length === 0 && (
-                    <span className="users-form-hint">No roles available from the API.</span>
+                    <span className="users-form-hint">
+                      No roles available from the API.
+                    </span>
                   )}
                 </label>
                 {editingId && (
                   <label>
                     <span>Status</span>
-                    <select value={form.status} onChange={onFormChange("status")}>
+                    <select
+                      value={form.status}
+                      onChange={onFormChange("status")}
+                    >
                       <option value="">No change</option>
                       {USER_STATUSES.map((item) => (
                         <option key={item.value} value={item.value}>
@@ -629,9 +641,18 @@ export default function UsersPage() {
                   >
                     Cancel
                   </button>
-                  <button type="submit" className="admin-btn admin-btn--primary" disabled={saving}>
+                  <button
+                    type="submit"
+                    className="admin-btn admin-btn--primary"
+                    disabled={saving}
+                  >
                     {saving ? (
-                      <LoadingSpinner size="sm" inline variant="light" label="Saving" />
+                      <LoadingSpinner
+                        size="sm"
+                        inline
+                        variant="light"
+                        label="Saving"
+                      />
                     ) : editingId ? (
                       "Update"
                     ) : (
