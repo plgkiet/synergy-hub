@@ -7,6 +7,9 @@ import { downloadCvByCode } from "@/api/fileService";
 import CvPreviewModal from "@/components/CvPreviewModal/CvPreviewModal";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
+const formatRole = (role = "") =>
+  role.replaceAll("_", " ").replace(/\s+/g, " ").trim();
+
 export default function AdminCvDetailPage() {
   const navigate = useNavigate();
   const { cvId } = useParams();
@@ -139,10 +142,12 @@ export default function AdminCvDetailPage() {
             {/* <p>{displayRole}</p> */}
           </div>
           <span className="admin-cv-detail__role-badge">
-            {cv.confirmedPredictedRole ||
-              cv.predictedRole ||
-              cv.targetRoles?.[0]}
-          </span>{" "}
+            {formatRole(
+              cv.confirmedPredictedRole ||
+                cv.predictedRole ||
+                cv.targetRoles?.[0],
+            ) || "-"}
+          </span>
         </div>
 
         <div className="admin-cv-detail__grid">
