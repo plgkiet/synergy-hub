@@ -15,7 +15,8 @@
   content: "";
   position: absolute;
   inset: -140px -140px 55% -140px;
-  background: #ffffff url("/src/assets/img/bg.png") top center / cover no-repeat;
+  background: #ffffff url("/src/assets/img/dbbg.png") top center / cover
+    no-repeat;
   z-index: -3;
 }
 
@@ -26,11 +27,11 @@
   top: 12%;
   width: 55%;
   height: 55%;
-  background: radial-gradient(
+  /* background: radial-gradient(
     circle at 20% -10%,
     rgba(255, 255, 255, 0.96),
     transparent 65%
-  );
+  ); */
   z-index: -2;
 }
 
@@ -96,6 +97,7 @@
 }
 
 .sh-hero {
+  min-height: 60vh;
   position: relative;
   padding: 200px 24px 200px;
   max-width: 1200px;
@@ -177,9 +179,11 @@
 .sh-band {
   background: #050505;
   color: #f9fafb;
-  padding: 140px 8vw 140px;
+  padding: 120px 8vw;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   text-align: center;
 }
