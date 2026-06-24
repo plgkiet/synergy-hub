@@ -18,19 +18,21 @@ const LIMIT = 50;
 
 function getSearchList(res) {
   console.log(res);
-  
+
   if (Array.isArray(res)) return res;
   if (Array.isArray(res?.selectedCvs) && res.selectedCvs.length > 0) {
     return res.selectedCvs;
   }
   if (Array.isArray(res?.results)) return res.results;
   if (Array.isArray(res?.metadata?.results)) return res.metadata.results;
-  if (Array.isArray(res?.metadata?.selectedCvs)) return res.metadata.selectedCvs;
+  if (Array.isArray(res?.metadata?.selectedCvs))
+    return res.metadata.selectedCvs;
   return [];
 }
 
 function withAiFields(list, res) {
-  const rankings = res?.aiSelection?.rankings ?? res?.metadata?.aiSelection?.rankings;
+  const rankings =
+    res?.aiSelection?.rankings ?? res?.metadata?.aiSelection?.rankings;
   if (!Array.isArray(rankings) || rankings.length === 0) return list;
 
   const byId = new Map(
@@ -65,9 +67,9 @@ export default function SearchPage() {
       ? results[Math.min(currentIndex, results.length - 1)]
       : null;
 
-  const handleSearchSubmit = async (e) => {
+  const handleSearchSubmit = async (e, searchValue) => {
     e.preventDefault();
-    const q = query.trim();
+    const q = (searchValue ?? query).trim();
     if (!q) return;
 
     try {
@@ -103,8 +105,9 @@ export default function SearchPage() {
     setQuery(next);
 
     setTimeout(() => {
-      const fakeEvent = { preventDefault() {} };
-      handleSearchSubmit(fakeEvent);
+      // const fakeEvent = { preventDefault() {} };
+      // handleSearchSubmit(fakeEvent);
+      handleSearchSubmit(null, next);
     }, 0);
   };
 
@@ -136,6 +139,11 @@ export default function SearchPage() {
       enqueueSnackbar(err?.message || "Download failed", { variant: "error" });
     }
   };
+
+  const selectedKeywords = query
+    .split(",")
+    .map((t) => t.trim().toLowerCase())
+    .filter(Boolean);
 
   return (
     <div className="search-root">
@@ -190,7 +198,7 @@ export default function SearchPage() {
               key={w}
               type="button"
               className={
-                query.toLowerCase().includes(w.toLowerCase())
+                selectedKeywords.includes(w.toLowerCase())
                   ? "search-chip search-chip--active"
                   : "search-chip"
               }
@@ -288,6 +296,32 @@ export default function SearchPage() {
                       <p className="search-result-line">
                         <span className="search-result-label">Score:</span>{" "}
                         {activeCandidate.score}
+                      </p>
+                    )}
+
+                    {activeCandidate.confidence > 0 && (
+                      <p className="search-result-line">
+                        <span className="search-result-label">Confidence:</span>
+
+                        <span className="confidence-wrapper">
+                          <span className="confidence-bar">
+                            <span
+                              className="confidence-fill"
+                              style={{
+                                width: `${Math.round(
+                                  (activeCandidate.confidence || 0) * 100,
+                                )}%`,
+                              }}
+                            />
+                          </span>
+
+                          <span className="confidence-value">
+                            {Math.round(
+                              (activeCandidate.confidence || 0) * 100,
+                            )}
+                            %
+                          </span>
+                        </span>
                       </p>
                     )}
 

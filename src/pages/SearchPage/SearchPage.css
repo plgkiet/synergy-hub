@@ -2,7 +2,11 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
     sans-serif;
   color: #0f172a;
 }
@@ -188,7 +192,8 @@
   padding-bottom: 90px;
 
   border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: -11px -10px 48px -12px rgba(0, 0, 0, 0.18),
+  box-shadow:
+    -11px -10px 48px -12px rgba(0, 0, 0, 0.18),
     -2px -2px 12px -8px rgba(0, 0, 0, 0.16),
     inset 2px 2px 11px rgba(255, 255, 255, 0.25),
     inset 1px 1px 5px rgba(255, 255, 255, 0.18);
@@ -402,4 +407,36 @@
     border-radius: 24px;
     min-height: 320px;
   }
+}
+
+.confidence-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 8px;
+}
+
+.confidence-bar {
+  width: 140px;
+  height: 10px;
+
+  overflow: hidden;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.confidence-fill {
+  display: block;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: linear-gradient(90deg, #34d399, #22c55e);
+}
+
+.confidence-value {
+  min-width: 48px;
+  font-size: 14px;
+  font-weight: 700;
 }
