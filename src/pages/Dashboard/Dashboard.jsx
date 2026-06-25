@@ -17,6 +17,12 @@ import NotificationBell from "@/components/Notifications/NotificationBell";
 import logoGif from "@/assets/img/logo/logo.gif";
 import ConfirmModal from "@/components/ConfirmModal/ConfirmModal";
 import { useState } from "react";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -25,9 +31,93 @@ export default function Dashboard() {
   const showAdmin = canAccessAdmin(permissions);
   // const showUpload = canUploadCv(permissions);
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const container = useRef(null);
+  useGSAP(
+    () => {
+      gsap.from(".sh-nav", {
+        y: -30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      });
 
+      gsap.from(".sh-hero-left > *", {
+        x: -50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+      });
+
+      gsap.from(".sh-hero-card", {
+        x: 70,
+        opacity: 0,
+        scale: 0.96,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      gsap.from(".sh-band-content > *", {
+        y: 40,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".sh-band",
+          start: "top 75%",
+        },
+      });
+
+      gsap.fromTo(
+        ".glass-circle--lg",
+        {
+          y: 40,
+          opacity: 0,
+          filter: "blur(16px)",
+        },
+        {
+          y: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".sh-band",
+            start: "top 75%",
+            once: true,
+          },
+        },
+      );
+
+      gsap.from(".sh-footer-inner > *", {
+        y: 50,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".sh-footer-cta",
+          start: "top 80%",
+        },
+      });
+
+      gsap.from(".sh-footer-col", {
+        y: 40,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".sh-footer-cta",
+          start: "top 80%",
+        },
+      });
+    },
+    { scope: container },
+  );
   return (
-    <div className="sh-root">
+    <div className="sh-root" ref={container}>
       <header className="sh-nav">
         <div className="sh-nav-left">
           <GlassPill className="sh-logo-pill">
@@ -69,7 +159,6 @@ export default function Dashboard() {
           </GlassPill>
         </div>
       </header>
-
       <section className="sh-hero">
         <div className="sh-hero-left">
           <h1>
@@ -92,7 +181,6 @@ export default function Dashboard() {
           </GlassHeroCard>
         </div>
       </section>
-
       <section className="sh-band  sh-band--bubble">
         <BubbleBackground interactive className="sh-band-bubble" />
 
@@ -123,7 +211,6 @@ export default function Dashboard() {
           </GlassCircle>
         </div>
       </section>
-
       <section className="sh-footer-cta">
         <div className="sh-footer-inner">
           <div className="sh-footer-brand">

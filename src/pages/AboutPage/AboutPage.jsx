@@ -10,11 +10,134 @@ import GlassButton from "./components/GlassButton";
 import { BubbleBackground } from "@/components/ui/BubbleBackground";
 import { useNavigate } from "react-router-dom";
 
+import { useRef } from "react";
+
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
+
 export default function AboutPage() {
   const navigate = useNavigate();
+  const container = useRef(null);
+  useGSAP(
+    () => {
+      gsap.from(".about-hero__content", {
+        opacity: 0,
+        x: -80,
+        duration: 1,
+        ease: "power3.out",
+      });
 
+      gsap.from(".about-logo-circle", {
+        opacity: 0,
+        x: 80,
+        scale: 0.9,
+        duration: 1,
+        delay: 0.15,
+        ease: "power3.out",
+      });
+
+      gsap.utils.toArray(".about-section").forEach((section) => {
+        gsap.from(section, {
+          y: 80,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+
+      gsap.from(".timeline-item", {
+        opacity: 0,
+        y: 60,
+        stagger: 0.18,
+        duration: 0.8,
+
+        scrollTrigger: {
+          trigger: ".timeline",
+          start: "top 75%",
+        },
+      });
+
+      gsap.from(".skill-card", {
+        opacity: 0,
+        y: 50,
+        stagger: 0.08,
+
+        scrollTrigger: {
+          trigger: ".skills-grid",
+          start: "top 75%",
+        },
+      });
+
+      gsap.utils.toArray(".skill-fill").forEach((bar) => {
+        gsap.to(bar, {
+          width: bar.dataset.width,
+
+          duration: 1.2,
+          ease: "power2.out",
+
+          scrollTrigger: {
+            trigger: bar,
+            start: "top 90%",
+          },
+        });
+      });
+
+      gsap.from(".tech-stack span", {
+        opacity: 0,
+        y: 25,
+        stagger: 0.08,
+
+        scrollTrigger: {
+          trigger: ".tech-stack",
+          start: "top 80%",
+        },
+      });
+
+      gsap.from(".reference-grid > *", {
+        opacity: 0,
+        y: 40,
+        stagger: 0.15,
+
+        scrollTrigger: {
+          trigger: ".reference-grid",
+          start: "top 80%",
+        },
+      });
+
+      gsap.fromTo(
+        ".about-actions .about-glass-button",
+        {
+          opacity: 0,
+          y: 20,
+          scale: 0.9,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".about-actions",
+            start: "top 90%",
+          },
+        },
+      );
+    },
+    { scope: container },
+  );
   return (
-    <div className="about-page">
+    <div className="about-page" ref={container}>
       <BubbleBackground interactive />
 
       <section className="about-hero">
@@ -148,7 +271,7 @@ export default function AboutPage() {
               </div>
 
               <div className="skill-bar">
-                <div className="skill-fill" style={{ width: score }} />
+                <div className="skill-fill" data-width={score} />
               </div>
             </GlassCard>
           ))}

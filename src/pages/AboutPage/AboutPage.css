@@ -147,7 +147,7 @@
 .skill-fill {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #7dd3fc, #38bdf8);
+  background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 50%, #2563eb 100%);
 }
 
 .tech-stack {
@@ -284,4 +284,8 @@
 
 .about-logo-circle {
   flex-shrink: 0;
+}
+
+.skill-fill {
+  width: 0;
 }
