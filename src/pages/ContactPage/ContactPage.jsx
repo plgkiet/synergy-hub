@@ -70,27 +70,27 @@ export default function ContactPage() {
         },
       });
 
-      gsap.fromTo(
-        ".contact-actions .about-glass-button",
-        {
-          opacity: 0,
-          y: 25,
-          x: (_, i) => (i === 0 ? -20 : 20),
-        },
-        {
-          opacity: 1,
-          y: 0,
-          x: 0,
-          duration: 0.7,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".contact-actions",
-            start: "top 90%",
-            toggleActions: "play none none none",
-          },
-        },
-      );
+      // gsap.fromTo(
+      //   ".contact-actions .about-glass-button",
+      //   {
+      //     opacity: 0,
+      //     y: 25,
+      //     x: (_, i) => (i === 0 ? -20 : 20),
+      //   },
+      //   {
+      //     opacity: 1,
+      //     y: 0,
+      //     x: 0,
+      //     duration: 0.7,
+      //     stagger: 0.15,
+      //     ease: "power3.out",
+      //     scrollTrigger: {
+      //       trigger: ".contact-actions",
+      //       start: "top 90%",
+      //       toggleActions: "play none none none",
+      //     },
+      //   },
+      // );
     },
     { scope: container },
   );
