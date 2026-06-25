@@ -432,7 +432,7 @@
 
   border-radius: inherit;
 
-  background: linear-gradient(90deg, #34d399, #22c55e);
+  background: linear-gradient(90deg, #38bdf8 0%, #0ea5e9 50%, #2563eb 100%);
 }
 
 .confidence-value {

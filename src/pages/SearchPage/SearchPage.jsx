@@ -16,6 +16,15 @@ import { mapCvToSearchView } from "@/utils/mapCvSearchResult";
 
 const LIMIT = 50;
 
+export const formatRoleName = (role) => {
+  if (!role) return "-";
+  return role
+    .replace(/_/g, " ")
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/\s+/g, " ")
+    .trim();
+};
+
 function getSearchList(res) {
   console.log(res);
 
@@ -271,7 +280,9 @@ export default function SearchPage() {
 
                     <p className="search-result-line">
                       <span className="search-result-label">Categories:</span>{" "}
-                      {(activeCandidate.categories || []).join(", ") || "-"}
+                      {(activeCandidate.categories || [])
+                        .map(formatRoleName)
+                        .join(", ") || "-"}{" "}
                     </p>
 
                     <p className="search-result-line">
@@ -308,18 +319,13 @@ export default function SearchPage() {
                             <span
                               className="confidence-fill"
                               style={{
-                                width: `${Math.round(
-                                  (activeCandidate.confidence || 0) * 100,
-                                )}%`,
+                                width: `${Math.min(activeCandidate.confidence || 0, 100)}%`,
                               }}
                             />
                           </span>
 
                           <span className="confidence-value">
-                            {Math.round(
-                              (activeCandidate.confidence || 0) * 100,
-                            )}
-                            %
+                            {Math.round(activeCandidate.confidence || "--")}%
                           </span>
                         </span>
                       </p>
