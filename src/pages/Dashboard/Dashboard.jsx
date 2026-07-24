@@ -17,6 +17,13 @@ import NotificationBell from "@/components/Notifications/NotificationBell";
 import logoGif from "@/assets/img/logo/logo.gif";
 import ConfirmModal from "@/components/ConfirmModal/ConfirmModal";
 import { useState } from "react";
+import { useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+import LenisProvider from "@/components/ui/LenisProvider";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -25,180 +32,264 @@ export default function Dashboard() {
   const showAdmin = canAccessAdmin(permissions);
   // const showUpload = canUploadCv(permissions);
   const [logoutOpen, setLogoutOpen] = useState(false);
+  const container = useRef(null);
+  useGSAP(
+    () => {
+      gsap.from(".sh-nav", {
+        y: -30,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      });
 
+      gsap.from(".sh-hero-left > *", {
+        x: -50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.15,
+        ease: "power3.out",
+      });
+
+      gsap.from(".sh-hero-card", {
+        x: 70,
+        opacity: 0,
+        scale: 0.96,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      gsap.from(".sh-band-content > *", {
+        y: 40,
+        opacity: 0,
+        stagger: 0.12,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".sh-band",
+          start: "top 75%",
+        },
+      });
+
+      gsap.fromTo(
+        ".glass-circle--lg",
+        {
+          y: 40,
+          opacity: 0,
+          filter: "blur(16px)",
+        },
+        {
+          y: 0,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".sh-band",
+            start: "top 75%",
+            once: true,
+          },
+        },
+      );
+
+      gsap.from(".sh-footer-inner > *", {
+        y: 50,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.7,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".sh-footer-cta",
+          start: "top 80%",
+        },
+      });
+
+      gsap.from(".sh-footer-col", {
+        y: 40,
+        opacity: 0,
+        stagger: 0.15,
+        duration: 0.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".sh-footer-cta",
+          start: "top 80%",
+        },
+      });
+    },
+    { scope: container },
+  );
   return (
-    <div className="sh-root">
-      <header className="sh-nav">
-        <div className="sh-nav-left">
-          <GlassPill className="sh-logo-pill">
-            {/* <img src={logo} alt="Synergy Hub" /> */}
-            <img src={logoGif} alt="Synergy Hub" />
-          </GlassPill>
-        </div>
+    <LenisProvider>
+      <div className="sh-root" ref={container}>
+        <header className="sh-nav">
+          <div className="sh-nav-left">
+            <GlassPill className="sh-logo-pill">
+              {/* <img src={logo} alt="Synergy Hub" /> */}
+              <img src={logoGif} alt="Synergy Hub" />
+            </GlassPill>
+          </div>
 
-        <nav className="sh-nav-center">
-          <GlassPill className="sh-nav-glass">
-            {/* {showUpload && (
+          <nav className="sh-nav-center">
+            <GlassPill className="sh-nav-glass">
+              {/* {showUpload && (
               <button onClick={() => navigate("/upload")}>Upload</button>
             )} */}
-            <button onClick={() => navigate("/jobs")}>Jobs</button>
-            {user?.role?.id != 3 && (
-              <button onClick={() => navigate("/search")}>Search</button>
-            )}
-            {showAdmin && (
-              <button onClick={() => navigate("/admin")}>Admin</button>
-            )}
-            {/* <button>Career Map</button> */}
-            <button onClick={() => navigate("/about")}>About Us</button>{" "}
-            <button onClick={() => navigate("/contact")}>
-              Contact Us
-            </button>{" "}
-          </GlassPill>
-        </nav>
-
-        <div className="sh-nav-right">
-          <GlassPill className="sh-nav-auth">
-            <span className="user-greeting">
-              Hi, {user?.username || "User"}!
-            </span>
-            <NotificationBell />
-
-            <GlassButton onClick={() => setLogoutOpen(true)}>
-              Log out
-            </GlassButton>
-          </GlassPill>
-        </div>
-      </header>
-
-      <section className="sh-hero">
-        <div className="sh-hero-left">
-          <h1>
-            Talent infrastructure <br />
-            <span>for modern businesses</span>
-          </h1>
-          <p className="sh-hero-text">
-            Millions of recruiters and companies use Synergy Hub to collect CVs,
-            filter candidates, streamline hiring workflows, and ultimately build
-            stronger teams.
-          </p>
-          <button className="sh-hero-cta" onClick={() => navigate("/search")}>
-            Get started →
-          </button>
-        </div>
-
-        <div className="sh-hero-right">
-          <GlassHeroCard className="sh-hero-card">
-            <img src={hero} alt="Dashboard illustration" />
-          </GlassHeroCard>
-        </div>
-      </section>
-
-      <section className="sh-band  sh-band--bubble">
-        <BubbleBackground interactive className="sh-band-bubble" />
-
-        <div className="sh-band-content">
-          <h2 className="sh-band-title">
-            High-quality talent,
-            <br />
-            matched to your needs
-          </h2>
-
-          <p className="sh-band-text">
-            Synergy Hub is a recruitment and talent-matching platform that helps
-            companies collect CVs, organize candidate profiles, and identify the
-            right people with accuracy and speed. We empower teams to simplify
-            hiring and focus on what matters most—building great organizations.
-          </p>
-
-          {/* {showUpload && ( */}
-          <button className="sh-band-cta" onClick={() => navigate("/about")}>
-            Who We Are →
-          </button>
-          {/* )} */}
-        </div>
-
-        <div className="sh-band-visual">
-          <GlassCircle className="glass-circle--lg">
-            <img src={hero2} alt="Synergy Hub brand" />
-          </GlassCircle>
-        </div>
-      </section>
-
-      <section className="sh-footer-cta">
-        <div className="sh-footer-inner">
-          <div className="sh-footer-brand">
-            <div className="sh-footer-logo-row">
-              <img src={logo} alt="Synergy Hub" />
-            </div>
-            <p className="sh-footer-tagline">
-              Experience the next generation
-              <br />
-              of CVs analytics.
-            </p>
-          </div>
-
-          <div className="sh-footer-columns">
-            <div className="sh-footer-col">
-              <h4 className="sh-footer-col-title">Platform</h4>
-              <button className="sh-footer-link">Features</button>
-              <button className="sh-footer-link">Pricing</button>
-              <button className="sh-footer-link">Community</button>
-              <button
-                className="sh-footer-link"
-                onClick={() => navigate("/contact")}
-              >
+              <button onClick={() => navigate("/jobs")}>Jobs</button>
+              {user?.role?.id != 3 && (
+                <button onClick={() => navigate("/search")}>Search</button>
+              )}
+              {showAdmin && (
+                <button onClick={() => navigate("/admin")}>Admin</button>
+              )}
+              {/* <button>Career Map</button> */}
+              <button onClick={() => navigate("/about")}>About Us</button>{" "}
+              <button onClick={() => navigate("/contact")}>
                 Contact Us
               </button>{" "}
-            </div>
+            </GlassPill>
+          </nav>
 
-            <div className="sh-footer-col">
-              <h4 className="sh-footer-col-title">Legals</h4>
-              <button className="sh-footer-link">Terms of Services</button>
-              <button className="sh-footer-link">Privacy Policy</button>
-            </div>
+          <div className="sh-nav-right">
+            <GlassPill className="sh-nav-auth">
+              <span className="user-greeting">
+                Hi, {user?.username || "User"}!
+              </span>
+              <NotificationBell />
 
-            <div className="sh-footer-col">
-              <h4 className="sh-footer-col-title">SH for</h4>
-              <button className="sh-footer-link">Agencies</button>
-              <button className="sh-footer-link">Startups</button>
-            </div>
+              <GlassButton onClick={() => setLogoutOpen(true)}>
+                Log out
+              </GlassButton>
+            </GlassPill>
+          </div>
+        </header>
+        <section className="sh-hero">
+          <div className="sh-hero-left">
+            <h1>
+              Talent infrastructure <br />
+              <span>for modern businesses</span>
+            </h1>
+            <p className="sh-hero-text">
+              Millions of recruiters and companies use Synergy Hub to collect
+              CVs, filter candidates, streamline hiring workflows, and
+              ultimately build stronger teams.
+            </p>
+            <button className="sh-hero-cta" onClick={() => navigate("/search")}>
+              Get started →
+            </button>
           </div>
 
-          <div className="sh-footer-contact">
-            <GlassCard className="sh-footer-card">
-              <h3 className="sh-footer-card-title">Get in touch</h3>
-              <p className="sh-footer-card-line">
-                81 Nam Ky Khoi Nghia Street,
+          <div className="sh-hero-right">
+            <GlassHeroCard className="sh-hero-card">
+              <img src={hero} alt="Dashboard illustration" />
+            </GlassHeroCard>
+          </div>
+        </section>
+        <section className="sh-band  sh-band--bubble">
+          <BubbleBackground interactive className="sh-band-bubble" />
+
+          <div className="sh-band-content">
+            <h2 className="sh-band-title">
+              High-quality talent,
+              <br />
+              matched to your needs
+            </h2>
+
+            <p className="sh-band-text">
+              Synergy Hub is a recruitment and talent-matching platform that
+              helps companies collect CVs, organize candidate profiles, and
+              identify the right people with accuracy and speed. We empower
+              teams to simplify hiring and focus on what matters most—building
+              great organizations.
+            </p>
+
+            {/* {showUpload && ( */}
+            <button className="sh-band-cta" onClick={() => navigate("/about")}>
+              Who We Are →
+            </button>
+            {/* )} */}
+          </div>
+
+          <div className="sh-band-visual">
+            <GlassCircle className="glass-circle--lg">
+              <img src={hero2} alt="Synergy Hub brand" />
+            </GlassCircle>
+          </div>
+        </section>
+        <section className="sh-footer-cta">
+          <div className="sh-footer-inner">
+            <div className="sh-footer-brand">
+              <div className="sh-footer-logo-row">
+                <img src={logo} alt="Synergy Hub" />
+              </div>
+              <p className="sh-footer-tagline">
+                Experience the next generation
+                <br />
+                of CVs analytics.
               </p>
-              <p className="sh-footer-card-line">Binh Duong Ward,</p>
-              <p className="sh-footer-card-line">Ho Chi Minh City</p>
-            </GlassCard>
-          </div>
-        </div>
+            </div>
 
-        <div className="sh-footer-bottom">
-          <span className="sh-footer-copy">
-            ©2026 Synergy Hub. All rights reserved.
-          </span>
+            <div className="sh-footer-columns">
+              <div className="sh-footer-col">
+                <h4 className="sh-footer-col-title">Platform</h4>
+                <button className="sh-footer-link">Features</button>
+                <button className="sh-footer-link">Pricing</button>
+                <button className="sh-footer-link">Community</button>
+                <button
+                  className="sh-footer-link"
+                  onClick={() => navigate("/contact")}
+                >
+                  Contact Us
+                </button>{" "}
+              </div>
 
-          <div className="sh-footer-social">
-            <i className="fa-brands fa-instagram" />
-            <i className="fa-brands fa-youtube" />
-            <i className="fa-brands fa-linkedin-in" />
+              <div className="sh-footer-col">
+                <h4 className="sh-footer-col-title">Legals</h4>
+                <button className="sh-footer-link">Terms of Services</button>
+                <button className="sh-footer-link">Privacy Policy</button>
+              </div>
+
+              <div className="sh-footer-col">
+                <h4 className="sh-footer-col-title">SH for</h4>
+                <button className="sh-footer-link">Agencies</button>
+                <button className="sh-footer-link">Startups</button>
+              </div>
+            </div>
+
+            <div className="sh-footer-contact">
+              <GlassCard className="sh-footer-card">
+                <h3 className="sh-footer-card-title">Get in touch</h3>
+                <p className="sh-footer-card-line">
+                  81 Nam Ky Khoi Nghia Street,
+                </p>
+                <p className="sh-footer-card-line">Binh Duong Ward,</p>
+                <p className="sh-footer-card-line">Ho Chi Minh City</p>
+              </GlassCard>
+            </div>
           </div>
-        </div>
-      </section>
-      <ConfirmModal
-        open={logoutOpen}
-        title="Confirm Logout"
-        text="Are you sure you want to log out from Synergy Hub?"
-        confirmText="Log out"
-        onClose={() => setLogoutOpen(false)}
-        onConfirm={() => {
-          logoutApi();
-          navigate("/login", { replace: true });
-        }}
-      />
-    </div>
+
+          <div className="sh-footer-bottom">
+            <span className="sh-footer-copy">
+              ©2026 Synergy Hub. All rights reserved.
+            </span>
+
+            <div className="sh-footer-social">
+              <i className="fa-brands fa-instagram" />
+              <i className="fa-brands fa-youtube" />
+              <i className="fa-brands fa-linkedin-in" />
+            </div>
+          </div>
+        </section>
+        <ConfirmModal
+          open={logoutOpen}
+          title="Confirm Logout"
+          text="Are you sure you want to log out from Synergy Hub?"
+          confirmText="Log out"
+          onClose={() => setLogoutOpen(false)}
+          onConfirm={() => {
+            logoutApi();
+            navigate("/login", { replace: true });
+          }}
+        />
+      </div>
+    </LenisProvider>
   );
 }
